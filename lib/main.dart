@@ -1,7 +1,7 @@
 import 'package:deshi_ponno/firebase_options.dart';
 import 'package:deshi_ponno/home_page.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,13 +16,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var themeData = ThemeData(
+      appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
+      scaffoldBackgroundColor: Colors.black,
+      primaryColorDark: Colors.white,
+      primaryColor: Colors.white,
+      colorScheme: const ColorScheme.dark(primary: Colors.white),
+      useMaterial3: true,
+    );
     return MaterialApp(
       title: 'Deshi Ponno',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: const ColorScheme.dark(primary: Colors.white),
-        useMaterial3: true,
-      ),
+      theme: themeData,
       home: const HomePage(),
     );
   }
