@@ -1,6 +1,9 @@
-import 'package:deshi_ponno/firebase_options.dart';
+import 'package:deshi_ponno/core/theme/material_theme.dart';
 import 'package:deshi_ponno/home_page.dart';
+import 'package:deshi_ponno/services/firebase_options.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -8,6 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseDatabase.instance.setPersistenceEnabled(true);
   runApp(const MyApp());
 }
 
@@ -16,19 +20,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var themeData = ThemeData(
-      appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
-      scaffoldBackgroundColor: Colors.black,
-      primaryColorDark: Colors.white,
-      primaryColor: Colors.white,
-      colorScheme: const ColorScheme.dark(primary: Colors.white),
-      useMaterial3: true,
-    );
-    return MaterialApp(
-      title: 'Deshi Ponno',
-      debugShowCheckedModeBanner: false,
-      theme: themeData,
-      home: const HomePage(),
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        return MaterialApp(
+          title: 'Deshi Ponno',
+          debugShowCheckedModeBanner: false,
+          themeMode: ThemeMode.system, // Follow system theme
+          theme: lightMaterialTheme(lightDynamic),
+          darkTheme: darkMaterialTheme(darkDynamic),
+          home: const HomePage(),
+        );
+      },
     );
   }
 }

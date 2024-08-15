@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1009900446483:android:f78cc2bd4e60acdb8bb0e6",
         "android_client_info": {
-          "package_name": "coco.it.deshi_ponno"
+          "package_name": "com.example.deshi_ponno"
         }
       },
       "oauth_client": [],
