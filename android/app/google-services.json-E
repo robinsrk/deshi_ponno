@@ -8,12 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1009900446483:android:f78cc2bd4e60acdb8bb0e6",
+        "mobilesdk_app_id": "1:1009900446483:android:03520d2451b8201f8bb0e6",
         "android_client_info": {
-          "package_name": "com.example.deshi_ponno"
+          "package_name": "coco.it.deshi_ponno"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1009900446483-jnukjprdvkav5r0mosir2eds3d969umm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAZlvUWcchmaXFWGT6RFvJiaR1UJ_Yur38"
@@ -21,7 +26,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009900446483-jnukjprdvkav5r0mosir2eds3d969umm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1009900446483-b8ta2cv5ji5ai8ms0dbt4muruo881amf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "coco.it.deshiPonno.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009900446483:android:f78cc2bd4e60acdb8bb0e6",
+        "android_client_info": {
+          "package_name": "coco.it.deshi_ponno"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009900446483-jnukjprdvkav5r0mosir2eds3d969umm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZlvUWcchmaXFWGT6RFvJiaR1UJ_Yur38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009900446483-jnukjprdvkav5r0mosir2eds3d969umm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1009900446483-b8ta2cv5ji5ai8ms0dbt4muruo881amf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "coco.it.deshiPonno.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }
