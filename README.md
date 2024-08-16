@@ -20,7 +20,7 @@ An app to find Deshi products of bangladesh and their ingredients
 - [ ] All product list
 - [ ] Settings page
 - [ ] AI based ingredient recognition
-- [ ] Add more Deshi products
-- [ ] Add more features
-- [ ] Add more search filters
-- [ ] Add more UI/UX improvements
+- [ ] Add search filters
+- [ ] Bottom navigation bar
+- [ ] Product details page
+- [ ] User history of scanned products
