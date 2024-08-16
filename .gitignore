@@ -42,3 +42,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /Session.vim
+android/app/google-services.json
+lib/services/firebase_options.dart
+lib/firebase_options.dart
