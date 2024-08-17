@@ -24,3 +24,5 @@ class SignupEvent extends AuthEvent {
   @override
   List<Object?> get props => [email, password];
 }
+
+class CheckUserLoggedInEvent extends AuthEvent {}

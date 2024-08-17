@@ -1,4 +1,13 @@
 // import 'package:deshi_ponno/core/theme/material_theme.dart';
+// import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
+// import 'package:deshi_ponno/features/auth/data/repositories/auth_repository_impl.dart';
+// import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
+// import 'package:deshi_ponno/features/auth/domain/usecases/login.dart';
+// import 'package:deshi_ponno/features/auth/domain/usecases/signup.dart';
+// import 'package:deshi_ponno/features/auth/presentation/bloc/auth_bloc.dart';
+// import 'package:deshi_ponno/features/auth/presentation/pages/login_page.dart';
+// import 'package:deshi_ponno/features/auth/presentation/pages/signup_page.dart';
+// import 'package:deshi_ponno/features/auth/presentation/pages/splash_page.dart';
 // import 'package:deshi_ponno/features/product_scanner/data/datasources/remote/product_remote_data_source.dart';
 // import 'package:deshi_ponno/features/product_scanner/data/repositories/product_repository_impl.dart';
 // import 'package:deshi_ponno/features/product_scanner/domain/usecases/get_product.dart';
@@ -6,6 +15,7 @@
 // import 'package:deshi_ponno/features/product_scanner/presentation/pages/home_page.dart';
 // import 'package:deshi_ponno/services/firebase_options.dart';
 // import 'package:dynamic_color/dynamic_color.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_database/firebase_database.dart';
 // import 'package:flutter/material.dart';
@@ -20,17 +30,38 @@
 //   );
 //   FirebaseDatabase.instance.setPersistenceEnabled(true);
 //   di.init();
+//   final firebaseAuth = FirebaseAuth.instance;
+//
+//   final authRemoteDataSource = AuthRemoteDataSourceImpl(firebaseAuth);
+//
+//   final authRepository = AuthRepositoryImpl(authRemoteDataSource);
+//
+//   final loginUseCase = Login(authRepository);
+//   final signupUseCase = Signup(authRepository);
+//   final checkUserLoggedIn = CheckUserLoggedIn(authRepository);
+//
 //   final productRepository = ProductRepositoryImpl(
 //     ProductRemoteDataSourceImpl(FirebaseDatabase.instance),
 //   );
 //   runApp(MyApp(
 //     repository: productRepository,
+//     loginUseCase: loginUseCase,
+//     signupUseCase: signupUseCase,
+//     checkUserLoggedIn: checkUserLoggedIn,
 //   ));
 // }
 //
 // class MyApp extends StatelessWidget {
 //   final ProductRepositoryImpl repository;
-//   const MyApp({super.key, required this.repository});
+//   final Login loginUseCase;
+//   final Signup signupUseCase;
+//   final CheckUserLoggedIn checkUserLoggedIn;
+//   const MyApp(
+//       {super.key,
+//       required this.repository,
+//       required this.loginUseCase,
+//       required this.signupUseCase,
+//       required this.checkUserLoggedIn});
 //
 //   @override
 //   Widget build(BuildContext context) {
@@ -38,15 +69,38 @@
 //       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
 //         return MaterialApp(
 //             title: 'Deshi Ponno',
-//             debugShowCheckedModeBanner: false,
+//             debugShowCheckedModeBanner: true,
 //             themeMode: ThemeMode.system, // Follow system theme
 //             theme: lightMaterialTheme(lightDynamic),
 //             darkTheme: darkMaterialTheme(darkDynamic),
-//             home: BlocProvider(
-//               create: (_) => ProductCubit(
-//                 GetProduct(repository),
-//               ),
-//               child: const HomePage(),
+//             routes: {
+//               '/login': (context) => const LoginPage(),
+//               '/signup': (context) => const SignupPage(),
+//               '/home': (context) => BlocProvider<ProductCubit>(
+//                     create: (context) => ProductCubit(GetProduct(repository)),
+//                     child: const HomePage(),
+//                   ),
+//             },
+//             home: MultiBlocProvider(
+//               providers: [
+//                 BlocProvider<AuthBloc>(
+//                   create: (context) => AuthBloc(
+//                       login: loginUseCase,
+//                       signup: signupUseCase,
+//                       checkUserLoggedIn: checkUserLoggedIn),
+//                 ),
+//                 BlocProvider<ProductCubit>(
+//                     create: (context) => ProductCubit(GetProduct(repository))),
+//                 BlocProvider(
+//                   create: (context) => checkUserLoggedIn,
+//                 ),
+//               ],
+//
+//               // create: (_) => ProductCubit(
+//               //   GetProduct(repository),
+//               // ),
+//               // ignore: prefer_const_constructors
+//               child: LoadingPage(),
 //             ));
 //       },
 //     );
@@ -55,16 +109,19 @@
 import 'package:deshi_ponno/core/theme/material_theme.dart';
 import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:deshi_ponno/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/login.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/signup.dart';
 import 'package:deshi_ponno/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:deshi_ponno/features/auth/presentation/pages/login_page.dart';
 import 'package:deshi_ponno/features/auth/presentation/pages/signup_page.dart';
+import 'package:deshi_ponno/features/auth/presentation/pages/splash_page.dart';
 import 'package:deshi_ponno/features/product_scanner/data/datasources/remote/product_remote_data_source.dart';
 import 'package:deshi_ponno/features/product_scanner/data/repositories/product_repository_impl.dart';
 import 'package:deshi_ponno/features/product_scanner/domain/usecases/get_product.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/pages/home_page.dart';
+import 'package:deshi_ponno/injection_container.dart' as di;
 import 'package:deshi_ponno/services/firebase_options.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -73,8 +130,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'injection_container.dart' as di;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -82,22 +137,24 @@ void main() async {
   );
   FirebaseDatabase.instance.setPersistenceEnabled(true);
   di.init();
+
   final firebaseAuth = FirebaseAuth.instance;
 
   final authRemoteDataSource = AuthRemoteDataSourceImpl(firebaseAuth);
-
   final authRepository = AuthRepositoryImpl(authRemoteDataSource);
-
   final loginUseCase = Login(authRepository);
   final signupUseCase = Signup(authRepository);
+  final checkUserLoggedIn = CheckUserLoggedIn(authRepository);
 
   final productRepository = ProductRepositoryImpl(
     ProductRemoteDataSourceImpl(FirebaseDatabase.instance),
   );
+
   runApp(MyApp(
     repository: productRepository,
     loginUseCase: loginUseCase,
     signupUseCase: signupUseCase,
+    checkUserLoggedInUseCase: checkUserLoggedIn,
   ));
 }
 
@@ -105,46 +162,55 @@ class MyApp extends StatelessWidget {
   final ProductRepositoryImpl repository;
   final Login loginUseCase;
   final Signup signupUseCase;
+  final CheckUserLoggedIn checkUserLoggedInUseCase;
+
   const MyApp({
-    super.key,
+    Key? key,
     required this.repository,
     required this.loginUseCase,
     required this.signupUseCase,
-  });
+    required this.checkUserLoggedInUseCase,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        return MaterialApp(
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<CheckUserLoggedIn>(
+          create: (context) => checkUserLoggedInUseCase,
+        ),
+        RepositoryProvider<ProductRepositoryImpl>(
+          create: (context) => repository,
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(
+            create: (context) => AuthBloc(
+                login: loginUseCase,
+                signup: signupUseCase,
+                checkUserLoggedIn: checkUserLoggedInUseCase),
+          ),
+          BlocProvider<ProductCubit>(
+              create: (context) => ProductCubit(GetProduct(repository))),
+        ],
+        child: DynamicColorBuilder(
+            builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+          return MaterialApp(
             title: 'Deshi Ponno',
-            debugShowCheckedModeBanner: true,
-            themeMode: ThemeMode.system, // Follow system theme
+            debugShowCheckedModeBanner: false,
+            themeMode: ThemeMode.system,
             theme: lightMaterialTheme(lightDynamic),
             darkTheme: darkMaterialTheme(darkDynamic),
             routes: {
               '/login': (context) => const LoginPage(),
               '/signup': (context) => const SignupPage(),
-              '/home': (context) => BlocProvider<ProductCubit>(
-                    create: (context) => ProductCubit(GetProduct(repository)),
-                    child: const HomePage(),
-                  ),
+              '/home': (context) => const HomePage(),
             },
-            home: MultiBlocProvider(
-              providers: [
-                BlocProvider<AuthBloc>(
-                  create: (context) =>
-                      AuthBloc(login: loginUseCase, signup: signupUseCase),
-                ),
-                BlocProvider<ProductCubit>(
-                    create: (context) => ProductCubit(GetProduct(repository)))
-              ],
-              // create: (_) => ProductCubit(
-              //   GetProduct(repository),
-              // ),
-              child: const LoginPage(),
-            ));
-      },
+            home: const LoadingPage(),
+          );
+        }),
+      ),
     );
   }
 }

@@ -12,6 +12,17 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource);
 
   @override
+  Future<Either<Failure, bool>> isUserLoggedIn() async {
+    try {
+      final isLoggedIn = await remoteDataSource.isUserLoggedIn();
+      return Right(isLoggedIn);
+    } catch (e) {
+      // Handle specific exceptions and return corresponding Failure
+      return Left(ServerFailure("Server failure"));
+    }
+  }
+
+  @override
   Future<Either<Failure, User>> login(String email, String password) async {
     try {
       final firebaseUser = await remoteDataSource.login(email, password);
