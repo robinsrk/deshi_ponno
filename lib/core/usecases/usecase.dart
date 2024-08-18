@@ -9,5 +9,4 @@ class NoParams extends Equatable {
 
 abstract class UseCase<Type, Params> {
   Future<Either<Failure, Type>> call(Params params);
-  // Future<Type> calls(Params params);
 }
