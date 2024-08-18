@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:deshi_ponno/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:deshi_ponno/features/auth/presentation/bloc/auth_events.dart';
 import 'package:deshi_ponno/features/auth/presentation/bloc/auth_states.dart';
 import 'package:deshi_ponno/features/auth/presentation/widgets/email_input_field.dart';
 import 'package:deshi_ponno/features/auth/presentation/widgets/password_input_field.dart';
 import 'package:deshi_ponno/features/auth/presentation/widgets/signup_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({Key? key}) : super(key: key);
+  const SignupPage({super.key});
 
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -20,16 +19,9 @@ class _SignupPageState extends State<SignupPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
+      appBar: AppBar(title: const Text('Sign Up')),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthError) {
@@ -48,9 +40,9 @@ class _SignupPageState extends State<SignupPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 EmailInputField(controller: _emailController),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 PasswordInputField(controller: _passwordController),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 SignupButton(
                   emailController: _emailController,
                   passwordController: _passwordController,
@@ -60,7 +52,7 @@ class _SignupPageState extends State<SignupPage> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/login');
                   },
-                  child: Text('Already have an account? Log in'),
+                  child: const Text('Already have an account? Log in'),
                 ),
               ],
             ),
@@ -68,5 +60,12 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }

@@ -21,9 +21,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -57,12 +59,12 @@ class MyApp extends StatelessWidget {
   final CheckUserLoggedIn checkUserLoggedInUseCase;
 
   const MyApp({
-    Key? key,
+    super.key,
     required this.repository,
     required this.loginUseCase,
     required this.signupUseCase,
     required this.checkUserLoggedInUseCase,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -44,6 +44,8 @@ dependencies:
   get_it: ^7.7.0
   dartz: ^0.10.1
   equatable: ^2.0.5
+  lottie: ^3.1.2
+  google_mobile_ads: ^5.1.0
   # tflite: ^1.1.2
 
 dev_dependencies:
