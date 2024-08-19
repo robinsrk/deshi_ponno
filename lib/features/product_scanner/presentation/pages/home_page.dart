@@ -1,6 +1,6 @@
-import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:deshi_ponno/features/product_scanner/domain/entities/product.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
+import 'package:deshi_ponno/features/product_scanner/presentation/pages/barcode_scanner.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/widgets/product_details_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,12 +50,22 @@ class HomePage extends StatelessWidget {
           //   fontSize: 20,
           // );
 
-          var res = await BarcodeScanner.scan();
-          String barcode = res.rawContent;
-
-          if (barcode.isNotEmpty) {
-            context.read<ProductCubit>().scanProduct(barcode);
-          }
+          // var res = await BarcodeScanner.scan();
+          // String barcode = res.rawContent;
+          // String barcode = "";
+          // AiBarcodeScanner(
+          //   onDetect: (BarcodeCapture code) {
+          //     barcode = code.barcodes.first.rawValue ?? "";
+          //   },
+          // );
+          //
+          // if (barcode.isNotEmpty) {
+          //   context.read<ProductCubit>().scanProduct(barcode);
+          // }
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const BarcodeScannerPage()),
+          );
         },
         tooltip: "Scan for product",
         child: const Icon(Icons.qr_code_scanner),
