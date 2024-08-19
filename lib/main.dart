@@ -25,7 +25,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MobileAds.instance.initialize();
+  MobileAds.instance.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
             builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
           return MaterialApp(
             title: 'Deshi Ponno',
-            debugShowCheckedModeBanner: false,
+            debugShowCheckedModeBanner: true,
             themeMode: ThemeMode.light,
             theme: lightMaterialTheme(lightDynamic),
             darkTheme: darkMaterialTheme(darkDynamic),

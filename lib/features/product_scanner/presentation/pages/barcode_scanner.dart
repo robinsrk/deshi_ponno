@@ -23,10 +23,8 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "Scan a Deshi Product",
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              "Scan a Product",
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(),
             ),
           ),
           Expanded(
@@ -35,7 +33,6 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                 AiBarcodeScanner(
                   extendBodyBehindAppBar: true,
                   sheetTitle: "Scan a Deshi Product",
-                  hideGalleryButton: true,
                   hideSheetDragHandler: true,
                   hideSheetTitle: true,
                   scanWindowUpdateThreshold: 1.0,
@@ -55,24 +52,6 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                     }
                   },
                 ),
-                // Align(
-                //   alignment: Alignment.topCenter,
-                //   child: Container(
-                //     margin: const EdgeInsets.only(top: 16.0),
-                //     padding: const EdgeInsets.symmetric(
-                //         vertical: 8.0, horizontal: 20.0),
-                //     decoration: BoxDecoration(
-                //       color: const Color(0xFFD32F2F), // Red from the flag
-                //       borderRadius: BorderRadius.circular(20.0),
-                //     ),
-                //     child: Text(
-                //       "Align the barcode within the frame",
-                //       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                //             color: Colors.white,
-                //           ),
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),

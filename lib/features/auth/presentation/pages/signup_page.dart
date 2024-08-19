@@ -1,10 +1,12 @@
 import 'package:deshi_ponno/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:deshi_ponno/features/auth/presentation/bloc/auth_events.dart';
 import 'package:deshi_ponno/features/auth/presentation/bloc/auth_states.dart';
 import 'package:deshi_ponno/features/auth/presentation/widgets/email_input_field.dart';
 import 'package:deshi_ponno/features/auth/presentation/widgets/password_input_field.dart';
 import 'package:deshi_ponno/features/auth/presentation/widgets/signup_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -17,11 +19,15 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
+      appBar: AppBar(
+        title: const Text('Sign Up'),
+        centerTitle: true,
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthError) {
@@ -39,6 +45,13 @@ class _SignupPageState extends State<SignupPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 16),
+                SvgPicture.asset(
+                  "assets/images/form.svg",
+                  height: 200,
+                  width: 100,
+                ),
+                const SizedBox(height: 16),
                 EmailInputField(controller: _emailController),
                 const SizedBox(height: 16),
                 PasswordInputField(controller: _passwordController),
@@ -47,10 +60,12 @@ class _SignupPageState extends State<SignupPage> {
                   emailController: _emailController,
                   passwordController: _passwordController,
                   formKey: _formKey,
+                  isLoading: _isLoading,
+                  onPressed: _onSignupButtonPressed,
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/login');
+                    Navigator.pushReplacementNamed(context, '/login');
                   },
                   child: const Text('Already have an account? Log in'),
                 ),
@@ -67,5 +82,20 @@ class _SignupPageState extends State<SignupPage> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _onSignupButtonPressed() {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      context.read<AuthBloc>().add(
+            SignupEvent(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            ),
+          );
+    }
   }
 }

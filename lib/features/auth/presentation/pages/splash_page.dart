@@ -2,6 +2,7 @@ import 'package:deshi_ponno/core/usecases/usecase.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class LoadingPage extends StatelessWidget {
   const LoadingPage({super.key});
@@ -9,9 +10,9 @@ class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _checkAuthentication(context);
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: Lottie.asset("assets/lottie/scan-food.json"),
       ),
     );
   }
@@ -19,7 +20,7 @@ class LoadingPage extends StatelessWidget {
   void _checkAuthentication(BuildContext context) async {
     final checkUserLoggedIn = context.read<CheckUserLoggedIn>();
 
-    final result = await Future.delayed(const Duration(seconds: 3), () {
+    final result = await Future.delayed(const Duration(seconds: 5), () {
       return checkUserLoggedIn(NoParams());
     });
     // final result = await checkUserLoggedIn(NoParams());
