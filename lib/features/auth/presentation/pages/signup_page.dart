@@ -7,6 +7,7 @@ import 'package:deshi_ponno/features/auth/presentation/widgets/signup_button.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -20,6 +21,13 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+
+  BannerAd bannerAd = BannerAd(
+    adUnitId: 'ca-app-pub-3940256099942544/2247696110',
+    size: AdSize.banner,
+    request: const AdRequest(),
+    listener: const BannerAdListener(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +77,11 @@ class _SignupPageState extends State<SignupPage> {
                   },
                   child: const Text('Already have an account? Log in'),
                 ),
+                SizedBox(
+                  height: bannerAd.size.height.toDouble(),
+                  width: bannerAd.size.width.toDouble(),
+                  child: AdWidget(ad: bannerAd),
+                )
               ],
             ),
           ),
