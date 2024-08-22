@@ -1,4 +1,5 @@
 import 'package:deshi_ponno/core/theme/material_theme.dart';
+import 'package:deshi_ponno/core/theme/theme_cubit.dart';
 import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:deshi_ponno/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
@@ -8,11 +9,15 @@ import 'package:deshi_ponno/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:deshi_ponno/features/auth/presentation/pages/login_page.dart';
 import 'package:deshi_ponno/features/auth/presentation/pages/signup_page.dart';
 import 'package:deshi_ponno/features/auth/presentation/pages/splash_page.dart';
+import 'package:deshi_ponno/features/navigation/domain/cubit/nav_bar_cubit.dart';
+import 'package:deshi_ponno/features/navigation/presentation/pages/nav_bar_page.dart';
 import 'package:deshi_ponno/features/product_scanner/data/datasources/remote/product_remote_data_source.dart';
 import 'package:deshi_ponno/features/product_scanner/data/repositories/product_repository_impl.dart';
 import 'package:deshi_ponno/features/product_scanner/domain/usecases/get_product.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/pages/home_page.dart';
+import 'package:deshi_ponno/features/settings/data/repositories/settings_repository_impl.dart';
+import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
 import 'package:deshi_ponno/injection_container.dart' as di;
 import 'package:deshi_ponno/services/firebase_options.dart';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -87,22 +92,29 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<ProductCubit>(
               create: (context) => ProductCubit(GetProduct(repository))),
+          BlocProvider<NavBarCubit>(create: (context) => NavBarCubit()),
+          BlocProvider(create: (_) => ThemeCubit()),
+          BlocProvider(create: (_) => SettingsCubit(SettingsRepositoryImpl())),
         ],
         child: DynamicColorBuilder(
             builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-          return MaterialApp(
-            title: 'Deshi Ponno',
-            debugShowCheckedModeBanner: true,
-            themeMode: ThemeMode.light,
-            theme: lightMaterialTheme(lightDynamic),
-            darkTheme: darkMaterialTheme(darkDynamic),
-            routes: {
-              '/login': (context) => const LoginPage(),
-              '/signup': (context) => const SignupPage(),
-              '/home': (context) => const HomePage(),
-            },
-            home: const LoadingPage(),
-          );
+          return BlocBuilder<ThemeCubit, ThemeData>(builder: (context, theme) {
+            return MaterialApp(
+              title: 'Deshi Ponno',
+              debugShowCheckedModeBanner: true,
+              // themeMode: ThemeMode.light,
+              // theme: lightMaterialTheme(lightDynamic),
+              // darkTheme: darkMaterialTheme(darkDynamic),
+              theme: theme,
+              routes: {
+                '/login': (context) => const LoginPage(),
+                '/signup': (context) => const SignupPage(),
+                '/home': (context) => const HomePage(),
+                '/main': (context) => const NavBarPage(),
+              },
+              home: const LoadingPage(),
+            );
+          });
         }),
       ),
     );

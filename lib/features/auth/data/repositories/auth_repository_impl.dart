@@ -1,3 +1,5 @@
+import "dart:developer" as dev;
+
 import 'package:dartz/dartz.dart';
 import 'package:deshi_ponno/core/errors/failures.dart';
 import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
@@ -26,7 +28,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> login(String email, String password) async {
     try {
       final firebaseUser = await remoteDataSource.login(email, password);
-      print(firebaseUser);
+      dev.log("$firebaseUser");
       final user = UserModel.fromFirebaseUser(firebaseUser);
       return Right(user);
     } catch (e) {

@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:deshi_ponno/core/errors/failures.dart';
 import 'package:deshi_ponno/core/usecases/usecase.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
@@ -28,7 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(failureOrUser.fold(
         (failure) {
           final errorMessage = _mapFailureToMessage(failure);
-          print('Login Error: $errorMessage'); // Logging for debugging
+          dev.log('Login Error: $errorMessage'); // Logging for debugging
           return AuthError(message: errorMessage);
         },
         (user) => Authenticated(user: user),
@@ -44,7 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(failureOrUser.fold(
         (failure) {
           final errorMessage = _mapFailureToMessage(failure);
-          print('Signup Error: $errorMessage'); // Logging for debugging
+          dev.log('Signup Error: $errorMessage'); // Logging for debugging
           return AuthError(message: errorMessage);
         },
         (user) => Authenticated(user: user),

@@ -32,6 +32,13 @@ class HomePage extends StatelessWidget {
                 "assets/images/welcome.svg",
                 height: 200,
                 width: 200,
+                // color: Colors.white, // Invert colors based on the theme
+                // colorFilter: const ColorFilter.mode(
+                //   Colors.white, // Invert colors based on the theme
+                //   BlendMode.srcIn,
+                // ),
+
+                // colorBlendMode: BlendMode.srcIn,
               ),
             ],
           ),

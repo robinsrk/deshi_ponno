@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:deshi_ponno/core/usecases/usecase.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,7 @@ class LoadingPage extends StatelessWidget {
   void _checkAuthentication(BuildContext context) async {
     final checkUserLoggedIn = context.read<CheckUserLoggedIn>();
 
-    final result = await Future.delayed(const Duration(seconds: 5), () {
+    final result = await Future.delayed(const Duration(seconds: 3), () {
       return checkUserLoggedIn(NoParams());
     });
     // final result = await checkUserLoggedIn(NoParams());
@@ -28,12 +30,12 @@ class LoadingPage extends StatelessWidget {
     result.fold(
       (failure) {
         // Handle failure (e.g., navigate to an error page or display a message)
-        print("Error: $failure");
+        dev.log("Error: $failure");
         Navigator.pushReplacementNamed(context, '/login');
       },
       (isLoggedIn) {
         if (isLoggedIn) {
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/main');
         } else {
           Navigator.pushReplacementNamed(context, '/login');
         }

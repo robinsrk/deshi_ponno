@@ -5,21 +5,6 @@ import 'package:deshi_ponno/features/product_scanner/data/datasources/remote/pro
 import 'package:deshi_ponno/features/product_scanner/domain/entities/product.dart';
 import 'package:deshi_ponno/features/product_scanner/domain/repositories/product_repository.dart';
 
-// class ProductRepositoryImpl implements ProductRepository {
-//   final ProductRemoteDataSource remoteDataSource;
-//
-//   ProductRepositoryImpl(this.remoteDataSource);
-//
-//   @override
-//   Future<Either<Failure, Product>> getProduct(String barcode) async {
-//     try {
-//       return await remoteDataSource.getProduct(barcode);
-//
-//     } on ServerException {
-//       rethrow;
-//     }
-//   }
-// }
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remoteDataSource;
 
