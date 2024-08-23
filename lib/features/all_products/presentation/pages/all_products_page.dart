@@ -10,13 +10,9 @@ class AllProductsPage extends StatefulWidget {
 class _AllProductsPageState extends State<AllProductsPage> {
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            Text("Hello world"),
-          ],
-        ),
+        appBar: AppBar(title: const Text("All products")),
       ),
     );
   }
