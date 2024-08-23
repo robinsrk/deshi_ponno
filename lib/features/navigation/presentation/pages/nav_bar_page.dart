@@ -1,3 +1,4 @@
+import 'package:deshi_ponno/features/all_products/presentation/pages/all_products_page.dart';
 import 'package:deshi_ponno/features/navigation/widgets/bottom_nav_bar.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/pages/home_page.dart';
 import 'package:deshi_ponno/features/settings/presentation/pages/settings_page.dart';
@@ -16,11 +17,9 @@ class NavBarPage extends StatelessWidget {
         builder: (context, state) {
           if (state is HomeState) {
             return const HomePage();
-          }
-          // else if (state is ProfileState) {
-          //   return ProfilePage();
-          // }
-          else if (state is SettingsState) {
+          } else if (state is AllProductsState) {
+            return const AllProductsPage();
+          } else if (state is SettingsState) {
             return const SettingsPage();
           }
           return Container();
