@@ -12,6 +12,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double svgWidth = MediaQuery.of(context).size.width * 0.8;
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
@@ -30,8 +31,7 @@ class HomePage extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 "assets/images/welcome.svg",
-                height: 200,
-                width: 200,
+                width: svgWidth,
                 // color: Colors.white, // Invert colors based on the theme
                 // colorFilter: const ColorFilter.mode(
                 //   Colors.white, // Invert colors based on the theme
