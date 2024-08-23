@@ -1,5 +1,21 @@
-class Settings {
+// class Settings {
+//   final bool isDarkMode;
+//
+//   Settings({required this.isDarkMode});
+// }
+import 'package:equatable/equatable.dart';
+
+class Settings extends Equatable {
   final bool isDarkMode;
 
-  Settings({required this.isDarkMode});
+  const Settings({required this.isDarkMode});
+
+  @override
+  List<Object?> get props => [isDarkMode];
+
+  Settings copyWith({bool? isDarkMode}) {
+    return Settings(
+      isDarkMode: isDarkMode ?? this.isDarkMode,
+    );
+  }
 }

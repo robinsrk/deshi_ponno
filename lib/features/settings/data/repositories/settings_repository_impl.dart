@@ -1,20 +1,24 @@
 import 'package:deshi_ponno/features/settings/domain/entities/settings.dart';
 import 'package:deshi_ponno/features/settings/domain/repositories/settings_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsRepositoryImpl implements SettingsRepository {
-  Settings _settings = Settings(isDarkMode: false);
+  static const String _darkModeKey = 'isDarkMode';
 
   @override
   Future<Settings> loadSettings() async {
     // Simulate loading settings from persistent storage.
     // Replace this with actual logic to load settings from a database or local storage.
-    return _settings;
+    final prefs = await SharedPreferences.getInstance();
+    final isDarkMode = prefs.getBool(_darkModeKey) ?? false;
+    return Settings(isDarkMode: isDarkMode);
   }
 
   @override
   Future<void> updateSettings(Settings settings) async {
     // Simulate updating settings in persistent storage.
     // Replace this with actual logic to save settings to a database or local storage.
-    _settings = settings;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_darkModeKey, settings.isDarkMode);
   }
 }

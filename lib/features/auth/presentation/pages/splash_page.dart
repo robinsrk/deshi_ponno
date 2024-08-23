@@ -13,6 +13,7 @@ class LoadingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _checkAuthentication(context);
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
         child: Lottie.asset("assets/lottie/scan-food.json"),
       ),

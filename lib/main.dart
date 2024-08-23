@@ -1,4 +1,3 @@
-import 'package:deshi_ponno/core/theme/material_theme.dart';
 import 'package:deshi_ponno/core/theme/theme_cubit.dart';
 import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:deshi_ponno/features/auth/data/repositories/auth_repository_impl.dart';
@@ -27,6 +26,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +36,9 @@ void main() async {
   );
   FirebaseDatabase.instance.setPersistenceEnabled(true);
   di.init();
+
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
 
   final firebaseAuth = FirebaseAuth.instance;
 
@@ -54,6 +57,7 @@ void main() async {
     loginUseCase: loginUseCase,
     signupUseCase: signupUseCase,
     checkUserLoggedInUseCase: checkUserLoggedIn,
+    isDarkMode: isDarkMode,
   ));
 }
 
@@ -62,6 +66,7 @@ class MyApp extends StatelessWidget {
   final Login loginUseCase;
   final Signup signupUseCase;
   final CheckUserLoggedIn checkUserLoggedInUseCase;
+  final bool isDarkMode;
 
   const MyApp({
     super.key,
@@ -69,6 +74,7 @@ class MyApp extends StatelessWidget {
     required this.loginUseCase,
     required this.signupUseCase,
     required this.checkUserLoggedInUseCase,
+    required this.isDarkMode,
   });
 
   @override
@@ -85,16 +91,17 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthBloc>(
-            create: (context) => AuthBloc(
-                login: loginUseCase,
-                signup: signupUseCase,
-                checkUserLoggedIn: checkUserLoggedInUseCase),
-          ),
+              create: (context) => AuthBloc(
+                  login: loginUseCase,
+                  signup: signupUseCase,
+                  checkUserLoggedIn: checkUserLoggedInUseCase)),
           BlocProvider<ProductCubit>(
               create: (context) => ProductCubit(GetProduct(repository))),
           BlocProvider<NavBarCubit>(create: (context) => NavBarCubit()),
           BlocProvider(create: (_) => ThemeCubit()),
-          BlocProvider(create: (_) => SettingsCubit(SettingsRepositoryImpl())),
+          BlocProvider(
+              create: (_) =>
+                  SettingsCubit(SettingsRepositoryImpl(), isDarkMode)),
         ],
         child: DynamicColorBuilder(
             builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
