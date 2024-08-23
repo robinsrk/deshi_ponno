@@ -46,8 +46,8 @@ class AppTheme {
     brightness: Brightness.dark,
     colorScheme: const ColorScheme(
       primary: Colors.white,
-      primaryContainer: Colors.grey,
-      secondary: Colors.grey,
+      primaryContainer: Colors.white,
+      secondary: Colors.white,
       secondaryContainer: Colors.grey,
       surface: Colors.black,
       error: Colors.red,
@@ -56,6 +56,9 @@ class AppTheme {
       onSurface: Colors.white,
       onError: Colors.black,
       brightness: Brightness.dark,
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: Color(0xFF191919),
     ),
     scaffoldBackgroundColor: Colors.black,
     appBarTheme: const AppBarTheme(
