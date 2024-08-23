@@ -15,7 +15,7 @@ class BottomNavBar extends StatelessWidget {
             context.read<NavBarCubit>().showHome();
             break;
           case 1:
-            context.read<NavBarCubit>().showProfile();
+            context.read<NavBarCubit>().showAllProducts();
             break;
           case 2:
             context.read<NavBarCubit>().showSettings();
@@ -30,8 +30,8 @@ class BottomNavBar extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
+          icon: Icon(Icons.shopping_cart),
+          label: 'All products',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
@@ -43,7 +43,7 @@ class BottomNavBar extends StatelessWidget {
 
   int _getIndexFromState(NavBarState state) {
     if (state is HomeState) return 0;
-    if (state is ProfileState) return 1;
+    if (state is AllProductsState) return 1;
     if (state is SettingsState) return 2;
     return 0;
   }

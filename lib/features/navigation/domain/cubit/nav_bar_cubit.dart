@@ -1,19 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class AllProductsState extends NavBarState {}
+
 class HomeState extends NavBarState {}
 
 class NavBarCubit extends Cubit<NavBarState> {
   NavBarCubit() : super(HomeState());
 
-  void showHome() => emit(HomeState());
+  void showAllProducts() => emit(AllProductsState());
 
-  void showProfile() => emit(ProfileState());
+  void showHome() => emit(HomeState());
 
   void showSettings() => emit(SettingsState());
 }
 
 abstract class NavBarState {}
-
-class ProfileState extends NavBarState {}
 
 class SettingsState extends NavBarState {}
