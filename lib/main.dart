@@ -1,3 +1,5 @@
+import 'package:deshi_ponno/core/di/injection_container.dart' as di;
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/core/theme/theme_cubit.dart';
 import 'package:deshi_ponno/features/all_products/presentation/bloc/product_list_cubit.dart';
 import 'package:deshi_ponno/features/all_products/presentation/pages/all_products_page.dart';
@@ -17,9 +19,10 @@ import 'package:deshi_ponno/features/product_scanner/data/repositories/product_r
 import 'package:deshi_ponno/features/product_scanner/domain/usecases/get_product.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/pages/home_page.dart';
+import 'package:deshi_ponno/features/settings/data/repositories/localization_repository_impl.dart';
 import 'package:deshi_ponno/features/settings/data/repositories/settings_repository_impl.dart';
+import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
-import 'package:deshi_ponno/injection_container.dart' as di;
 import 'package:deshi_ponno/services/firebase_options.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,6 +30,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -106,26 +110,56 @@ class MyApp extends StatelessWidget {
                   SettingsCubit(SettingsRepositoryImpl(), isDarkMode)),
           BlocProvider<ProductListCubit>(
               create: (context) => di.sl<ProductListCubit>()..getAllProducts()),
+          BlocProvider<LocalizationCubit>(
+            create: (context) =>
+                LocalizationCubit(LocalizationRepositoryImpl()),
+          ),
         ],
-        child: DynamicColorBuilder(
-            builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-          return BlocBuilder<ThemeCubit, ThemeData>(builder: (context, theme) {
-            return MaterialApp(
-              title: 'Deshi Ponno',
-              debugShowCheckedModeBanner: true,
-              // themeMode: ThemeMode.light,
-              // theme: lightMaterialTheme(lightDynamic),
-              // darkTheme: darkMaterialTheme(darkDynamic),
-              theme: theme,
-              routes: {
-                '/login': (context) => const LoginPage(),
-                '/signup': (context) => const SignupPage(),
-                '/home': (context) => const HomePage(),
-                '/main': (context) => const NavBarPage(),
-                "/products": (context) => const ProductListPage(),
-              },
-              home: const LoadingPage(),
-            );
+        child:
+            BlocBuilder<LocalizationCubit, Locale>(builder: (context, locale) {
+          return DynamicColorBuilder(
+              builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+            return BlocBuilder<ThemeCubit, ThemeData>(builder: (
+              context,
+              theme,
+            ) {
+              return MaterialApp(
+                title: 'Deshi Ponno',
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('en', ''),
+                  Locale('bn', ''),
+                  // Add other supported locales here
+                ],
+                locale: locale,
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale?.languageCode) {
+                      return supportedLocale;
+                    }
+                  }
+                  return supportedLocales.first;
+                },
+                debugShowCheckedModeBanner: true,
+                // themeMode: ThemeMode.light,
+                // theme: lightMaterialTheme(lightDynamic),
+                // darkTheme: darkMaterialTheme(darkDynamic),
+                theme: theme,
+                routes: {
+                  '/login': (context) => const LoginPage(),
+                  '/signup': (context) => const SignupPage(),
+                  '/home': (context) => const HomePage(),
+                  '/main': (context) => const NavBarPage(),
+                  "/products": (context) => const ProductListPage(),
+                },
+                home: const LoadingPage(),
+              );
+            });
           });
         }),
       ),

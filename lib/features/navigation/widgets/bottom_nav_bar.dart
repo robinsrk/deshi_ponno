@@ -1,3 +1,4 @@
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/navigation/domain/cubit/nav_bar_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,18 +25,18 @@ class BottomNavBar extends StatelessWidget {
       },
       // selectedItemColor: Colors.red,
 
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: const Icon(Icons.home),
+          label: AppLocalizations.of(context).translate("home"),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart),
-          label: 'All products',
+          icon: const Icon(Icons.shopping_cart),
+          label: AppLocalizations.of(context).translate("all_products"),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Settings',
+          icon: const Icon(Icons.settings),
+          label: AppLocalizations.of(context).translate("settings"),
         ),
       ],
     );

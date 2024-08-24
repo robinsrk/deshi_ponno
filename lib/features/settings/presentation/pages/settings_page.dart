@@ -1,50 +1,6 @@
-// import 'package:deshi_ponno/core/theme/theme_cubit.dart';
-// import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
-// import 'package:deshi_ponno/features/settings/presentation/bloc/settings_state.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-//
-// class SettingsPage extends StatefulWidget {
-//   const SettingsPage({super.key});
-//
-//   @override
-//   State<SettingsPage> createState() => _SettingsPageState();
-// }
-//
-// class _SettingsPageState extends State<SettingsPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Settings'),
-//       ),
-//       body: BlocBuilder<SettingsCubit, SettingsState>(
-//         builder: (context, state) {
-//           if (state is SettingsLoaded) {
-//             return SwitchListTile(
-//               title: const Text('Dark Mode'),
-//               value: state.settings.isDarkMode,
-//               onChanged: (value) {
-//                 context.read<SettingsCubit>().toggleDarkMode(value);
-//                 context.read<ThemeCubit>().toggleTheme(value);
-//               },
-//             );
-//           } else if (state is SettingsError) {
-//             return Center(child: Text(state.message));
-//           }
-//           return const Center(child: CircularProgressIndicator());
-//         },
-//       ),
-//     );
-//   }
-//
-//   @override
-//   initState() {
-//     super.initState();
-//     context.read<SettingsCubit>().loadSettings();
-//   }
-// }
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/core/theme/theme_cubit.dart';
+import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_state.dart';
 import 'package:flutter/material.dart';
@@ -62,26 +18,55 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(AppLocalizations.of(context).translate("settings")),
       ),
-      body: BlocBuilder<SettingsCubit, SettingsState>(
-        builder: (context, state) {
-          if (state is SettingsLoaded) {
-            return SwitchListTile(
-              title: const Text('Dark Mode'),
-              value: state.settings.isDarkMode,
-              onChanged: (value) {
-                // Toggles dark mode and saves the new state.
-                context.read<SettingsCubit>().toggleDarkMode();
-                // Changes the theme based on the toggle.
-                context.read<ThemeCubit>().toggleTheme(value);
-              },
-            );
-          } else if (state is SettingsError) {
-            return Center(child: Text(state.message));
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
+      body: Column(
+        children: [
+          BlocBuilder<SettingsCubit, SettingsState>(
+            builder: (context, state) {
+              if (state is SettingsLoaded) {
+                return SwitchListTile(
+                  title:
+                      Text(AppLocalizations.of(context).translate("dark_mode")),
+                  value: state.settings.isDarkMode,
+                  onChanged: (value) {
+                    // Toggles dark mode and saves the new state.
+                    context.read<SettingsCubit>().toggleDarkMode();
+                    // Changes the theme based on the toggle.
+                    context.read<ThemeCubit>().toggleTheme(value);
+                  },
+                );
+              } else if (state is SettingsError) {
+                return Center(child: Text(state.message));
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+          BlocBuilder<LocalizationCubit, Locale>(
+            builder: (context, locale) {
+              return DropdownButton<Locale>(
+                value: locale,
+                items: [
+                  DropdownMenuItem(
+                    value: const Locale('en', ''),
+                    child:
+                        Text(AppLocalizations.of(context).translate('english')),
+                  ),
+                  DropdownMenuItem(
+                    value: const Locale('bn', ''),
+                    child:
+                        Text(AppLocalizations.of(context).translate('bengali')),
+                  ),
+                ],
+                onChanged: (Locale? newLocale) {
+                  if (newLocale != null) {
+                    context.read<LocalizationCubit>().updateLocale(newLocale);
+                  }
+                },
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -90,5 +75,6 @@ class _SettingsPageState extends State<SettingsPage> {
   initState() {
     super.initState();
     context.read<SettingsCubit>().loadSettings();
+    context.read<LocalizationCubit>().loadLocale();
   }
 }

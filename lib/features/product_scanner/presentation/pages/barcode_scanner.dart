@@ -1,4 +1,5 @@
 import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,8 +24,8 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "Scan a Product",
-              style: Theme.of(context).textTheme.headlineLarge?.copyWith(),
+              AppLocalizations.of(context).translate("scan_product"),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
           Expanded(

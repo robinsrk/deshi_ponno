@@ -1,3 +1,4 @@
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/product_scanner/domain/entities/product.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/pages/barcode_scanner.dart';
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
             FirebaseAuth.instance.signOut();
             Navigator.pushReplacementNamed(context, "/login");
           },
-          child: const Text("Deshi Ponno"),
+          child: Text(AppLocalizations.of(context).translate("app_title")),
         ),
       ),
       body: Column(
@@ -50,7 +51,7 @@ class HomePage extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
-                    "Scan a product",
+                    AppLocalizations.of(context).translate("scan_product"),
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 );
