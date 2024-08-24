@@ -44,25 +44,28 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           BlocBuilder<LocalizationCubit, Locale>(
             builder: (context, locale) {
-              return DropdownButton<Locale>(
-                value: locale,
-                items: [
-                  DropdownMenuItem(
-                    value: const Locale('en', ''),
-                    child:
-                        Text(AppLocalizations.of(context).translate('english')),
-                  ),
-                  DropdownMenuItem(
-                    value: const Locale('bn', ''),
-                    child:
-                        Text(AppLocalizations.of(context).translate('bengali')),
-                  ),
-                ],
-                onChanged: (Locale? newLocale) {
-                  if (newLocale != null) {
-                    context.read<LocalizationCubit>().updateLocale(newLocale);
-                  }
-                },
+              return ListTile(
+                title: Text(AppLocalizations.of(context).translate("language")),
+                trailing: DropdownButton<Locale>(
+                  value: locale,
+                  items: [
+                    DropdownMenuItem(
+                      value: const Locale('en', ''),
+                      child: Text(
+                          AppLocalizations.of(context).translate('english')),
+                    ),
+                    DropdownMenuItem(
+                      value: const Locale('bn', ''),
+                      child: Text(
+                          AppLocalizations.of(context).translate('bengali')),
+                    ),
+                  ],
+                  onChanged: (Locale? newLocale) {
+                    if (newLocale != null) {
+                      context.read<LocalizationCubit>().updateLocale(newLocale);
+                    }
+                  },
+                ),
               );
             },
           ),
@@ -75,6 +78,5 @@ class _SettingsPageState extends State<SettingsPage> {
   initState() {
     super.initState();
     context.read<SettingsCubit>().loadSettings();
-    context.read<LocalizationCubit>().loadLocale();
   }
 }

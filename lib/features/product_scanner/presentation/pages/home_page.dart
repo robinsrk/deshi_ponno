@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "Your scanned products: ",
+                            AppLocalizations.of(context).translate("history"),
                             style: Theme.of(context).textTheme.titleMedium,
                             textDirection: TextDirection.ltr,
                           ),

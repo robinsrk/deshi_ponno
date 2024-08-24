@@ -1,4 +1,6 @@
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:flutter/material.dart';
+
 import '../../domain/entities/product.dart';
 
 class ProductDetailsBottomSheet extends StatelessWidget {
@@ -21,7 +23,7 @@ class ProductDetailsBottomSheet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Product Details",
+                AppLocalizations.of(context).translate("product_details"),
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               IconButton(
@@ -35,12 +37,12 @@ class ProductDetailsBottomSheet extends StatelessWidget {
           const Divider(),
           const SizedBox(height: 8),
           Text(
-            "Name: ${product.name}",
+            "${AppLocalizations.of(context).translate("name")}: ${product.name}",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 8),
           Text(
-            "Brand: ${product.brand}",
+            "${AppLocalizations.of(context).translate("brand")}: ${product.brand}",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 16),

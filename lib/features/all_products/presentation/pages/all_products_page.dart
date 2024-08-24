@@ -29,7 +29,8 @@ class _ProductListPageState extends State<ProductListPage> {
                 final product = state.products[index];
                 return ListTile(
                   title: Text(product.name),
-                  subtitle: Text('Brand: ${product.brand}'),
+                  subtitle: Text(
+                      '${AppLocalizations.of(context).translate("brand")}: ${product.brand}'),
                   onTap: () {
                     // Navigate to product details page
                   },

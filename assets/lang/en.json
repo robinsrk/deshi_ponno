@@ -7,5 +7,9 @@
   "bengali": "Bengali",
   "home": "Home",
   "all_products": "All Products",
-  "scan_product": "Scan a product"
+  "scan_product": "Scan a product",
+  "name": "Name",
+  "brand": "Brand",
+  "history": "History",
+  "product_details": "Product details"
 }

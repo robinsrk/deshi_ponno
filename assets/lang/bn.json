@@ -7,5 +7,9 @@
   "bengali": "বাংলা",
   "home": "হোম",
   "all_products": "সকল পণ্য",
-  "scan_product": "পণ্য স্ক্যান করুন"
+  "scan_product": "পণ্য স্ক্যান করুন",
+  "name": "নাম",
+  "brand": "ব্র্যান্ড",
+  "history": "হিস্টরি",
+  "product_details": "পণ্যের বিস্তারিত"
 }

@@ -1,5 +1,6 @@
 import 'dart:developer' as dev;
 
+import 'package:deshi_ponno/core/theme/theme_cubit.dart';
 import 'package:deshi_ponno/core/usecases/usecase.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
@@ -17,16 +18,22 @@ class LoadingPage extends StatefulWidget {
 class _LoadingPageState extends State<LoadingPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Center(
-        child: Lottie.asset("assets/lottie/scan-food.json"),
-      ),
-    );
+    return BlocBuilder<ThemeCubit, ThemeData>(builder: (context, theme) {
+      dev.log("${theme.brightness}", name: "theme data");
+      final lottieImage = theme.brightness == Brightness.dark
+          ? "assets/lottie/scan-light.json"
+          : "assets/lottie/scan-dark.json";
+      return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: Center(
+          child: Lottie.asset(lottieImage),
+        ),
+      );
+    });
   }
 
   @override
-  void initState() {
+  initState() {
     _checkAuthentication(context);
     context.read<LocalizationCubit>().loadLocale();
     super.initState();
@@ -38,11 +45,9 @@ class _LoadingPageState extends State<LoadingPage> {
     final result = await Future.delayed(const Duration(seconds: 3), () {
       return checkUserLoggedIn(NoParams());
     });
-    // final result = await checkUserLoggedIn(NoParams());
 
     result.fold(
       (failure) {
-        // Handle failure (e.g., navigate to an error page or display a message)
         dev.log("Error: $failure");
         Navigator.pushReplacementNamed(context, '/login');
       },
