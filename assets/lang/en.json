@@ -11,5 +11,11 @@
   "name": "Name",
   "brand": "Brand",
   "history": "History",
-  "product_details": "Product details"
+  "product_details": "Product details",
+  "login": "Login",
+  "no_account": "Don't have an account?",
+  "sign_up": "Sign up",
+  "email": "Email",
+  "password": "Password",
+  "already_account": "Already have an account?"
 }

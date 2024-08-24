@@ -1,3 +1,4 @@
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:deshi_ponno/features/auth/presentation/bloc/auth_events.dart';
 import 'package:deshi_ponno/features/auth/presentation/bloc/auth_states.dart';
@@ -33,7 +34,7 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Text(AppLocalizations.of(context).translate("login")),
         centerTitle: true,
       ),
       body: BlocListener<AuthBloc, AuthState>(
@@ -78,7 +79,8 @@ class LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/signup');
                   },
-                  child: const Text('Don\'t have an account? Sign up'),
+                  child: Text(
+                      '${AppLocalizations.of(context).translate("no_account")} ${AppLocalizations.of(context).translate("sign_up")}'),
                 ),
                 SizedBox(
                   width: bannerAd.size.width.toDouble(),

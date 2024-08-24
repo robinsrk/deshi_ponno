@@ -1,3 +1,4 @@
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:flutter/material.dart';
 
 class EmailInputField extends StatelessWidget {
@@ -9,7 +10,8 @@ class EmailInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: const InputDecoration(labelText: 'Email'),
+      decoration: InputDecoration(
+          labelText: AppLocalizations.of(context).translate("email")),
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         if (value == null || value.isEmpty) {

@@ -1,3 +1,4 @@
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:flutter/material.dart';
 
 class SignupButton extends StatelessWidget {
@@ -29,7 +30,7 @@ class SignupButton extends StatelessWidget {
                 strokeWidth: 2.0,
               ),
             )
-          : const Text('Sign up'),
+          : Text(AppLocalizations.of(context).translate("sign_up")),
     );
   }
 }

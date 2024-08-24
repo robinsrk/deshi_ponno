@@ -1,3 +1,4 @@
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:flutter/material.dart';
 
 class PasswordInputField extends StatelessWidget {
@@ -9,7 +10,8 @@ class PasswordInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: const InputDecoration(labelText: 'Password'),
+      decoration: InputDecoration(
+          labelText: AppLocalizations.of(context).translate("password")),
       obscureText: true,
       validator: (value) {
         if (value == null || value.isEmpty) {

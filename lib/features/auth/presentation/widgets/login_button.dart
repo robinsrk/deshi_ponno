@@ -1,3 +1,4 @@
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:flutter/material.dart';
 
 class LoginButton extends StatelessWidget {
@@ -29,7 +30,7 @@ class LoginButton extends StatelessWidget {
                 strokeWidth: 2.0,
               ),
             )
-          : const Text('Login'),
+          : Text(AppLocalizations.of(context).translate("login")),
     );
   }
 }
