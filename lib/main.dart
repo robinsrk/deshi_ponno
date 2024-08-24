@@ -1,4 +1,6 @@
 import 'package:deshi_ponno/core/theme/theme_cubit.dart';
+import 'package:deshi_ponno/features/all_products/presentation/bloc/product_list_cubit.dart';
+import 'package:deshi_ponno/features/all_products/presentation/pages/all_products_page.dart';
 import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:deshi_ponno/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
@@ -102,6 +104,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (_) =>
                   SettingsCubit(SettingsRepositoryImpl(), isDarkMode)),
+          BlocProvider<ProductListCubit>(
+              create: (context) => di.sl<ProductListCubit>()..getAllProducts()),
         ],
         child: DynamicColorBuilder(
             builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
@@ -118,6 +122,7 @@ class MyApp extends StatelessWidget {
                 '/signup': (context) => const SignupPage(),
                 '/home': (context) => const HomePage(),
                 '/main': (context) => const NavBarPage(),
+                "/products": (context) => const ProductListPage(),
               },
               home: const LoadingPage(),
             );

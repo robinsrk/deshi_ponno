@@ -32,13 +32,6 @@ class HomePage extends StatelessWidget {
               SvgPicture.asset(
                 "assets/images/welcome.svg",
                 width: svgWidth,
-                // color: Colors.white, // Invert colors based on the theme
-                // colorFilter: const ColorFilter.mode(
-                //   Colors.white, // Invert colors based on the theme
-                //   BlendMode.srcIn,
-                // ),
-
-                // colorBlendMode: BlendMode.srcIn,
               ),
             ],
           ),
@@ -54,7 +47,13 @@ class HomePage extends StatelessWidget {
             },
             builder: (context, state) {
               if (state is ProductInitial) {
-                return const Text("Scan a product");
+                return Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    "Scan a product",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                );
               } else if (state is ProductLoading) {
                 return const CircularProgressIndicator();
               } else if (state is ProductLoaded) {
@@ -67,7 +66,7 @@ class HomePage extends StatelessWidget {
                         children: [
                           Text(
                             "Your scanned products: ",
-                            style: Theme.of(context).textTheme.titleLarge,
+                            style: Theme.of(context).textTheme.titleMedium,
                             textDirection: TextDirection.ltr,
                           ),
                         ],

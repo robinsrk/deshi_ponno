@@ -1,3 +1,8 @@
+import 'package:deshi_ponno/features/all_products/data/datasources/remote/product_remote_data_source.dart';
+import 'package:deshi_ponno/features/all_products/data/repositories/all_products_repository_impl.dart';
+import 'package:deshi_ponno/features/all_products/domain/repositories/all_product_repository.dart';
+import 'package:deshi_ponno/features/all_products/domain/usecases/get_all_products.dart';
+import 'package:deshi_ponno/features/all_products/presentation/bloc/product_list_cubit.dart';
 import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:deshi_ponno/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:deshi_ponno/features/auth/domain/repositories/auth_repository.dart';
@@ -37,6 +42,12 @@ void init() {
     () => ProductRepositoryImpl(sl()),
   );
 
+  sl.registerFactory(() => ProductListCubit(sl<GetAllProducts>()));
+  sl.registerLazySingleton(() => GetAllProducts(sl<AllProductsRepository>()));
+  sl.registerLazySingleton<AllProductsRepository>(
+      () => ProductListRepositoryImpl(sl<ProductListRemoteDataSource>()));
+  sl.registerLazySingleton(
+      () => ProductListRemoteDataSource(FirebaseDatabase.instance));
   // Use cases
   sl.registerLazySingleton(() => CheckUserLoggedIn(sl()));
   sl.registerLazySingleton(() => Login(sl()));

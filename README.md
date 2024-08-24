@@ -2,20 +2,23 @@
 
 An app to find Deshi products of bangladesh and their ingredients
 
-# Table of Contents
+## Table of Contents
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Tech Stack](#tech-stack)
 - [TODO](#todo)
 
-# FEATURES
+## Introduction
+
+test
+
+## FEATURES
 
 1. Scan barcode to recognize products
 2. Search by product name, brand, category, price
 3. View product details
 
-# TODO
+## TODO
 
 - [ ] All product list
 - [ ] Settings page
