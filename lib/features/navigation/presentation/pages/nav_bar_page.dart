@@ -18,7 +18,7 @@ class NavBarPage extends StatelessWidget {
           if (state is HomeState) {
             return const HomePage();
           } else if (state is AllProductsState) {
-            return const AllProductsPage();
+            return const ProductListPage();
           } else if (state is SettingsState) {
             return const SettingsPage();
           }
