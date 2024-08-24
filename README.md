@@ -24,8 +24,8 @@ test
 - [x] Settings page
 - [x] Home page
 - [ ] AI based ingredient recognition
-- [*] Add search filters
+- [ ] Add search filters
 - [x] Bottom navigation bar
 - [ ] Product details page
 - [ ] User history of scanned products
-- [ ] Language localization
+- [-] Language localization
