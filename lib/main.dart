@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
               theme,
             ) {
               return MaterialApp(
-                title: 'Deshi Ponno',
+                title: "Deshi Ponno",
                 localizationsDelegates: const [
                   AppLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
@@ -151,10 +151,11 @@ class MyApp extends StatelessWidget {
                 // darkTheme: darkMaterialTheme(darkDynamic),
                 theme: theme,
                 routes: {
-                  '/login': (context) => const LoginPage(),
-                  '/signup': (context) => const SignupPage(),
-                  '/home': (context) => const HomePage(),
-                  '/main': (context) => const NavBarPage(),
+                  "/login": (context) => const LoginPage(),
+                  "/signup": (context) => const SignupPage(),
+                  "/home": (context) => const HomePage(),
+                  "/main": (context) => const NavBarPage(),
+                  "/loading": (context) => const LoadingPage(),
                   "/products": (context) => const ProductListPage(),
                 },
                 home: const LoadingPage(),

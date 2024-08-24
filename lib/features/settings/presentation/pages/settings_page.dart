@@ -3,6 +3,7 @@ import 'package:deshi_ponno/core/theme/theme_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +19,18 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate("settings")),
+        title: Text(
+          AppLocalizations.of(context).translate("settings"),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, "/loading");
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: Column(
         children: [

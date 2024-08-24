@@ -16,13 +16,7 @@ class HomePage extends StatelessWidget {
     final double svgWidth = MediaQuery.of(context).size.width * 0.8;
     return Scaffold(
       appBar: AppBar(
-        title: GestureDetector(
-          onTap: () {
-            FirebaseAuth.instance.signOut();
-            Navigator.pushReplacementNamed(context, "/login");
-          },
-          child: Text(AppLocalizations.of(context).translate("app_title")),
-        ),
+        title: Text(AppLocalizations.of(context).translate("app_title")),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
