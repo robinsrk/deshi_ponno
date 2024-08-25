@@ -40,7 +40,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseDatabase.instance.setPersistenceEnabled(false);
+  FirebaseDatabase.instance.setPersistenceEnabled(true);
   FirebaseDatabase.instance.ref().keepSynced(true);
   di.init();
 

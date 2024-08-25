@@ -49,6 +49,7 @@ dependencies:
   ai_barcode_scanner: ^5.1.1+2
   flutter_svg: ^2.0.10+1
   shared_preferences: ^2.3.2
+  cached_network_image: ^3.4.0
   # tflite: ^1.1.2
 
 dev_dependencies:

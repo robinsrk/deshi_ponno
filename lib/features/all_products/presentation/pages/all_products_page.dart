@@ -1,5 +1,6 @@
 import 'dart:developer' as dev;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/all_products/presentation/bloc/product_list_cubit.dart';
 import 'package:deshi_ponno/features/all_products/presentation/pages/product_details.dart';
@@ -37,30 +38,14 @@ class _ProductListPageState extends State<ProductListPage> {
                       '${AppLocalizations.of(context).translate("brand")}: ${product.brand}'),
                   trailing: Hero(
                     tag: product.name,
-                    child: Image.network(
-                      product.imageUrl,
-                      loadingBuilder: (BuildContext context, Widget child,
-                          ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) {
-                          // If the image is loaded, return the image widget
-                          return child;
-                        } else {
-                          // While the image is loading, show a spinner
-                          return CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    (loadingProgress.expectedTotalBytes ?? 1)
-                                : null,
-                          );
-                        }
-                      },
-                      errorBuilder: (BuildContext context, Object error,
-                          StackTrace? stackTrace) {
-                        // Handle errors in image loading
-                        return const Center(
-                          child: Icon(Icons.error, color: Colors.red),
-                        );
-                      },
+                    child: CachedNetworkImage(
+                      imageUrl: product.imageUrl,
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) =>
+                              CircularProgressIndicator(
+                                  value: downloadProgress.progress),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                   ),
                   onTap: () {
