@@ -42,7 +42,7 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                 Align(
                   alignment: Alignment.center,
                   child: Image.network(
-                    product.image_url,
+                    product.imageUrl,
                     fit: BoxFit.fitWidth,
                     loadingBuilder: (BuildContext context, Widget child,
                         ImageChunkEvent? loadingProgress) {

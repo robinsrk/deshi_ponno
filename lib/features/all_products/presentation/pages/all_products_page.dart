@@ -38,7 +38,7 @@ class _ProductListPageState extends State<ProductListPage> {
                   trailing: Hero(
                     tag: product.name,
                     child: Image.network(
-                      product.image_url,
+                      product.imageUrl,
                       loadingBuilder: (BuildContext context, Widget child,
                           ImageChunkEvent? loadingProgress) {
                         if (loadingProgress == null) {
@@ -46,13 +46,11 @@ class _ProductListPageState extends State<ProductListPage> {
                           return child;
                         } else {
                           // While the image is loading, show a spinner
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      (loadingProgress.expectedTotalBytes ?? 1)
-                                  : null,
-                            ),
+                          return CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    (loadingProgress.expectedTotalBytes ?? 1)
+                                : null,
                           );
                         }
                       },

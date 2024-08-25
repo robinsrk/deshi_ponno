@@ -1,18 +1,4 @@
-// import 'package:flutter/material.dart';
-//
-// class ProductDetailsPage extends StatefulWidget {
-//   const ProductDetailsPage({super.key});
-//
-//   @override
-//   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
-// }
-//
-// class _ProductDetailsPageState extends State<ProductDetailsPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold();
-//   }
-// }
+import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/all_products/domain/entities/product.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +24,7 @@ class ProductDetailsPage extends StatelessWidget {
                   child: Hero(
                     tag: product.name,
                     child: Image.network(
-                      product.image_url,
+                      product.imageUrl,
                       fit: BoxFit.fitWidth,
                       loadingBuilder: (BuildContext context, Widget child,
                           ImageChunkEvent? loadingProgress) {
@@ -74,8 +60,12 @@ class ProductDetailsPage extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 8),
-            Text('Brand: ${product.brand}'),
+            Text(
+                '${AppLocalizations.of(context).translate("brand")}: ${product.brand}'),
             // Add other product details as needed
+            const SizedBox(height: 16),
+            Text(
+                '${AppLocalizations.of(context).translate("price")}: ${product.price}')
           ],
         ),
       ),

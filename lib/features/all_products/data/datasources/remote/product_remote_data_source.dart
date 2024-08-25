@@ -26,7 +26,7 @@ class ProductListRemoteDataSource {
   ProductListRemoteDataSource(this.database);
 
   Future<List<Product>> getAllProducts() async {
-    final ref = database.reference().child('products');
+    final ref = database.ref().child('products');
     final event = await ref.once();
     final snapshot = event.snapshot; // Correct usage
     final data = snapshot.value as Map<dynamic, dynamic>?;
