@@ -2,6 +2,7 @@ import 'dart:developer' as dev;
 
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/all_products/presentation/bloc/product_list_cubit.dart';
+import 'package:deshi_ponno/features/all_products/presentation/pages/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,11 +29,48 @@ class _ProductListPageState extends State<ProductListPage> {
               itemBuilder: (context, index) {
                 final product = state.products[index];
                 return ListTile(
-                  title: Text(product.name),
+                  title: Text(
+                    product.name,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                   subtitle: Text(
                       '${AppLocalizations.of(context).translate("brand")}: ${product.brand}'),
+                  trailing: Hero(
+                    tag: product.name,
+                    child: Image.network(
+                      product.image_url,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          // If the image is loaded, return the image widget
+                          return child;
+                        } else {
+                          // While the image is loading, show a spinner
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          );
+                        }
+                      },
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        // Handle errors in image loading
+                        return const Center(
+                          child: Icon(Icons.error, color: Colors.red),
+                        );
+                      },
+                    ),
+                  ),
                   onTap: () {
-                    // Navigate to product details page
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProductDetailsPage(product: product)));
                   },
                 );
               },

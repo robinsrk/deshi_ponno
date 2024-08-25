@@ -21,7 +21,7 @@ class AppTheme {
       primary: Colors.black,
       primaryContainer: Colors.black,
       secondary: Colors.white,
-      secondaryContainer: Colors.white,
+      secondaryContainer: Colors.grey,
       surface: Colors.white,
       error: Colors.red,
       onPrimary: Colors.white,

@@ -19,11 +19,13 @@ class Product extends Equatable {
   final String id;
   final String name;
   final String brand;
+  final String image_url;
 
   const Product({
     required this.id,
     required this.name,
     required this.brand,
+    required this.image_url,
   });
 
   @override

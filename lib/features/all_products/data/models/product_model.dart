@@ -5,6 +5,7 @@ class ProductModel extends Product {
     required super.id,
     required super.name,
     required super.brand,
+    required super.image_url,
   });
 
   factory ProductModel.fromMap(String id, Map<dynamic, dynamic> data) {
@@ -12,6 +13,8 @@ class ProductModel extends Product {
       id: id,
       name: data['name'],
       brand: data['brand'] ?? "Unknown brand",
+      image_url: data['image_url'] ??
+          "https://i.pinimg.com/originals/aa/c5/4c/aac54cd9b837f7cf979ad61c0df09dd6.png",
     );
   }
 
@@ -21,6 +24,7 @@ class ProductModel extends Product {
       id: id,
       name: name,
       brand: brand,
+      image_url: image_url,
     );
   }
 }

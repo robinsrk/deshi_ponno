@@ -3,7 +3,6 @@ import 'package:deshi_ponno/features/product_scanner/domain/entities/product.dar
 import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/pages/barcode_scanner.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/widgets/product_details_bottom_sheet.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,6 +39,8 @@ class HomePage extends StatelessWidget {
                 );
               }
             },
+
+            // TODO: add user history
             builder: (context, state) {
               if (state is ProductInitial) {
                 return Padding(
@@ -94,6 +95,8 @@ class HomePage extends StatelessWidget {
   void _showProductDetailsBottomSheet(BuildContext context, Product product) {
     showModalBottomSheet(
       context: context,
+      enableDrag: true,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return ProductDetailsBottomSheet(product: product);
       },

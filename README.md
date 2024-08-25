@@ -1,6 +1,6 @@
 # Deshi Ponno
 
-An app to find Deshi products of bangladesh and their ingredients
+An app to find Deshi products of bangladesh and their ingredients.
 
 ## Table of Contents
 
@@ -10,13 +10,14 @@ An app to find Deshi products of bangladesh and their ingredients
 
 ## Introduction
 
-test
+This app can be used to find Deshi products of bangladesh and their ingredients. Not only the products, users can see the ingredients of the products and determine if the product is healthy or not.
 
 ## FEATURES
 
 1. Scan barcode to recognize products
 2. Search by product name, brand, category, price
 3. View product details
+4. View user history of scanned products
 
 ## TODO
 

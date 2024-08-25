@@ -14,6 +14,8 @@ class SettingsPage extends StatefulWidget {
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
+// TODO: more profile settings and profile infromations
+
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
@@ -58,25 +60,32 @@ class _SettingsPageState extends State<SettingsPage> {
             builder: (context, locale) {
               return ListTile(
                 title: Text(AppLocalizations.of(context).translate("language")),
-                trailing: DropdownButton<Locale>(
-                  value: locale,
-                  items: [
-                    DropdownMenuItem(
-                      value: const Locale('en', ''),
-                      child: Text(
-                          AppLocalizations.of(context).translate('english')),
+                trailing: Wrap(
+                  spacing: 8.0,
+                  children: [
+                    ChoiceChip(
+                      label: const Text("🇺🇸 English"),
+                      selected: locale.languageCode == 'en',
+                      onSelected: (bool selected) {
+                        if (selected) {
+                          context
+                              .read<LocalizationCubit>()
+                              .updateLocale(const Locale('en', ''));
+                        }
+                      },
                     ),
-                    DropdownMenuItem(
-                      value: const Locale('bn', ''),
-                      child: Text(
-                          AppLocalizations.of(context).translate('bengali')),
+                    ChoiceChip(
+                      label: const Text("🇧🇩 বাংলা"),
+                      selected: locale.languageCode == 'bn',
+                      onSelected: (bool selected) {
+                        if (selected) {
+                          context
+                              .read<LocalizationCubit>()
+                              .updateLocale(const Locale('bn', ''));
+                        }
+                      },
                     ),
                   ],
-                  onChanged: (Locale? newLocale) {
-                    if (newLocale != null) {
-                      context.read<LocalizationCubit>().updateLocale(newLocale);
-                    }
-                  },
                 ),
               );
             },
