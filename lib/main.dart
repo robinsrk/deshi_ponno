@@ -40,7 +40,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseDatabase.instance.setPersistenceEnabled(true);
+  FirebaseDatabase.instance.setPersistenceEnabled(false);
+  FirebaseDatabase.instance.ref().keepSynced(true);
   di.init();
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
