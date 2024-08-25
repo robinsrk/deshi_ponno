@@ -42,7 +42,7 @@ class _LoadingPageState extends State<LoadingPage> {
   void _checkAuthentication(BuildContext context) async {
     final checkUserLoggedIn = context.read<CheckUserLoggedIn>();
 
-    final result = await Future.delayed(const Duration(seconds: 0), () {
+    final result = await Future.delayed(const Duration(seconds: 3), () {
       return checkUserLoggedIn(NoParams());
     });
 
