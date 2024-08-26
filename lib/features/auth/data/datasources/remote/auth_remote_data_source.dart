@@ -24,8 +24,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       dev.log("Attempting to log in with email: $email", name: "Login mail");
       final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-        email: "robinsrk3@gmail.com",
-        password: "nehakakkar",
+        email: email,
+        password: password,
       );
       dev.log("Login successful");
       return userCredential.user!;
