@@ -135,7 +135,6 @@ class MyApp extends StatelessWidget {
                 supportedLocales: const [
                   Locale('en', ''),
                   Locale('bn', ''),
-                  // Add other supported locales here
                 ],
                 locale: locale,
                 localeResolutionCallback: (locale, supportedLocales) {

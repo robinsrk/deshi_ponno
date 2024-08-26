@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/product_scanner/domain/entities/product.dart';
 import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
@@ -53,24 +54,36 @@ class HomePage extends StatelessWidget {
               } else if (state is ProductLoading) {
                 return const CircularProgressIndicator();
               } else if (state is ProductLoaded) {
-                return Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            AppLocalizations.of(context).translate("history"),
-                            style: Theme.of(context).textTheme.titleMedium,
-                            textDirection: TextDirection.ltr,
-                          ),
-                        ],
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                        title: Text(
+                      AppLocalizations.of(context).translate("history"),
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textDirection: TextDirection.ltr,
+                    )),
+                    ListTile(
+                      title: Text(
+                        state.product.name,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      const SizedBox(height: 10),
-                      Text(state.product.name)
-                    ],
-                  ),
+                      subtitle: Text(
+                          '${AppLocalizations.of(context).translate("brand")}: ${state.product.brand}'),
+                      trailing: CachedNetworkImage(
+                        imageUrl: state.product.imageUrl,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                                CircularProgressIndicator(
+                                    value: downloadProgress.progress),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                      onTap: () {
+                        _showProductDetailsBottomSheet(context, state.product);
+                      },
+                    )
+                  ],
                 );
               } else if (state is ProductError) {
                 return Text(state.message);
