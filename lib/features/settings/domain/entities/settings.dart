@@ -1,8 +1,3 @@
-// class Settings {
-//   final bool isDarkMode;
-//
-//   Settings({required this.isDarkMode});
-// }
 import 'package:equatable/equatable.dart';
 
 class Settings extends Equatable {
