@@ -27,6 +27,6 @@ This app can be used to find Deshi products of bangladesh and their ingredients.
 - [ ] AI based ingredient recognition
 - [ ] Add search filters
 - [x] Bottom navigation bar
-- [ ] Product details page
+- [x] Product details page
 - [ ] User history of scanned products
-- [-] Language localization
+- [x] Language localization

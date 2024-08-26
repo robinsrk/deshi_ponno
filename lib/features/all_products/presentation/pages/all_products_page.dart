@@ -34,8 +34,11 @@ class _ProductListPageState extends State<ProductListPage> {
                     product.name,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
+                  // trailing: Text(
+                  //     "${AppLocalizations.of(context).translate("price")}: ${product.price.toStringAsFixed(2)} ৳"),
+                  isThreeLine: true,
                   subtitle: Text(
-                      '${AppLocalizations.of(context).translate("brand")}: ${product.brand}'),
+                      '${AppLocalizations.of(context).translate("brand")}: ${product.brand}\n${AppLocalizations.of(context).translate("price")}: ${product.price.toStringAsFixed(2)} ৳'),
                   trailing: Hero(
                     tag: product.name,
                     child: CachedNetworkImage(

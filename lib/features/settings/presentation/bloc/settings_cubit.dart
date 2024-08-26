@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:deshi_ponno/features/settings/domain/entities/settings.dart';
 import 'package:deshi_ponno/features/settings/domain/repositories/settings_repository.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   final SettingsRepository settingsRepository;

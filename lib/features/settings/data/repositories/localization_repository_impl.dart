@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalizationRepositoryImpl implements LocalizationRepository {
-  Locale _locale = const Locale('en', '');
-
   @override
   Future<Locale> loadLanguage() async {
     final prefs = await SharedPreferences.getInstance();
@@ -28,6 +26,5 @@ class LocalizationRepositoryImpl implements LocalizationRepository {
     // Save locale to persistent storage
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("lang", locale.toString());
-    _locale = locale;
   }
 }
