@@ -44,11 +44,10 @@ class HomePage extends StatelessWidget {
             // TODO: add user history
             builder: (context, state) {
               if (state is ProductInitial) {
-                return Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
+                return ListTile(
+                  title: Text(
                     AppLocalizations.of(context).translate("scan_product"),
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 );
               } else if (state is ProductLoading) {
