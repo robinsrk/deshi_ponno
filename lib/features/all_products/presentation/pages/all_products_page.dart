@@ -2,10 +2,12 @@ import 'dart:developer' as dev;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
+import 'package:deshi_ponno/core/services/number_format_service.dart';
 import 'package:deshi_ponno/features/all_products/presentation/bloc/product_list_cubit.dart';
 import 'package:deshi_ponno/features/all_products/presentation/pages/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 class ProductListPage extends StatefulWidget {
   const ProductListPage({super.key});
@@ -17,6 +19,7 @@ class ProductListPage extends StatefulWidget {
 class _ProductListPageState extends State<ProductListPage> {
   @override
   Widget build(BuildContext context) {
+    final numberFormatter = GetIt.instance<NumberFormatterService>();
     return Scaffold(
       appBar: AppBar(
           title: Text(AppLocalizations.of(context).translate("all_products"))),
@@ -38,7 +41,7 @@ class _ProductListPageState extends State<ProductListPage> {
                   //     "${AppLocalizations.of(context).translate("price")}: ${product.price.toStringAsFixed(2)} ৳"),
                   isThreeLine: true,
                   subtitle: Text(
-                      '${AppLocalizations.of(context).translate("brand")}: ${product.brand}\n${AppLocalizations.of(context).translate("price")}: ${product.price.toStringAsFixed(2)} ৳'),
+                      '${AppLocalizations.of(context).translate("brand")}: ${product.brand}\n${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}'),
                   trailing: Hero(
                     tag: product.name,
                     child: CachedNetworkImage(

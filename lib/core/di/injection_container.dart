@@ -1,4 +1,5 @@
 import 'package:deshi_ponno/core/localization/app_localization.dart';
+import 'package:deshi_ponno/core/services/number_format_service.dart';
 import 'package:deshi_ponno/features/all_products/data/datasources/remote/product_remote_data_source.dart';
 import 'package:deshi_ponno/features/all_products/data/repositories/all_products_repository_impl.dart';
 import 'package:deshi_ponno/features/all_products/domain/repositories/all_product_repository.dart';
@@ -47,6 +48,10 @@ void init() {
   sl.registerLazySingleton<ProductRepository>(
     () => ProductRepositoryImpl(sl()),
   );
+
+  // Number format
+  sl.registerLazySingleton<NumberFormatterService>(
+      () => NumberFormatterService());
 
   sl.registerFactory(() => ProductListCubit(sl<GetAllProducts>()));
   sl.registerLazySingleton(() => GetAllProducts(sl<AllProductsRepository>()));
