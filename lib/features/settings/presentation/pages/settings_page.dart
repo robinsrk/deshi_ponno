@@ -44,9 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(AppLocalizations.of(context).translate("dark_mode")),
                   value: state.settings.isDarkMode,
                   onChanged: (value) {
-                    // Toggles dark mode and saves the new state.
                     context.read<SettingsCubit>().toggleDarkMode();
-                    // Changes the theme based on the toggle.
                     context.read<ThemeCubit>().toggleTheme(value);
                   },
                 );

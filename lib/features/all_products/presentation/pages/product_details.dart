@@ -47,8 +47,10 @@ class ProductDetailsPage extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
                 '${AppLocalizations.of(context).translate("brand")}: ${product.brand}'),
-            // Add other product details as needed
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
+            Text(
+                '${AppLocalizations.of(context).translate("origin")}: ${product.origin}'),
+            const SizedBox(height: 8),
             Text(
                 '${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}')
           ],

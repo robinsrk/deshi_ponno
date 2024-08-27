@@ -23,8 +23,6 @@ class BottomNavBar extends StatelessWidget {
             break;
         }
       },
-      // selectedItemColor: Colors.red,
-
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.home),

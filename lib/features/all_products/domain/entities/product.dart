@@ -4,6 +4,7 @@ class Product extends Equatable {
   final String id;
   final String name;
   final String brand;
+  final String origin;
   final num price;
   final String imageUrl;
 
@@ -13,6 +14,7 @@ class Product extends Equatable {
     required this.brand,
     required this.price,
     required this.imageUrl,
+    required this.origin,
   });
 
   @override

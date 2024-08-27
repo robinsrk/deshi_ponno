@@ -8,12 +8,10 @@ class LocalizationRepositoryImpl implements LocalizationRepository {
     final prefs = await SharedPreferences.getInstance();
     final localeString = prefs.getString("lang");
 
-    // If no locale is stored, return a default locale
     if (localeString == null || localeString.isEmpty) {
       return const Locale('en'); // Default locale
     }
 
-    // Split the localeString to get language and country codes
     final localeParts = localeString.split('_');
     final languageCode = localeParts[0];
     final countryCode = localeParts.length > 1 ? localeParts[1] : null;
@@ -23,7 +21,6 @@ class LocalizationRepositoryImpl implements LocalizationRepository {
 
   @override
   Future<void> updateLanguage(Locale locale) async {
-    // Save locale to persistent storage
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("lang", locale.toString());
   }

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
+import 'package:deshi_ponno/core/services/number_format_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../domain/entities/product.dart';
 
@@ -14,6 +16,7 @@ class ProductDetailsBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final numberFormatter = GetIt.instance<NumberFormatterService>();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -61,6 +64,11 @@ class ProductDetailsBottomSheet extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               "${AppLocalizations.of(context).translate("brand")}: ${product.brand}",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}",
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 16),

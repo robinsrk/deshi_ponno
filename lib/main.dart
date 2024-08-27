@@ -116,53 +116,58 @@ class MyApp extends StatelessWidget {
                 LocalizationCubit(LocalizationRepositoryImpl()),
           ),
         ],
-        child:
-            BlocBuilder<LocalizationCubit, Locale>(builder: (context, locale) {
-          return DynamicColorBuilder(
+        child: BlocBuilder<LocalizationCubit, Locale>(
+          builder: (context, locale) {
+            return DynamicColorBuilder(
               builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-            return BlocBuilder<ThemeCubit, ThemeData>(builder: (
-              context,
-              theme,
-            ) {
-              return MaterialApp(
-                title: "Deshi Ponno",
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en', ''),
-                  Locale('bn', ''),
-                ],
-                locale: locale,
-                localeResolutionCallback: (locale, supportedLocales) {
-                  for (var supportedLocale in supportedLocales) {
-                    if (supportedLocale.languageCode == locale?.languageCode) {
-                      return supportedLocale;
-                    }
-                  }
-                  return supportedLocales.first;
-                },
-                debugShowCheckedModeBanner: true,
-                // themeMode: ThemeMode.light,
-                // theme: lightMaterialTheme(lightDynamic),
-                // darkTheme: darkMaterialTheme(darkDynamic),
-                theme: theme,
-                routes: {
-                  "/login": (context) => const LoginPage(),
-                  "/signup": (context) => const SignupPage(),
-                  "/home": (context) => const HomePage(),
-                  "/main": (context) => const NavBarPage(),
-                  "/loading": (context) => const LoadingPage(),
-                  "/products": (context) => const ProductListPage(),
-                },
-                home: const LoadingPage(),
-              );
-            });
-          });
-        }),
+                return BlocBuilder<ThemeCubit, ThemeData>(
+                  builder: (
+                    context,
+                    theme,
+                  ) {
+                    return MaterialApp(
+                      title: "Deshi Ponno",
+                      localizationsDelegates: const [
+                        AppLocalizations.delegate,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
+                      supportedLocales: const [
+                        Locale('en', ''),
+                        Locale('bn', ''),
+                      ],
+                      locale: locale,
+                      localeResolutionCallback: (locale, supportedLocales) {
+                        for (var supportedLocale in supportedLocales) {
+                          if (supportedLocale.languageCode ==
+                              locale?.languageCode) {
+                            return supportedLocale;
+                          }
+                        }
+                        return supportedLocales.first;
+                      },
+                      debugShowCheckedModeBanner: true,
+                      // themeMode: ThemeMode.light,
+                      // theme: lightMaterialTheme(lightDynamic),
+                      // darkTheme: darkMaterialTheme(darkDynamic),
+                      theme: theme,
+                      routes: {
+                        "/login": (context) => const LoginPage(),
+                        "/signup": (context) => const SignupPage(),
+                        "/home": (context) => const HomePage(),
+                        "/main": (context) => const NavBarPage(),
+                        "/loading": (context) => const LoadingPage(),
+                        "/products": (context) => const ProductListPage(),
+                      },
+                      home: const LoadingPage(),
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

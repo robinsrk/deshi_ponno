@@ -30,6 +30,7 @@ class AppTheme {
       onError: Colors.white,
       brightness: Brightness.light,
     ),
+    fontFamily: "shreyam",
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,
@@ -60,6 +61,7 @@ class AppTheme {
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Color(0xFF191919),
     ),
+    fontFamily: "shreyam",
     scaffoldBackgroundColor: Colors.black,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.black,
