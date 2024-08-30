@@ -23,8 +23,8 @@ class ProductListRepositoryImpl implements AllProductsRepository {
   ProductListRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<List<Product>> getAllProducts() async {
-    final products = await remoteDataSource.getAllProducts();
-    return products;
+  Stream<List<Product>> getAllProducts() {
+    return remoteDataSource
+        .getAllProductsStream(); // Return the stream directly
   }
 }

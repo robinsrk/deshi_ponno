@@ -7,10 +7,19 @@ import 'package:deshi_ponno/features/product_scanner/presentation/widgets/produc
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool _isAdLoaded = false;
+  final bool _isAdLoading = false;
+  late BannerAd bannerAd;
   @override
   Widget build(BuildContext context) {
     final double svgWidth = MediaQuery.of(context).size.width * 0.8;
@@ -30,65 +39,78 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          BlocConsumer<ProductCubit, ProductState>(
-            listener: (context, state) {
-              if (state is ProductLoaded) {
-                _showProductDetailsBottomSheet(context, state.product);
-              } else if (state is ProductError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message)),
-                );
-              }
-            },
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              BlocConsumer<ProductCubit, ProductState>(
+                listener: (context, state) {
+                  if (state is ProductLoaded) {
+                    _showProductDetailsBottomSheet(context, state.product);
+                  } else if (state is ProductError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(state.message)),
+                    );
+                  }
+                },
 
-            // TODO: add user history
-            builder: (context, state) {
-              if (state is ProductInitial) {
-                return ListTile(
-                  title: Text(
-                    AppLocalizations.of(context).translate("scan_product"),
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                );
-              } else if (state is ProductLoading) {
-                return const CircularProgressIndicator();
-              } else if (state is ProductLoaded) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                        title: Text(
-                      AppLocalizations.of(context).translate("history"),
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textDirection: TextDirection.ltr,
-                    )),
-                    ListTile(
+                // TODO: add user history
+                builder: (context, state) {
+                  if (state is ProductInitial) {
+                    return ListTile(
                       title: Text(
-                        state.product.name,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        AppLocalizations.of(context).translate("scan_product"),
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      subtitle: Text(
-                          '${AppLocalizations.of(context).translate("brand")}: ${state.product.brand}'),
-                      trailing: CachedNetworkImage(
-                        imageUrl: state.product.imageUrl,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) =>
-                                CircularProgressIndicator(
-                                    value: downloadProgress.progress),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-                      onTap: () {
-                        _showProductDetailsBottomSheet(context, state.product);
-                      },
-                    )
-                  ],
-                );
-              } else if (state is ProductError) {
-                return Text(state.message);
-              }
-              return const SizedBox.shrink();
-            },
+                    );
+                  } else if (state is ProductLoading) {
+                    return const CircularProgressIndicator();
+                  } else if (state is ProductLoaded) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                            title: Text(
+                          AppLocalizations.of(context).translate("history"),
+                          style: Theme.of(context).textTheme.headlineSmall,
+                          textDirection: TextDirection.ltr,
+                        )),
+                        ListTile(
+                          title: Text(
+                            state.product.name,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          subtitle: Text(
+                              '${AppLocalizations.of(context).translate("brand")}: ${state.product.brand}'),
+                          trailing: CachedNetworkImage(
+                            imageUrl: state.product.imageUrl,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) =>
+                                    CircularProgressIndicator(
+                                        value: downloadProgress.progress),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                          onTap: () {
+                            _showProductDetailsBottomSheet(
+                                context, state.product);
+                          },
+                        )
+                      ],
+                    );
+                  } else if (state is ProductError) {
+                    return Text(state.message);
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+              if (_isAdLoaded)
+                SizedBox(
+                  height: bannerAd.size.height.toDouble(),
+                  width: bannerAd.size.width.toDouble(),
+                  child: AdWidget(ad: bannerAd),
+                ),
+            ],
           ),
         ],
       ),
@@ -102,6 +124,35 @@ class HomePage extends StatelessWidget {
         child: const Icon(Icons.qr_code_scanner),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bannerAd.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-3978946832189310/9374110609',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+
+    bannerAd.load();
   }
 
   void _showProductDetailsBottomSheet(BuildContext context, Product product) {

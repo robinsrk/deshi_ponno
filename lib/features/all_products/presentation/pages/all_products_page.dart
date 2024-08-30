@@ -76,7 +76,7 @@ class _ProductListPageState extends State<ProductListPage> {
 
   @override
   void initState() {
-    context.read<ProductListCubit>().fetchAllProducts();
+    // context.read<ProductListCubit>().fetchAllProducts();
     super.initState();
   }
 }

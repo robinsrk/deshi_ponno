@@ -1,5 +1,6 @@
 # Miscellaneous
 *.class
+*.env
 *.log
 *.pyc
 *.swp
@@ -45,3 +46,4 @@ app.*.map.json
 android/app/google-services.json
 lib/services/firebase_options.dart
 lib/firebase_options.dart
+firebase.json

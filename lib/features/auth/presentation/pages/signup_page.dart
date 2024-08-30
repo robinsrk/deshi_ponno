@@ -22,14 +22,9 @@ class SignupPageState extends State<SignupPage> {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  bool _isAdLoaded = false; // Track ad load status
 
-  BannerAd bannerAd = BannerAd(
-    adUnitId: 'ca-app-pub-3940256099942544/2247696110',
-    size: AdSize.banner,
-    request: const AdRequest(),
-    listener: const BannerAdListener(),
-  );
-
+  late BannerAd bannerAd;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,11 +74,17 @@ class SignupPageState extends State<SignupPage> {
                   child: Text(
                       '${AppLocalizations.of(context).translate("already_account")} ${AppLocalizations.of(context).translate("login")}'),
                 ),
-                SizedBox(
-                  height: bannerAd.size.height.toDouble(),
-                  width: bannerAd.size.width.toDouble(),
-                  child: AdWidget(ad: bannerAd),
-                )
+                if (_isAdLoaded)
+                  SizedBox(
+                    height: bannerAd.size.height.toDouble(),
+                    width: bannerAd.size.width.toDouble(),
+                    child: AdWidget(ad: bannerAd),
+                  ),
+                // SizedBox(
+                //   height: bannerAd.size.height.toDouble(),
+                //   width: bannerAd.size.width.toDouble(),
+                //   child: AdWidget(ad: bannerAd),
+                // )
               ],
             ),
           ),
@@ -96,7 +97,38 @@ class SignupPageState extends State<SignupPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    bannerAd.dispose();
     super.dispose();
+  }
+
+  // bannerAd = BannerAd(
+  //   adUnitId: 'ca-app-pub-3978946832189310/9374110609',
+  //   size: AdSize.banner,
+  //   request: const AdRequest(),
+  //   listener: const BannerAdListener(),
+  // );
+  @override
+  void initState() {
+    super.initState();
+
+    bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-3978946832189310/9374110609',
+      // adUnitId: 'ca-app-pub-3940256099942544/9214589741',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isAdLoaded = true; // Update the state when the ad is loaded
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose(); // Dispose of the ad if it fails to load
+        },
+      ),
+    );
+
+    bannerAd.load(); // Load the ad
   }
 
   void _onSignupButtonPressed() {
@@ -105,12 +137,10 @@ class SignupPageState extends State<SignupPage> {
         _isLoading = true;
       });
 
-      context.read<AuthBloc>().add(
-            SignupEvent(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim(),
-            ),
-          );
+      context.read<AuthBloc>().add(SignupEvent(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          ));
     }
   }
 }
