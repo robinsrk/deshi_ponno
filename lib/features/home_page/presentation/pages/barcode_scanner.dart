@@ -1,6 +1,6 @@
 import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
-import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
+import 'package:deshi_ponno/features/home_page/presentation/bloc/product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

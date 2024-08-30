@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
-import 'package:deshi_ponno/features/product_scanner/domain/entities/product.dart';
-import 'package:deshi_ponno/features/product_scanner/presentation/bloc/product_bloc.dart';
-import 'package:deshi_ponno/features/product_scanner/presentation/pages/barcode_scanner.dart';
-import 'package:deshi_ponno/features/product_scanner/presentation/widgets/product_details_bottom_sheet.dart';
+import 'package:deshi_ponno/features/home_page/domain/entities/product.dart';
+import 'package:deshi_ponno/features/home_page/presentation/bloc/product_bloc.dart';
+import 'package:deshi_ponno/features/home_page/presentation/pages/barcode_scanner.dart';
+import 'package:deshi_ponno/features/home_page/presentation/widgets/product_details_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';

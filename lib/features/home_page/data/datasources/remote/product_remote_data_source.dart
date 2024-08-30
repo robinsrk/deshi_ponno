@@ -1,5 +1,5 @@
 import 'package:deshi_ponno/core/errors/exceptions.dart';
-import 'package:deshi_ponno/features/product_scanner/data/models/product_model.dart';
+import 'package:deshi_ponno/features/home_page/data/models/product_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 abstract class ProductRemoteDataSource {

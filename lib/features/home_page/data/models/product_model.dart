@@ -1,4 +1,4 @@
-import 'package:deshi_ponno/features/product_scanner/domain/entities/product.dart';
+import 'package:deshi_ponno/features/home_page/domain/entities/product.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class ProductModel extends Product {

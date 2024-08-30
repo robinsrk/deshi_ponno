@@ -1,5 +1,5 @@
-// import 'package:deshi_ponno/features/product_scanner/domain/entities/product.dart';
-// import 'package:deshi_ponno/features/product_scanner/domain/usecases/get_product.dart';
+// import 'package:deshi_ponno/features/home_page/domain/entities/product.dart';
+// import 'package:deshi_ponno/features/home_page/domain/usecases/get_product.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 //
 // class ProductCubit extends Cubit<ProductState> {
@@ -35,8 +35,8 @@
 //
 //   ProductError(this.message);
 // }
-import 'package:deshi_ponno/features/product_scanner/domain/entities/product.dart';
-import 'package:deshi_ponno/features/product_scanner/domain/usecases/get_product.dart';
+import 'package:deshi_ponno/features/home_page/domain/entities/product.dart';
+import 'package:deshi_ponno/features/home_page/domain/usecases/get_product.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductCubit extends Cubit<ProductState> {
