@@ -1,9 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/home_page/domain/entities/product.dart';
 import 'package:deshi_ponno/features/home_page/presentation/bloc/product_bloc.dart';
+import 'package:deshi_ponno/features/home_page/presentation/bloc/product_states.dart';
 import 'package:deshi_ponno/features/home_page/presentation/pages/barcode_scanner.dart';
 import 'package:deshi_ponno/features/home_page/presentation/widgets/product_details_bottom_sheet.dart';
+import 'package:deshi_ponno/features/home_page/presentation/widgets/product_history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,7 +19,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _isAdLoaded = false;
-  final bool _isAdLoading = false;
   late BannerAd bannerAd;
   @override
   Widget build(BuildContext context) {
@@ -26,6 +26,14 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate("app_title")),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person_outline_outlined),
+            onPressed: () {
+              Navigator.pushNamed(context, "/profile");
+            },
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,78 +47,51 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              BlocConsumer<ProductCubit, ProductState>(
-                listener: (context, state) {
-                  if (state is ProductLoaded) {
-                    _showProductDetailsBottomSheet(context, state.product);
-                  } else if (state is ProductError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.message)),
-                    );
-                  }
-                },
-
-                // TODO: add user history
-                builder: (context, state) {
-                  if (state is ProductInitial) {
-                    return ListTile(
-                      title: Text(
-                        AppLocalizations.of(context).translate("scan_product"),
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    );
-                  } else if (state is ProductLoading) {
-                    return const CircularProgressIndicator();
-                  } else if (state is ProductLoaded) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                            title: Text(
-                          AppLocalizations.of(context).translate("history"),
+          Expanded(
+            flex: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                BlocConsumer<ProductCubit, ProductState>(
+                  listener: (context, state) {
+                    if (state is ProductLoaded) {
+                      _showProductDetailsBottomSheet(context, state.product);
+                    } else if (state is ProductError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.message)),
+                      );
+                    }
+                  },
+                  // TODO: add user history
+                  builder: (context, state) {
+                    if (state is ProductInitial) {
+                      return ListTile(
+                        title: Text(
+                          "${AppLocalizations.of(context).translate("no_recents")}, ${AppLocalizations.of(context).translate("scan_product")}",
                           style: Theme.of(context).textTheme.headlineSmall,
-                          textDirection: TextDirection.ltr,
-                        )),
-                        ListTile(
-                          title: Text(
-                            state.product.name,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          subtitle: Text(
-                              '${AppLocalizations.of(context).translate("brand")}: ${state.product.brand}'),
-                          trailing: CachedNetworkImage(
-                            imageUrl: state.product.imageUrl,
-                            progressIndicatorBuilder:
-                                (context, url, downloadProgress) =>
-                                    CircularProgressIndicator(
-                                        value: downloadProgress.progress),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
-                          onTap: () {
-                            _showProductDetailsBottomSheet(
-                                context, state.product);
-                          },
-                        )
-                      ],
-                    );
-                  } else if (state is ProductError) {
-                    return Text(state.message);
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
-              if (_isAdLoaded)
-                SizedBox(
-                  height: bannerAd.size.height.toDouble(),
-                  width: bannerAd.size.width.toDouble(),
-                  child: AdWidget(ad: bannerAd),
+                        ),
+                      );
+                    } else if (state is ProductLoading) {
+                      return const CircularProgressIndicator();
+                    } else if (state is ProductLoaded) {
+                      return ProductHistory(
+                        product: state.product,
+                      );
+                    } else if (state is ProductError) {
+                      return Text(state.message);
+                    }
+                    return const SizedBox.shrink();
+                  },
                 ),
-            ],
+                if (_isAdLoaded)
+                  SizedBox(
+                    height: bannerAd.size.height.toDouble(),
+                    width: bannerAd.size.width.toDouble(),
+                    child: AdWidget(ad: bannerAd),
+                  ),
+              ],
+            ),
           ),
         ],
       ),
@@ -135,7 +116,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
     bannerAd = BannerAd(
       adUnitId: 'ca-app-pub-3978946832189310/9374110609',
       size: AdSize.banner,

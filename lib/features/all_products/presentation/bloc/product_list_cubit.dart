@@ -24,8 +24,7 @@ class ProductListCubit extends Cubit<ProductListState> {
 
   @override
   Future<void> close() {
-    _productsSubscription
-        .cancel(); // Cancel the subscription when the Cubit is closed
+    _productsSubscription.cancel();
     return super.close();
   }
 }

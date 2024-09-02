@@ -19,6 +19,7 @@ import 'package:deshi_ponno/features/home_page/presentation/bloc/product_bloc.da
 import 'package:deshi_ponno/features/home_page/presentation/pages/home_page.dart';
 import 'package:deshi_ponno/features/navigation/domain/cubit/nav_bar_cubit.dart';
 import 'package:deshi_ponno/features/navigation/presentation/pages/nav_bar_page.dart';
+import 'package:deshi_ponno/features/profile/presentation/pages/profile_page.dart';
 import 'package:deshi_ponno/features/settings/data/repositories/localization_repository_impl.dart';
 import 'package:deshi_ponno/features/settings/data/repositories/settings_repository_impl.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
@@ -159,6 +160,7 @@ class MyApp extends StatelessWidget {
                         "/main": (context) => const NavBarPage(),
                         "/loading": (context) => const LoadingPage(),
                         "/products": (context) => const ProductListPage(),
+                        "/profile": (context) => const ProfilePage(),
                       },
                       home: const LoadingPage(),
                     );

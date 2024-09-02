@@ -22,7 +22,6 @@ class ProductModel extends Product {
     );
   }
 
-  // Converts ProductModel to Product entity
   Product toEntity() {
     return Product(
       id: id,

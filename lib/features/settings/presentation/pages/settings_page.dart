@@ -3,7 +3,7 @@ import 'package:deshi_ponno/core/theme/theme_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_state.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:deshi_ponno/features/settings/presentation/widgets/made_with_love_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,70 +24,68 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text(
           AppLocalizations.of(context).translate("settings"),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pushReplacementNamed(context, "/loading");
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          BlocBuilder<SettingsCubit, SettingsState>(
-            builder: (context, state) {
-              if (state is SettingsLoaded) {
-                return SwitchListTile(
-                  title:
-                      Text(AppLocalizations.of(context).translate("dark_mode")),
-                  value: state.settings.isDarkMode,
-                  onChanged: (value) {
-                    context.read<SettingsCubit>().toggleDarkMode();
-                    context.read<ThemeCubit>().toggleTheme(value);
-                  },
-                );
-              } else if (state is SettingsError) {
-                return Center(child: Text(state.message));
-              }
-              return const Center(child: CircularProgressIndicator());
-            },
-          ),
-          BlocBuilder<LocalizationCubit, Locale>(
-            builder: (context, locale) {
-              return ListTile(
-                title: Text(AppLocalizations.of(context).translate("language")),
-                trailing: Wrap(
-                  spacing: 8.0,
-                  children: [
-                    ChoiceChip(
-                      label: const Text("🇺🇸 English"),
-                      selected: locale.languageCode == 'en',
-                      onSelected: (bool selected) {
-                        if (selected) {
-                          context
-                              .read<LocalizationCubit>()
-                              .updateLocale(const Locale('en', ''));
-                        }
+          Column(
+            children: [
+              BlocBuilder<SettingsCubit, SettingsState>(
+                builder: (context, state) {
+                  if (state is SettingsLoaded) {
+                    return SwitchListTile(
+                      title: Text(
+                          AppLocalizations.of(context).translate("dark_mode")),
+                      value: state.settings.isDarkMode,
+                      onChanged: (value) {
+                        context.read<SettingsCubit>().toggleDarkMode();
+                        context.read<ThemeCubit>().toggleTheme(value);
                       },
+                    );
+                  } else if (state is SettingsError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                },
+              ),
+              BlocBuilder<LocalizationCubit, Locale>(
+                builder: (context, locale) {
+                  return ListTile(
+                    title: Text(
+                        AppLocalizations.of(context).translate("language")),
+                    trailing: Wrap(
+                      spacing: 8.0,
+                      children: [
+                        ChoiceChip(
+                          label: const Text("🇺🇸 English"),
+                          selected: locale.languageCode == 'en',
+                          onSelected: (bool selected) {
+                            if (selected) {
+                              context
+                                  .read<LocalizationCubit>()
+                                  .updateLocale(const Locale('en', ''));
+                            }
+                          },
+                        ),
+                        ChoiceChip(
+                          label: const Text("🇧🇩 বাংলা"),
+                          selected: locale.languageCode == 'bn',
+                          onSelected: (bool selected) {
+                            if (selected) {
+                              context
+                                  .read<LocalizationCubit>()
+                                  .updateLocale(const Locale('bn', ''));
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    ChoiceChip(
-                      label: const Text("🇧🇩 বাংলা"),
-                      selected: locale.languageCode == 'bn',
-                      onSelected: (bool selected) {
-                        if (selected) {
-                          context
-                              .read<LocalizationCubit>()
-                              .updateLocale(const Locale('bn', ''));
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
+                  );
+                },
+              ),
+            ],
           ),
+          const MadeWithLoveWidget(),
         ],
       ),
     );
