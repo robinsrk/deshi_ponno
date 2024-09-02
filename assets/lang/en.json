@@ -11,6 +11,8 @@
   "name": "Name",
   "brand": "Brand",
   "history": "History",
+  "recents": "Recents",
+  "no_recents": "No recent scans",
   "product_details": "Product details",
   "login": "Login",
   "no_account": "Don't have an account?",
@@ -20,5 +22,6 @@
   "already_account": "Already have an account?",
   "price": "Price",
   "taka": "taka",
-  "origin": "Origin"
+  "origin": "Origin",
+  "profile": "Profile"
 }
