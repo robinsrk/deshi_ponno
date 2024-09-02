@@ -35,8 +35,8 @@
 //
 //   ProductError(this.message);
 // }
-import 'package:deshi_ponno/features/home_page/domain/entities/product.dart';
 import 'package:deshi_ponno/features/home_page/domain/usecases/get_product.dart';
+import 'package:deshi_ponno/features/home_page/presentation/bloc/product_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductCubit extends Cubit<ProductState> {
@@ -60,21 +60,3 @@ class ProductCubit extends Cubit<ProductState> {
     );
   }
 }
-
-class ProductError extends ProductState {
-  final String message;
-
-  ProductError(this.message);
-}
-
-class ProductInitial extends ProductState {}
-
-class ProductLoaded extends ProductState {
-  final Product product;
-
-  ProductLoaded(this.product);
-}
-
-class ProductLoading extends ProductState {}
-
-abstract class ProductState {}
