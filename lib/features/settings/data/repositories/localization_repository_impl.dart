@@ -9,7 +9,7 @@ class LocalizationRepositoryImpl implements LocalizationRepository {
     final localeString = prefs.getString("lang");
 
     if (localeString == null || localeString.isEmpty) {
-      return const Locale('en'); // Default locale
+      return const Locale('bn'); // Default locale
     }
 
     final localeParts = localeString.split('_');
