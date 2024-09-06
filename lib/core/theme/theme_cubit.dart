@@ -1,4 +1,5 @@
 import 'package:deshi_ponno/core/theme/material_theme.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,13 +34,6 @@ class ThemeCubit extends Cubit<ThemeData> {
         lightDynamic: lightDynamic, darkDynamic: darkDynamic));
   }
 
-  Future<void> _loadTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isDarkMode = prefs.getBool(_darkKey) ?? false;
-    final isMaterialTheme = prefs.getBool(_materialKey) ?? false;
-    emit(_getTheme(isDarkMode, isMaterialTheme));
-  }
-
   ThemeData _getTheme(bool isDarkMode, bool isMaterialTheme,
       {ColorScheme? lightDynamic, ColorScheme? darkDynamic}) {
     if (isMaterialTheme) {
@@ -48,5 +42,28 @@ class ThemeCubit extends Cubit<ThemeData> {
           : AppTheme.lightMaterialTheme(lightDynamic);
     }
     return isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
+  }
+
+  Future<void> _loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isDarkMode = prefs.getBool(_darkKey) ?? false;
+    final isMaterialTheme = prefs.getBool(_materialKey) ?? false;
+
+    ColorScheme? lightDynamic;
+    ColorScheme? darkDynamic;
+
+    if (isMaterialTheme) {
+      lightDynamic =
+          await DynamicColorPlugin.getCorePalette().then((corePalette) {
+        return corePalette?.toColorScheme();
+      });
+      darkDynamic =
+          await DynamicColorPlugin.getCorePalette().then((corePalette) {
+        return corePalette?.toColorScheme(brightness: Brightness.dark);
+      });
+    }
+
+    emit(_getTheme(isDarkMode, isMaterialTheme,
+        lightDynamic: lightDynamic, darkDynamic: darkDynamic));
   }
 }

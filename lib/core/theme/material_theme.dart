@@ -30,7 +30,7 @@ class AppTheme {
       onError: Colors.white,
       brightness: Brightness.light,
     ),
-    fontFamily: "shreyam",
+    fontFamily: "liakot",
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.white,
@@ -61,7 +61,7 @@ class AppTheme {
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Color(0xFF191919),
     ),
-    fontFamily: "shreyam",
+    fontFamily: "liakot",
     scaffoldBackgroundColor: Colors.black,
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.black,
@@ -76,14 +76,16 @@ class AppTheme {
   static ThemeData darkMaterialTheme(ColorScheme? darkDynamic) {
     return ThemeData(
       brightness: Brightness.dark,
-      colorScheme: darkDynamic ?? ColorScheme.dark(),
+      colorScheme: darkDynamic ?? const ColorScheme.dark(),
+      fontFamily: "liakot",
     );
   }
 
   static ThemeData lightMaterialTheme(ColorScheme? lightDynamic) {
     return ThemeData(
       brightness: Brightness.light,
-      colorScheme: lightDynamic ?? ColorScheme.light(),
+      colorScheme: lightDynamic ?? const ColorScheme.light(),
+      fontFamily: "liakot",
     );
   }
 }
