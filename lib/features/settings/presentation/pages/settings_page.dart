@@ -33,14 +33,31 @@ class _SettingsPageState extends State<SettingsPage> {
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   if (state is SettingsLoaded) {
-                    return SwitchListTile(
-                      title: Text(
-                          AppLocalizations.of(context).translate("dark_mode")),
-                      value: state.settings.isDarkMode,
-                      onChanged: (value) {
-                        context.read<SettingsCubit>().toggleDarkMode();
-                        context.read<ThemeCubit>().toggleTheme(value);
-                      },
+                    return Column(
+                      children: [
+                        SwitchListTile(
+                          title: Text(AppLocalizations.of(context)
+                              .translate("dark_mode")),
+                          value: state.settings.isDarkMode,
+                          onChanged: (value) {
+                            context.read<SettingsCubit>().toggleDarkMode();
+                            context
+                                .read<ThemeCubit>()
+                                .toggleTheme(value, state.settings.isMaterialU);
+                          },
+                        ),
+                        SwitchListTile(
+                          title: Text(AppLocalizations.of(context)
+                              .translate("material_u")),
+                          value: state.settings.isMaterialU,
+                          onChanged: (value) {
+                            context.read<SettingsCubit>().toggleMaterialU();
+                            context
+                                .read<ThemeCubit>()
+                                .toggleTheme(state.settings.isDarkMode, value);
+                          },
+                        ),
+                      ],
                     );
                   } else if (state is SettingsError) {
                     return Center(child: Text(state.message));

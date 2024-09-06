@@ -4,21 +4,49 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeCubit extends Cubit<ThemeData> {
-  static const _themeKey = 'themeKey';
+  static const _darkKey = 'darkKey';
+  static const String _materialKey = "materialKey";
 
   ThemeCubit() : super(AppTheme.lightTheme) {
     _loadTheme();
   }
 
-  Future<void> toggleTheme(bool isDarkMode) async {
+  // Future<void> toggleTheme(bool isDarkMode, bool isMaterialTheme) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.setBool(_darkKey, isDarkMode);
+  //   await prefs.setBool(_materialKey, isMaterialTheme);
+  //   emit(isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme);
+  // }
+  //
+  // Future<void> _loadTheme() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final isDarkMode = prefs.getBool(_darkKey) ?? false;
+  //   final isMaterialTheme = prefs.getBool(_materialKey) ?? false;
+  //   emit(isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme);
+  // }
+  Future<void> toggleTheme(bool isDarkMode, bool isMaterialTheme,
+      {ColorScheme? lightDynamic, ColorScheme? darkDynamic}) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_themeKey, isDarkMode);
-    emit(isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme);
+    await prefs.setBool(_darkKey, isDarkMode);
+    await prefs.setBool(_materialKey, isMaterialTheme);
+    emit(_getTheme(isDarkMode, isMaterialTheme,
+        lightDynamic: lightDynamic, darkDynamic: darkDynamic));
   }
 
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    final isDarkMode = prefs.getBool(_themeKey) ?? false;
-    emit(isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme);
+    final isDarkMode = prefs.getBool(_darkKey) ?? false;
+    final isMaterialTheme = prefs.getBool(_materialKey) ?? false;
+    emit(_getTheme(isDarkMode, isMaterialTheme));
+  }
+
+  ThemeData _getTheme(bool isDarkMode, bool isMaterialTheme,
+      {ColorScheme? lightDynamic, ColorScheme? darkDynamic}) {
+    if (isMaterialTheme) {
+      return isDarkMode
+          ? AppTheme.darkMaterialTheme(darkDynamic)
+          : AppTheme.lightMaterialTheme(lightDynamic);
+    }
+    return isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
   }
 }

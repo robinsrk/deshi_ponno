@@ -73,4 +73,17 @@ class AppTheme {
       bodyLarge: TextStyle(color: Colors.white),
     ),
   );
+  static ThemeData darkMaterialTheme(ColorScheme? darkDynamic) {
+    return ThemeData(
+      brightness: Brightness.dark,
+      colorScheme: darkDynamic ?? ColorScheme.dark(),
+    );
+  }
+
+  static ThemeData lightMaterialTheme(ColorScheme? lightDynamic) {
+    return ThemeData(
+      brightness: Brightness.light,
+      colorScheme: lightDynamic ?? ColorScheme.light(),
+    );
+  }
 }

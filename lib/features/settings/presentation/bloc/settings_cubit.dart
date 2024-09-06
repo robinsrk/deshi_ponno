@@ -6,8 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SettingsCubit extends Cubit<SettingsState> {
   final SettingsRepository settingsRepository;
 
-  SettingsCubit(this.settingsRepository, bool isDarkMode)
-      : super(SettingsInitial(settings: Settings(isDarkMode: isDarkMode)));
+  SettingsCubit(this.settingsRepository, bool isDarkMode, bool isMaterialU)
+      : super(SettingsInitial(
+            settings:
+                Settings(isDarkMode: isDarkMode, isMaterialU: isMaterialU)));
 
   void loadSettings() async {
     try {
@@ -21,6 +23,14 @@ class SettingsCubit extends Cubit<SettingsState> {
   void toggleDarkMode() {
     final newSettings = state.settings.copyWith(
       isDarkMode: !state.settings.isDarkMode,
+    );
+    settingsRepository.updateSettings(newSettings);
+    emit(SettingsLoaded(settings: newSettings));
+  }
+
+  void toggleMaterialU() {
+    final newSettings = state.settings.copyWith(
+      isMaterialU: !state.settings.isMaterialU,
     );
     settingsRepository.updateSettings(newSettings);
     emit(SettingsLoaded(settings: newSettings));

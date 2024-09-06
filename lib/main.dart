@@ -37,19 +37,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Mobile ads
   MobileAds.instance.initialize();
+
+  // Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseDatabase.instance.setPersistenceEnabled(true);
   FirebaseDatabase.instance.ref().keepSynced(true);
+
+  // Dependency injection
   di.init();
 
+  // Local storage
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
+  final bool isMaterialU = prefs.getBool('isMaterialU') ?? false;
 
+  // Firebase authentication
   final firebaseAuth = FirebaseAuth.instance;
-
   final authRemoteDataSource = AuthRemoteDataSourceImpl(firebaseAuth);
   final authRepository = AuthRepositoryImpl(authRemoteDataSource);
   final loginUseCase = Login(authRepository);
@@ -66,6 +74,7 @@ void main() async {
     signupUseCase: signupUseCase,
     checkUserLoggedInUseCase: checkUserLoggedIn,
     isDarkMode: isDarkMode,
+    isMaterialU: isMaterialU,
   ));
 }
 
@@ -75,6 +84,7 @@ class MyApp extends StatelessWidget {
   final Signup signupUseCase;
   final CheckUserLoggedIn checkUserLoggedInUseCase;
   final bool isDarkMode;
+  final bool isMaterialU;
 
   const MyApp({
     super.key,
@@ -83,6 +93,7 @@ class MyApp extends StatelessWidget {
     required this.signupUseCase,
     required this.checkUserLoggedInUseCase,
     required this.isDarkMode,
+    required this.isMaterialU,
   });
 
   @override
@@ -108,8 +119,8 @@ class MyApp extends StatelessWidget {
           BlocProvider<NavBarCubit>(create: (context) => NavBarCubit()),
           BlocProvider(create: (_) => ThemeCubit()),
           BlocProvider(
-              create: (_) =>
-                  SettingsCubit(SettingsRepositoryImpl(), isDarkMode)),
+              create: (_) => SettingsCubit(
+                  SettingsRepositoryImpl(), isDarkMode, isMaterialU)),
           BlocProvider<ProductListCubit>(
               create: (context) => di.sl<ProductListCubit>()..getAllProducts()),
           BlocProvider<LocalizationCubit>(
