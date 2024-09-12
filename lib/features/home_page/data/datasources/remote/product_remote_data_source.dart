@@ -1,9 +1,9 @@
 import 'package:deshi_ponno/core/errors/exceptions.dart';
-import 'package:deshi_ponno/features/home_page/data/models/product_model.dart';
+import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 abstract class ProductRemoteDataSource {
-  Future<ProductModel> getProduct(String barcode);
+  Future<CommonProduct> getProduct(String barcode);
 }
 
 class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
@@ -12,12 +12,12 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   ProductRemoteDataSourceImpl(this.database);
 
   @override
-  Future<ProductModel> getProduct(String barcode) async {
+  Future<CommonProduct> getProduct(String barcode) async {
     final databaseRef = database.ref();
     DataSnapshot snapshot = await databaseRef.child('products/$barcode').get();
 
     if (snapshot.exists) {
-      return ProductModel.fromSnapshot(snapshot);
+      return CommonProduct.fromSnapshot(snapshot);
     } else {
       throw ServerException();
     }

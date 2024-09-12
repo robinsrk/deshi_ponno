@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:deshi_ponno/core/errors/exceptions.dart';
 import 'package:deshi_ponno/core/errors/failures.dart';
+import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 import 'package:deshi_ponno/features/home_page/data/datasources/remote/product_remote_data_source.dart';
-import 'package:deshi_ponno/features/home_page/domain/entities/product.dart';
 import 'package:deshi_ponno/features/home_page/domain/repositories/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -11,7 +11,7 @@ class ProductRepositoryImpl implements ProductRepository {
   ProductRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<Either<Failure, Product>> getProduct(String barcode) async {
+  Future<Either<Failure, CommonProduct>> getProduct(String barcode) async {
     try {
       // Fetch product from remote data source
       final product = await remoteDataSource.getProduct(barcode);

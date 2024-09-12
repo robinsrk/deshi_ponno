@@ -1,4 +1,4 @@
-import 'package:deshi_ponno/features/home_page/domain/entities/product.dart';
+import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 
 class ProductError extends ProductState {
   final String message;
@@ -9,7 +9,7 @@ class ProductError extends ProductState {
 class ProductInitial extends ProductState {}
 
 class ProductLoaded extends ProductState {
-  final Product product;
+  final CommonProduct product;
 
   ProductLoaded(this.product);
 }

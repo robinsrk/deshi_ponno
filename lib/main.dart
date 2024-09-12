@@ -12,6 +12,12 @@ import 'package:deshi_ponno/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:deshi_ponno/features/auth/presentation/pages/login_page.dart';
 import 'package:deshi_ponno/features/auth/presentation/pages/signup_page.dart';
 import 'package:deshi_ponno/features/auth/presentation/pages/splash_page.dart';
+import 'package:deshi_ponno/features/common/data/datasources/remote/product_remote_data_source.dart';
+import 'package:deshi_ponno/features/common/data/repositories/product_repository_impl.dart';
+import 'package:deshi_ponno/features/common/domain/repositories/product_repository.dart';
+import 'package:deshi_ponno/features/common/domain/usecases/get_scanned_products.dart';
+import 'package:deshi_ponno/features/common/domain/usecases/store_scanned_products.dart';
+import 'package:deshi_ponno/features/common/presentation/bloc/product_history_bloc.dart';
 import 'package:deshi_ponno/features/home_page/data/datasources/remote/product_remote_data_source.dart';
 import 'package:deshi_ponno/features/home_page/data/repositories/product_repository_impl.dart';
 import 'package:deshi_ponno/features/home_page/domain/usecases/get_product.dart';
@@ -46,7 +52,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseDatabase.instance.setPersistenceEnabled(true);
-  FirebaseDatabase.instance.ref().keepSynced(true);
+  FirebaseDatabase.instance.ref().child("products").keepSynced(true);
+  FirebaseDatabase.instance.ref().child("users").keepSynced(true);
 
   // Dependency injection
   di.init();
@@ -56,6 +63,9 @@ void main() async {
   final bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
   final bool isMaterialU = prefs.getBool('isMaterialU') ?? false;
 
+  final commonProductRemoteDataSource = CommonProductRemoteDataSourceImpl();
+  final commonProductRepository =
+      CommonProductRepositoryImpl(commonProductRemoteDataSource);
   // Firebase authentication
   final firebaseAuth = FirebaseAuth.instance;
   final authRemoteDataSource = AuthRemoteDataSourceImpl(firebaseAuth);
@@ -69,6 +79,7 @@ void main() async {
   );
 
   runApp(MyApp(
+    commonProductRepository: commonProductRepository,
     repository: productRepository,
     loginUseCase: loginUseCase,
     signupUseCase: signupUseCase,
@@ -85,16 +96,17 @@ class MyApp extends StatelessWidget {
   final CheckUserLoggedIn checkUserLoggedInUseCase;
   final bool isDarkMode;
   final bool isMaterialU;
+  final ProductRepository commonProductRepository;
 
-  const MyApp({
-    super.key,
-    required this.repository,
-    required this.loginUseCase,
-    required this.signupUseCase,
-    required this.checkUserLoggedInUseCase,
-    required this.isDarkMode,
-    required this.isMaterialU,
-  });
+  const MyApp(
+      {super.key,
+      required this.repository,
+      required this.loginUseCase,
+      required this.signupUseCase,
+      required this.checkUserLoggedInUseCase,
+      required this.isDarkMode,
+      required this.isMaterialU,
+      required this.commonProductRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +138,12 @@ class MyApp extends StatelessWidget {
           BlocProvider<LocalizationCubit>(
             create: (context) =>
                 LocalizationCubit(LocalizationRepositoryImpl()),
+          ),
+          BlocProvider(
+            create: (context) => ProductHistoryBloc(
+              getScannedProducts: GetScannedProducts(commonProductRepository),
+              storeScannedProduct: StoreScannedProduct(commonProductRepository),
+            ),
           ),
         ],
         child: BlocBuilder<LocalizationCubit, Locale>(
