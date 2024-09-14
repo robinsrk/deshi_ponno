@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/core/services/number_format_service.dart';
-import 'package:deshi_ponno/features/all_products/domain/entities/product.dart';
+import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class ProductDetailsPage extends StatelessWidget {
-  final Product product;
+  final CommonProduct product;
 
   const ProductDetailsPage({super.key, required this.product});
   @override

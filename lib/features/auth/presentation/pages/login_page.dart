@@ -77,7 +77,9 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/signup');
+                    _isLoading
+                        ? Navigator.pushReplacementNamed(context, '/signup')
+                        : null;
                   },
                   child: Text(
                       '${AppLocalizations.of(context).translate("no_account")} ${AppLocalizations.of(context).translate("sign_up")}'),

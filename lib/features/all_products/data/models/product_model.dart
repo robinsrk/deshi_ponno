@@ -1,8 +1,7 @@
-import 'package:deshi_ponno/features/all_products/domain/entities/product.dart';
+import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 
-class ProductModel extends Product {
-  const ProductModel({
-    required super.id,
+class ProductModel extends CommonProduct {
+  ProductModel({
     required super.name,
     required super.brand,
     required super.imageUrl,
@@ -12,7 +11,6 @@ class ProductModel extends Product {
 
   factory ProductModel.fromMap(String id, Map<dynamic, dynamic> data) {
     return ProductModel(
-      id: id,
       name: data['name'],
       brand: data['brand'] ?? "Unknown brand",
       price: data['price'] ?? 0.0,
@@ -22,9 +20,8 @@ class ProductModel extends Product {
     );
   }
 
-  Product toEntity() {
-    return Product(
-      id: id,
+  CommonProduct toEntity() {
+    return CommonProduct(
       name: name,
       brand: brand,
       price: price,

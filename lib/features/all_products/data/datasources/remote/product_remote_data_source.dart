@@ -1,12 +1,12 @@
 import 'package:deshi_ponno/features/all_products/data/models/product_model.dart';
-import 'package:deshi_ponno/features/all_products/domain/entities/product.dart';
+import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class ProductListRemoteDataSource {
   final FirebaseDatabase database;
 
   ProductListRemoteDataSource(this.database);
-  Stream<List<Product>> getAllProductsStream() {
+  Stream<List<CommonProduct>> getAllProductsStream() {
     final ref = database.ref().child('products');
 
     return ref.onValue.map((event) {

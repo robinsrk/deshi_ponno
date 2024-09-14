@@ -1,6 +1,6 @@
-import 'package:deshi_ponno/features/all_products/domain/entities/product.dart';
+import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 
 abstract class AllProductsRepository {
-  Stream<List<Product>> getAllProducts();
+  Stream<List<CommonProduct>> getAllProducts();
   // Future<List<Product>> getAllProducts();
 }
