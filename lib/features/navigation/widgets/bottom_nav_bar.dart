@@ -10,6 +10,9 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: _getIndexFromState(context.watch<NavBarCubit>().state),
+      showSelectedLabels: true,
+      showUnselectedLabels: false,
+      enableFeedback: true,
       onTap: (index) {
         switch (index) {
           case 0:
