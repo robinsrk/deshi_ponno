@@ -30,63 +30,69 @@ final sl = GetIt.instance;
 
 void init() {
   // Firebase
-  sl.registerLazySingleton(() => FirebaseAuth.instance);
-  sl.registerLazySingleton(() => FirebaseDatabase.instance);
+  sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+  sl.registerLazySingleton<FirebaseDatabase>(() => FirebaseDatabase.instance);
 
   // Data sources
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(sl()),
+    () => AuthRemoteDataSourceImpl(sl<FirebaseAuth>()),
   );
   sl.registerLazySingleton<ProductRemoteDataSource>(
-    () => ProductRemoteDataSourceImpl(sl()),
+    () => ProductRemoteDataSourceImpl(sl<FirebaseDatabase>()),
   );
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(sl()),
+    () => AuthRepositoryImpl(sl<AuthRemoteDataSource>()),
   );
   sl.registerLazySingleton<ProductRepository>(
-    () => ProductRepositoryImpl(sl()),
+    () => ProductRepositoryImpl(sl<ProductRemoteDataSource>()),
   );
 
   // Number format
   sl.registerLazySingleton<NumberFormatterService>(
       () => NumberFormatterService());
 
-  sl.registerFactory(() => ProductListCubit(sl<GetAllProducts>()));
-  sl.registerLazySingleton(() => GetAllProducts(sl<AllProductsRepository>()));
+  sl.registerFactory<ProductListCubit>(
+      () => ProductListCubit(sl<GetAllProducts>()));
+  sl.registerLazySingleton<GetAllProducts>(
+      () => GetAllProducts(sl<AllProductsRepository>()));
   sl.registerLazySingleton<AllProductsRepository>(
       () => ProductListRepositoryImpl(sl<ProductListRemoteDataSource>()));
-  sl.registerLazySingleton(
+  sl.registerLazySingleton<ProductListRemoteDataSource>(
       () => ProductListRemoteDataSource(FirebaseDatabase.instance));
   // Use cases
-  sl.registerLazySingleton(() => CheckUserLoggedIn(sl()));
-  sl.registerLazySingleton(() => Login(sl()));
-  sl.registerLazySingleton(() => Signup(sl()));
-  sl.registerLazySingleton(() => GetProduct(sl()));
+  sl.registerLazySingleton<CheckUserLoggedIn>(
+      () => CheckUserLoggedIn(sl<AuthRepository>()));
+  sl.registerLazySingleton<Login>(() => Login(sl<AuthRepository>()));
+  sl.registerLazySingleton<Signup>(() => Signup(sl<AuthRepository>()));
+  sl.registerLazySingleton<GetProduct>(
+      () => GetProduct(sl<ProductRepository>()));
 
-  sl.registerFactory(() => LocalizationCubit(sl()));
+  sl.registerFactory<LocalizationCubit>(
+      () => LocalizationCubit(sl<LocalizationRepository>()));
   sl.registerLazySingleton<LocalizationRepository>(
       () => LocalizationRepositoryImpl());
   // Localization delegates
-  sl.registerLazySingleton(() => [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ]);
+  sl.registerLazySingleton<List<LocalizationsDelegate<Object>>>(
+      () => <LocalizationsDelegate<Object>>[
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ]);
 
   // Supported locales
-  sl.registerLazySingleton(() => const [
+  sl.registerLazySingleton<List<Locale>>(() => const <Locale>[
         Locale('en', ''),
         Locale('bn', ''),
       ]);
 
   // Blocs/Cubits
-  sl.registerFactory(() => AuthBloc(
-        checkUserLoggedIn: sl(),
-        login: sl(),
-        signup: sl(),
+  sl.registerFactory<AuthBloc>(() => AuthBloc(
+        checkUserLoggedIn: sl<CheckUserLoggedIn>(),
+        login: sl<Login>(),
+        signup: sl<Signup>(),
       ));
-  sl.registerFactory(() => ProductCubit(sl()));
+  sl.registerFactory<ProductCubit>(() => ProductCubit(sl<GetProduct>()));
 }
