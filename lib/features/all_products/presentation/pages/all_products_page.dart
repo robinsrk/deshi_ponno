@@ -19,8 +19,8 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListPageState extends State<ProductListPage> {
-  ProductFilter _filter =
-      ProductFilter(origin: '', minPrice: 0, maxPrice: double.infinity);
+  ProductFilter _filter = ProductFilter(
+      origin: 'Bangladesh', minPrice: 0, maxPrice: double.infinity, brand: '');
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +38,12 @@ class _ProductListPageState extends State<ProductListPage> {
                 .map((product) => product.origin)
                 .toSet()
                 .toList();
+            final brands =
+                state.products.map((product) => product.brand).toSet().toList();
             final filteredProducts = _applyFilters(state.products);
             return Column(
               children: [
-                _buildFilterRow(origins),
+                _buildFilterRow(origins, brands),
                 Expanded(
                   child: ListView.builder(
                     itemCount: filteredProducts.length,
@@ -101,40 +103,97 @@ class _ProductListPageState extends State<ProductListPage> {
           _filter.origin.isEmpty || product.origin == _filter.origin;
       final matchesPrice = product.price >= _filter.minPrice &&
           product.price <= _filter.maxPrice;
-      return matchesOrigin && matchesPrice;
+      final matchesBrand =
+          _filter.brand.isEmpty || product.brand == _filter.brand;
+      return matchesOrigin && matchesPrice && matchesBrand;
     }).toList();
   }
 
-  Widget _buildFilterRow(List<String> origins) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: DropdownButton<String>(
-              isExpanded: true,
-              value: _filter.origin.isEmpty ? null : _filter.origin,
-              hint:
-                  Text(AppLocalizations.of(context).translate("select_origin")),
-              items: origins.map((origin) {
-                return DropdownMenuItem<String>(
-                  value: origin,
-                  child: Text(origin),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _filter = ProductFilter(
-                    origin: value ?? '',
-                    minPrice: _filter.minPrice,
-                    maxPrice: _filter.maxPrice,
+  Widget _buildDropdownChip(BuildContext context, String selectedValue,
+      String hint, List<String> items, ValueChanged<String?> onChanged) {
+    return InkWell(
+      onTap: () async {
+        final selectedItem = await showModalBottomSheet<String>(
+          context: context,
+          useSafeArea: true,
+          isScrollControlled: true,
+          builder: (BuildContext context) {
+            return Wrap(
+              children: [
+                ListTile(
+                  title: Text(AppLocalizations.of(context).translate("all")),
+                  onTap: () {
+                    Navigator.pop(context, "All");
+                  },
+                ),
+                ...items.map((item) {
+                  return ListTile(
+                    title: Text(item),
+                    onTap: () {
+                      Navigator.pop(context, item);
+                    },
                   );
-                });
-              },
-            ),
-          ),
-        ],
+                }).toList(),
+              ],
+            );
+          },
+        );
+        if (selectedItem != null) {
+          onChanged(selectedItem == "All" ? null : selectedItem);
+        }
+      },
+      child: Chip(
+        label: Text(selectedValue.isEmpty ? hint : selectedValue),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+        ),
       ),
+    );
+  }
+
+  Widget _buildFilterRow(List<String> origins, List<String> brands) {
+    return Column(
+      children: [
+        ListTile(
+          title: Row(
+            children: [
+              _buildDropdownChip(
+                context,
+                _filter.origin,
+                AppLocalizations.of(context).translate("origin"),
+                origins,
+                (value) {
+                  setState(() {
+                    _filter = ProductFilter(
+                      origin: value ?? '',
+                      minPrice: _filter.minPrice,
+                      maxPrice: _filter.maxPrice,
+                      brand: _filter.brand,
+                    );
+                  });
+                },
+              ),
+              const SizedBox(width: 8),
+              _buildDropdownChip(
+                context,
+                _filter.brand,
+                AppLocalizations.of(context).translate("brand"),
+                brands,
+                (value) {
+                  setState(() {
+                    _filter = ProductFilter(
+                      origin: _filter.origin,
+                      minPrice: _filter.minPrice,
+                      maxPrice: _filter.maxPrice,
+                      brand: value ?? "",
+                    );
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
