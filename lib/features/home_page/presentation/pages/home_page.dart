@@ -9,6 +9,7 @@ import 'package:deshi_ponno/features/home_page/presentation/widgets/product_hist
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,8 +19,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // final bool _isAdLoaded = false;
-  // late BannerAd bannerAd;
+  bool _isAdLoaded = false;
+  late BannerAd bannerAd;
   @override
   Widget build(BuildContext context) {
     final double svgWidth = MediaQuery.of(context).size.width * 0.8;
@@ -135,12 +136,12 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                // if (_isAdLoaded)
-                //   SizedBox(
-                //     height: bannerAd.size.height.toDouble(),
-                //     width: bannerAd.size.width.toDouble(),
-                //     child: AdWidget(ad: bannerAd),
-                //   ),
+                if (_isAdLoaded)
+                  SizedBox(
+                    height: bannerAd.size.height.toDouble(),
+                    width: bannerAd.size.width.toDouble(),
+                    child: AdWidget(ad: bannerAd),
+                  ),
               ],
             ),
           ),
@@ -168,23 +169,23 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<ProductHistoryBloc>().add(LoadProductHistoryEvent());
-    // bannerAd = BannerAd(
-    //   adUnitId: 'ca-app-pub-3978946832189310/9374110609',
-    //   size: AdSize.banner,
-    //   request: const AdRequest(),
-    //   listener: BannerAdListener(
-    //     onAdLoaded: (_) {
-    //       setState(() {
-    //         _isAdLoaded = true;
-    //       });
-    //     },
-    //     onAdFailedToLoad: (ad, error) {
-    //       ad.dispose();
-    //     },
-    //   ),
-    // );
-    //
-    // bannerAd.load();
+    bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4470111026859700/9940743932',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+
+    bannerAd.load();
   }
 
   void _showProductDetailsBottomSheet(

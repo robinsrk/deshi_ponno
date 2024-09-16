@@ -7,14 +7,14 @@ class ProductListRemoteDataSource {
 
   ProductListRemoteDataSource(this.database);
   Stream<List<CommonProduct>> getAllProductsStream() {
-    final ref = database.ref().child('products');
+    final DatabaseReference ref = database.ref().child('products');
 
-    return ref.onValue.map((event) {
+    return ref.onValue.map<List<CommonProduct>>((event) {
       final snapshot = event.snapshot;
       final data = snapshot.value as Map<dynamic, dynamic>?;
 
       if (data == null) {
-        return []; // Return an empty list if no data is found
+        return <CommonProduct>[];
       }
 
       // Convert List<ProductModel> to List<Product>
@@ -24,20 +24,4 @@ class ProductListRemoteDataSource {
       }).toList();
     });
   }
-  // Future<List<Product>> getAllProducts() async {
-  //   final ref = database.ref().child('products');
-  //   final event = await ref.once();
-  //   final snapshot = event.snapshot; // Correct usage
-  //   final data = snapshot.value as Map<dynamic, dynamic>?;
-  //
-  //   if (data == null) {
-  //     return []; // Return an empty list if no data is found
-  //   }
-  //
-  //   // Convert List<ProductModel> to List<Product>
-  //   return data.entries.map((entry) {
-  //     final productModel = ProductModel.fromMap(entry.key, entry.value);
-  //     return productModel.toEntity(); // Convert ProductModel to Product
-  //   }).toList();
-  // }
 }

@@ -15,7 +15,7 @@ ThemeData lightMaterialTheme(ColorScheme? lightDynamic) {
 }
 
 class AppTheme {
-  static final lightTheme = ThemeData(
+  static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     colorScheme: const ColorScheme(
       primary: Colors.black,
@@ -43,7 +43,7 @@ class AppTheme {
     ),
   );
 
-  static final darkTheme = ThemeData(
+  static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     colorScheme: const ColorScheme(
       primary: Colors.white,

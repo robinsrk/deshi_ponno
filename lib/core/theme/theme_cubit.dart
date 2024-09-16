@@ -12,19 +12,6 @@ class ThemeCubit extends Cubit<ThemeData> {
     _loadTheme();
   }
 
-  // Future<void> toggleTheme(bool isDarkMode, bool isMaterialTheme) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   await prefs.setBool(_darkKey, isDarkMode);
-  //   await prefs.setBool(_materialKey, isMaterialTheme);
-  //   emit(isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme);
-  // }
-  //
-  // Future<void> _loadTheme() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final isDarkMode = prefs.getBool(_darkKey) ?? false;
-  //   final isMaterialTheme = prefs.getBool(_materialKey) ?? false;
-  //   emit(isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme);
-  // }
   Future<void> toggleTheme(bool isDarkMode, bool isMaterialTheme,
       {ColorScheme? lightDynamic, ColorScheme? darkDynamic}) async {
     final prefs = await SharedPreferences.getInstance();

@@ -1,40 +1,6 @@
-// import 'package:deshi_ponno/features/home_page/domain/entities/product.dart';
-// import 'package:deshi_ponno/features/home_page/domain/usecases/get_product.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-//
-// class ProductCubit extends Cubit<ProductState> {
-//   final GetProduct getProduct;
-//
-//   ProductCubit(this.getProduct) : super(ProductInitial());
-//
-//   Future<void> scanProduct(String barcode) async {
-//     emit(ProductLoading());
-//     try {
-//       final product = await getProduct(barcode);
-//       emit(ProductLoaded(product));
-//     } catch (e) {
-//       emit(ProductError("Product not found"));
-//     }
-//   }
-// }
-//
-// abstract class ProductState {}
-//
-// class ProductInitial extends ProductState {}
-//
-// class ProductLoading extends ProductState {}
-//
-// class ProductLoaded extends ProductState {
-//   final Product product;
-//
-//   ProductLoaded(this.product);
-// }
-//
-// class ProductError extends ProductState {
-//   final String message;
-//
-//   ProductError(this.message);
-// }
+import 'package:dartz/dartz.dart';
+import 'package:deshi_ponno/core/errors/failures.dart';
+import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 import 'package:deshi_ponno/features/home_page/domain/usecases/get_product.dart';
 import 'package:deshi_ponno/features/home_page/presentation/bloc/product_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,15 +12,13 @@ class ProductCubit extends Cubit<ProductState> {
 
   Future<void> scanProduct(String barcode) async {
     emit(ProductLoading());
-    final result = await getProduct(barcode);
+    final Either<Failure, CommonProduct> result = await getProduct(barcode);
 
-    result.fold(
-      (failure) {
-        // Handle the failure case
+    result.fold<Null>(
+      (Failure failure) {
         emit(ProductError("Product not found"));
       },
-      (product) {
-        // Handle the success case
+      (CommonProduct product) {
         emit(ProductLoaded(product));
       },
     );

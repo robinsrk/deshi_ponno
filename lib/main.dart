@@ -63,18 +63,21 @@ void main() async {
   final bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
   final bool isMaterialU = prefs.getBool('isMaterialU') ?? false;
 
-  final commonProductRemoteDataSource = CommonProductRemoteDataSourceImpl();
-  final commonProductRepository =
+  final CommonProductRemoteDataSourceImpl commonProductRemoteDataSource =
+      CommonProductRemoteDataSourceImpl();
+  final CommonProductRepositoryImpl commonProductRepository =
       CommonProductRepositoryImpl(commonProductRemoteDataSource);
   // Firebase authentication
-  final firebaseAuth = FirebaseAuth.instance;
-  final authRemoteDataSource = AuthRemoteDataSourceImpl(firebaseAuth);
-  final authRepository = AuthRepositoryImpl(authRemoteDataSource);
-  final loginUseCase = Login(authRepository);
-  final signupUseCase = Signup(authRepository);
-  final checkUserLoggedIn = CheckUserLoggedIn(authRepository);
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final AuthRemoteDataSourceImpl authRemoteDataSource =
+      AuthRemoteDataSourceImpl(firebaseAuth);
+  final AuthRepositoryImpl authRepository =
+      AuthRepositoryImpl(authRemoteDataSource);
+  final Login loginUseCase = Login(authRepository);
+  final Signup signupUseCase = Signup(authRepository);
+  final CheckUserLoggedIn checkUserLoggedIn = CheckUserLoggedIn(authRepository);
 
-  final productRepository = ProductRepositoryImpl(
+  final ProductRepositoryImpl productRepository = ProductRepositoryImpl(
     ProductRemoteDataSourceImpl(FirebaseDatabase.instance),
   );
 
@@ -98,78 +101,85 @@ class MyApp extends StatelessWidget {
   final bool isMaterialU;
   final ProductRepository commonProductRepository;
 
-  const MyApp(
-      {super.key,
-      required this.repository,
-      required this.loginUseCase,
-      required this.signupUseCase,
-      required this.checkUserLoggedInUseCase,
-      required this.isDarkMode,
-      required this.isMaterialU,
-      required this.commonProductRepository});
+  const MyApp({
+    super.key,
+    required this.repository,
+    required this.loginUseCase,
+    required this.signupUseCase,
+    required this.checkUserLoggedInUseCase,
+    required this.isDarkMode,
+    required this.isMaterialU,
+    required this.commonProductRepository,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<CheckUserLoggedIn>(
-          create: (context) => checkUserLoggedInUseCase,
+          create: (BuildContext context) => checkUserLoggedInUseCase,
         ),
         RepositoryProvider<ProductRepositoryImpl>(
-          create: (context) => repository,
+          create: (BuildContext context) => repository,
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthBloc>(
-              create: (context) => AuthBloc(
+              create: (BuildContext context) => AuthBloc(
                   login: loginUseCase,
                   signup: signupUseCase,
                   checkUserLoggedIn: checkUserLoggedInUseCase)),
           BlocProvider<ProductCubit>(
-              create: (context) => ProductCubit(GetProduct(repository))),
-          BlocProvider<NavBarCubit>(create: (context) => NavBarCubit()),
-          BlocProvider(create: (_) => ThemeCubit()),
-          BlocProvider(
-              create: (_) => SettingsCubit(
+              create: (BuildContext context) =>
+                  ProductCubit(GetProduct(repository))),
+          BlocProvider<NavBarCubit>(
+              create: (BuildContext context) => NavBarCubit()),
+          BlocProvider<ThemeCubit>(
+              create: (BuildContext context) => ThemeCubit()),
+          BlocProvider<SettingsCubit>(
+              create: (BuildContext context) => SettingsCubit(
                   SettingsRepositoryImpl(), isDarkMode, isMaterialU)),
           BlocProvider<ProductListCubit>(
-              create: (context) => di.sl<ProductListCubit>()..getAllProducts()),
+              create: (BuildContext context) =>
+                  di.sl<ProductListCubit>()..getAllProducts()),
           BlocProvider<LocalizationCubit>(
-            create: (context) =>
+            create: (BuildContext context) =>
                 LocalizationCubit(LocalizationRepositoryImpl()),
           ),
-          BlocProvider(
-            create: (context) => ProductHistoryBloc(
+          BlocProvider<ProductHistoryBloc>(
+            create: (BuildContext context) => ProductHistoryBloc(
               getScannedProducts: GetScannedProducts(commonProductRepository),
               storeScannedProduct: StoreScannedProduct(commonProductRepository),
             ),
           ),
         ],
         child: BlocBuilder<LocalizationCubit, Locale>(
-          builder: (context, locale) {
+          builder: (BuildContext context, Locale locale) {
             return DynamicColorBuilder(
               builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
                 return BlocBuilder<ThemeCubit, ThemeData>(
                   builder: (
-                    context,
-                    theme,
+                    BuildContext context,
+                    ThemeData theme,
                   ) {
                     return MaterialApp(
                       title: "Deshi Ponno",
-                      localizationsDelegates: const [
+                      localizationsDelegates: const <LocalizationsDelegate<
+                          dynamic>>[
                         AppLocalizations.delegate,
                         GlobalMaterialLocalizations.delegate,
                         GlobalWidgetsLocalizations.delegate,
                         GlobalCupertinoLocalizations.delegate,
                       ],
-                      supportedLocales: const [
+                      supportedLocales: const <Locale>[
                         Locale('en', ''),
                         Locale('bn', ''),
                       ],
                       locale: locale,
-                      localeResolutionCallback: (locale, supportedLocales) {
-                        for (var supportedLocale in supportedLocales) {
+                      localeResolutionCallback:
+                          (Locale? locale, Iterable<Locale> supportedLocales) {
+                        for (Locale supportedLocale in supportedLocales) {
                           if (supportedLocale.languageCode ==
                               locale?.languageCode) {
                             return supportedLocale;
@@ -182,14 +192,17 @@ class MyApp extends StatelessWidget {
                       // theme: lightMaterialTheme(lightDynamic),
                       // darkTheme: darkMaterialTheme(darkDynamic),
                       theme: theme,
-                      routes: {
-                        "/login": (context) => const LoginPage(),
-                        "/signup": (context) => const SignupPage(),
-                        "/home": (context) => const HomePage(),
-                        "/main": (context) => const NavBarPage(),
-                        "/loading": (context) => const LoadingPage(),
-                        "/products": (context) => const ProductListPage(),
-                        "/profile": (context) => const ProfilePage(),
+                      routes: <String, Widget Function(BuildContext)>{
+                        "/login": (BuildContext context) => const LoginPage(),
+                        "/signup": (BuildContext context) => const SignupPage(),
+                        "/home": (BuildContext context) => const HomePage(),
+                        "/main": (BuildContext context) => const NavBarPage(),
+                        "/loading": (BuildContext context) =>
+                            const LoadingPage(),
+                        "/products": (BuildContext context) =>
+                            const ProductListPage(),
+                        "/profile": (BuildContext context) =>
+                            const ProfilePage(),
                       },
                       home: const LoadingPage(),
                     );

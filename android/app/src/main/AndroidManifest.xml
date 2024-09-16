@@ -29,7 +29,7 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3978946832189310~1359093051" />
+            android:value="ca-app-pub-4470111026859700~7762502261" />
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

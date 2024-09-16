@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 
 class NoParams extends Equatable {
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => <Object?>[];
 }
 
 abstract class UseCase<Type, Params> {
