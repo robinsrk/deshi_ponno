@@ -8,6 +8,9 @@ class CommonProductRepositoryImpl implements ProductRepository {
   CommonProductRepositoryImpl(this.remoteDataSource);
 
   @override
+  Future<void> deleteScannedProduct(String id) async {}
+
+  @override
   Future<List<CommonProduct>> getScannedProducts() async {
     return await remoteDataSource.getScannedProducts();
   }
