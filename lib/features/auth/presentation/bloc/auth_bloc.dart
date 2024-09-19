@@ -23,10 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }) : super(AuthInitial()) {
     on<LoginEvent>((event, emit) async {
       emit(AuthLoading());
-      final failureOrUser = await login(LoginParams(
-        email: event.email,
-        password: event.password,
-      ));
+      final failureOrUser = await login(LoginParams());
       emit(failureOrUser.fold(
         (failure) {
           final errorMessage = _mapFailureToMessage(failure);

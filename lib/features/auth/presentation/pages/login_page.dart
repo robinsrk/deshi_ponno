@@ -18,8 +18,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
@@ -57,32 +55,21 @@ class LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 16),
-                SvgPicture.asset(
-                  "assets/images/login.svg",
-                  height: 300,
-                  width: 200,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/images/login.svg",
+                      height: 300,
+                      width: 200,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
-                EmailInputField(controller: _emailController),
-                const SizedBox(height: 16),
-                PasswordInputField(controller: _passwordController),
-                const SizedBox(height: 16),
                 LoginButton(
-                  emailController: _emailController,
-                  passwordController: _passwordController,
                   formKey: _formKey,
                   isLoading: _isLoading,
                   onPressed: _onLoginButtonPressed,
-                ),
-                TextButton(
-                  onPressed: () {
-                    _isLoading
-                        ? Navigator.pushReplacementNamed(context, '/signup')
-                        : null;
-                  },
-                  child: Text(
-                      '${AppLocalizations.of(context).translate("no_account")} ${AppLocalizations.of(context).translate("sign_up")}'),
                 ),
                 SizedBox(
                   width: bannerAd.size.width.toDouble(),
@@ -99,8 +86,6 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
@@ -117,10 +102,7 @@ class LoginPageState extends State<LoginPage> {
       });
 
       context.read<AuthBloc>().add(
-            LoginEvent(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim(),
-            ),
+            LoginEvent(),
           );
     }
   }

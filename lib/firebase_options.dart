@@ -14,21 +14,13 @@ import 'package:flutter/foundation.dart'
 ///   options: DefaultFirebaseOptions.currentPlatform,
 /// );
 /// ```
-
-const FirebaseOptions android = FirebaseOptions(
-  apiKey: 'AIzaSyAZlvUWcchmaXFWGT6RFvJiaR1UJ_Yur38',
-  appId: '1:1009900446483:android:03520d2451b8201f8bb0e6',
-  messagingSenderId: '1009900446483',
-  projectId: 'deshiponnos',
-  databaseURL:
-      'https://deshiponnos-default-rtdb.asia-southeast1.firebasedatabase.app',
-  storageBucket: 'deshiponnos.appspot.com',
-);
-
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -60,15 +52,12 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC7rLI-kw2YRz3nB2fmQE_waBi-W8AWI9o',
-    appId: '1:1009900446483:web:ae3523a127f331ad8bb0e6',
-    messagingSenderId: '1009900446483',
-    projectId: 'deshiponnos',
-    authDomain: 'deshiponnos.firebaseapp.com',
-    databaseURL:
-        'https://deshiponnos-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'deshiponnos.appspot.com',
-    measurementId: 'G-3MMNZ0DX75',
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyAEH57PJ1VYspUGobdaGq7YdakpK8346nM',
+    appId: '1:204825377289:android:85bcc72f932778eaea56d8',
+    messagingSenderId: '204825377289',
+    projectId: 'deshi-ponno',
+    databaseURL: 'https://deshi-ponno-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'deshi-ponno.appspot.com',
   );
 }

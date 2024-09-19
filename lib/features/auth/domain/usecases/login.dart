@@ -12,13 +12,11 @@ class Login implements UseCase<User, LoginParams> {
 
   @override
   Future<Either<Failure, User>> call(LoginParams params) async {
-    return await repository.login(params.email, params.password);
+    return await repository.login();
   }
 }
 
 class LoginParams {
-  final String email;
-  final String password;
 
-  LoginParams({required this.email, required this.password});
+  LoginParams();
 }

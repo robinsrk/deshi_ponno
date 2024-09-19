@@ -2,15 +2,11 @@ import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:flutter/material.dart';
 
 class LoginButton extends StatelessWidget {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
   final GlobalKey<FormState> formKey;
   final bool isLoading;
   final VoidCallback onPressed;
 
   const LoginButton({
-    required this.emailController,
-    required this.passwordController,
     required this.formKey,
     required this.isLoading,
     required this.onPressed,

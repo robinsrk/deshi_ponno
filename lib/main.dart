@@ -30,7 +30,7 @@ import 'package:deshi_ponno/features/settings/data/repositories/localization_rep
 import 'package:deshi_ponno/features/settings/data/repositories/settings_repository_impl.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
-import 'package:deshi_ponno/services/firebase_options.dart';
+import 'package:deshi_ponno/firebase_options.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,6 +39,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -48,9 +49,14 @@ void main() async {
   MobileAds.instance.initialize();
 
   // Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try{
+
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch(e) {
+    print(e);
+  }
   FirebaseDatabase.instance.setPersistenceEnabled(true);
   FirebaseDatabase.instance.ref().child("products").keepSynced(true);
   FirebaseDatabase.instance.ref().child("users").keepSynced(true);
@@ -69,8 +75,9 @@ void main() async {
       CommonProductRepositoryImpl(commonProductRemoteDataSource);
   // Firebase authentication
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
   final AuthRemoteDataSourceImpl authRemoteDataSource =
-      AuthRemoteDataSourceImpl(firebaseAuth);
+      AuthRemoteDataSourceImpl(firebaseAuth, googleSignIn);
   final AuthRepositoryImpl authRepository =
       AuthRepositoryImpl(authRemoteDataSource);
   final Login loginUseCase = Login(authRepository);

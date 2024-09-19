@@ -1,17 +1,20 @@
 import "dart:developer" as dev;
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthRemoteDataSource {
   Future<bool> isUserLoggedIn();
-  Future<User> login(String email, String password);
+  Future<User> login();
   Future<User> signup(String email, String password);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth firebaseAuth;
+  final GoogleSignIn _googleSignIn;
 
-  AuthRemoteDataSourceImpl(this.firebaseAuth);
+  AuthRemoteDataSourceImpl(this.firebaseAuth, this._googleSignIn);
 
   @override
   Future<bool> isUserLoggedIn() async {
@@ -20,21 +23,39 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<User> login(String email, String password) async {
+  Future<User> login() async {
     try {
-      dev.log("Attempting to log in with email: $email", name: "Login mail");
-      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) {
+        // If the user cancels the sign-in
+        throw Exception("User cancelled login");
+      }
+
+      print(googleUser.authentication);
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      print(googleAuth);
+
+      // Create a new credential
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
-      dev.log("Login successful");
+      print(googleAuth.accessToken);
+      print(googleAuth.idToken);
+
+      // Sign in to Firebase with the Google user credential
+      final UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
+
+      // Return the logged-in user
       return userCredential.user!;
     } catch (e) {
-      dev.log("Login failed with error: $e");
+      print("Error signing in with Google: $e");
       rethrow;
     }
   }
-
   @override
   Future<User> signup(String email, String password) async {
     try {
