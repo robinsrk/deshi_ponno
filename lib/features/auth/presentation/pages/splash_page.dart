@@ -18,9 +18,10 @@ class LoadingPage extends StatefulWidget {
 class _LoadingPageState extends State<LoadingPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit, ThemeData>(builder: (context, theme) {
+    return BlocBuilder<ThemeCubit, ThemeData>(
+        builder: (BuildContext context, ThemeData theme) {
       dev.log("${theme.brightness}", name: "theme data");
-      final lottieImage = theme.brightness == Brightness.dark
+      final String lottieImage = theme.brightness == Brightness.dark
           ? "assets/lottie/scan-light.json"
           : "assets/lottie/scan-dark.json";
       return Scaffold(
@@ -33,14 +34,15 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   @override
-  initState() {
+  void initState() {
     _checkAuthentication(context);
     context.read<LocalizationCubit>().loadLocale();
     super.initState();
   }
 
   void _checkAuthentication(BuildContext context) async {
-    final checkUserLoggedIn = context.read<CheckUserLoggedIn>();
+    final CheckUserLoggedIn checkUserLoggedIn =
+        context.read<CheckUserLoggedIn>();
 
     final result = await Future.delayed(const Duration(seconds: 3), () {
       return checkUserLoggedIn(NoParams());
