@@ -11,13 +11,13 @@ class ProductDetailsPage extends StatelessWidget {
   const ProductDetailsPage({super.key, required this.product});
   @override
   Widget build(BuildContext context) {
-    final numberFormatter = GetIt.instance<NumberFormatterService>();
+    final NumberFormatterService numberFormatter =
+        GetIt.instance<NumberFormatterService>();
     return Scaffold(
       appBar: AppBar(
         title: Text(product.name),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,30 +29,28 @@ class ProductDetailsPage extends StatelessWidget {
                     tag: product.name,
                     child: CachedNetworkImage(
                       imageUrl: product.imageUrl,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) =>
-                              CircularProgressIndicator(
-                                  value: downloadProgress.progress),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
+                      height: 300,
+                      progressIndicatorBuilder: (BuildContext context,
+                              String url, DownloadProgress downloadProgress) =>
+                          CircularProgressIndicator(
+                              value: downloadProgress.progress),
+                      errorWidget:
+                          (BuildContext context, String url, Object error) =>
+                              const Icon(Icons.error),
                     ),
                   ),
                 ),
               ],
             ),
-            Text(
-              product.name,
-              style: Theme.of(context).textTheme.headlineSmall,
+            ListTile(
+              title: Text(
+                product.name,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              subtitle: Text(
+                '${AppLocalizations.of(context).translate("brand")}: ${product.brand} \n${AppLocalizations.of(context).translate("origin")}: ${product.origin} \n${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}',
+              ),
             ),
-            const SizedBox(height: 8),
-            Text(
-                '${AppLocalizations.of(context).translate("brand")}: ${product.brand}'),
-            const SizedBox(height: 8),
-            Text(
-                '${AppLocalizations.of(context).translate("origin")}: ${product.origin}'),
-            const SizedBox(height: 8),
-            Text(
-                '${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}')
           ],
         ),
       ),

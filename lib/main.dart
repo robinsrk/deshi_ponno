@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:deshi_ponno/core/di/injection_container.dart' as di;
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/core/theme/theme_cubit.dart';
@@ -49,13 +51,12 @@ void main() async {
   MobileAds.instance.initialize();
 
   // Firebase
-  try{
-
+  try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-  } catch(e) {
-    print(e);
+  } catch (e) {
+    dev.log(e.toString());
   }
   FirebaseDatabase.instance.setPersistenceEnabled(true);
   FirebaseDatabase.instance.ref().child("products").keepSynced(true);

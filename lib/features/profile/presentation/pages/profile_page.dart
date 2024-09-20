@@ -38,8 +38,11 @@ class ProfilePage extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16),
-          Text(FirebaseAuth.instance.currentUser!.displayName.toString()),
+          const SizedBox(height: 16),
+          Text(
+            FirebaseAuth.instance.currentUser!.displayName.toString(),
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
         ],
       ),
     );

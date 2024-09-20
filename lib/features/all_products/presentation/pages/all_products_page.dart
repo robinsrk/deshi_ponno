@@ -56,7 +56,8 @@ class _ProductListPageState extends State<ProductListPage> {
                         ),
                         isThreeLine: true,
                         subtitle: Text(
-                            '${AppLocalizations.of(context).translate("brand")}: ${product.brand}\n${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}'),
+                          '${AppLocalizations.of(context).translate("brand")}: ${product.brand}\n${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}',
+                        ),
                         trailing: Hero(
                           tag: product.name,
                           child: CachedNetworkImage(
@@ -133,7 +134,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       Navigator.pop(context, item);
                     },
                   );
-                }).toList(),
+                })
               ],
             );
           },
