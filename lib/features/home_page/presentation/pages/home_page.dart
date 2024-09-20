@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 import 'package:deshi_ponno/features/common/presentation/bloc/product_history_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:deshi_ponno/features/home_page/presentation/bloc/product_states.
 import 'package:deshi_ponno/features/home_page/presentation/pages/barcode_scanner.dart';
 import 'package:deshi_ponno/features/home_page/presentation/widgets/product_details_bottom_sheet.dart';
 import 'package:deshi_ponno/features/home_page/presentation/widgets/product_history.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,7 +31,18 @@ class _HomePageState extends State<HomePage> {
         title: Text(AppLocalizations.of(context).translate("app_title")),
         actions: [
           IconButton(
-            icon: const Icon(Icons.person_outline_outlined),
+            icon: Hero(
+              tag: "profile_image",
+              child: ClipOval(
+                child: CachedNetworkImage(
+                  imageUrl:
+                      FirebaseAuth.instance.currentUser!.photoURL.toString(),
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             onPressed: () {
               Navigator.pushNamed(context, "/profile");
             },

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,31 @@ class ProfilePage extends StatelessWidget {
           IconButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();
-              Navigator.pushReplacementNamed(context, "/loading");
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/loading', (Route<dynamic> route) => false);
             },
             icon: const Icon(Icons.logout),
           ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Hero(
+                tag: "profile_image",
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        FirebaseAuth.instance.currentUser!.photoURL.toString(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Text(FirebaseAuth.instance.currentUser!.displayName.toString()),
         ],
       ),
     );
