@@ -109,6 +109,18 @@ class _SettingsPageState extends State<SettingsPage> {
                   );
                 },
               ),
+              ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {},
+                      child:
+                          Text(AppLocalizations.of(context).translate("about")),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
           const MadeWithLoveWidget(),

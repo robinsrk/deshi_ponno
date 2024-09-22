@@ -194,9 +194,6 @@ class MyApp extends StatelessWidget {
                         return supportedLocales.first;
                       },
                       debugShowCheckedModeBanner: true,
-                      // themeMode: ThemeMode.light,
-                      // theme: lightMaterialTheme(lightDynamic),
-                      // darkTheme: darkMaterialTheme(darkDynamic),
                       theme: theme,
                       routes: <String, Widget Function(BuildContext)>{
                         "/login": (BuildContext context) => const LoginPage(),
