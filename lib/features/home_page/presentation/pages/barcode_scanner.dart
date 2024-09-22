@@ -38,16 +38,13 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
                   hideSheetTitle: true,
                   scanWindowUpdateThreshold: 1.0,
                   onDetect: (BarcodeCapture code) {
-                    // Check if a barcode has already been scanned
                     if (!_hasScanned) {
-                      _hasScanned = true; // Mark as scanned
+                      _hasScanned = true;
 
                       final String barcode = code.barcodes.first.rawValue ?? "";
-                      if (barcode.isNotEmpty && mounted) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Navigator.pop(
-                              context); // Go back to the previous screen
-                        });
+                      if (barcode.isNotEmpty) {
+                        Navigator.pop(
+                            context); // Go back to the previous screen
                         context.read<ProductCubit>().scanProduct(barcode);
                       }
                     }
