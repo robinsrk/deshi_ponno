@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 
 class CommonProduct {
+  final num id;
   final String name;
   final String brand;
   final String origin;
@@ -8,6 +9,7 @@ class CommonProduct {
   final String imageUrl;
 
   CommonProduct({
+    required this.id,
     required this.name,
     required this.origin,
     required this.brand,
@@ -17,6 +19,7 @@ class CommonProduct {
 
   factory CommonProduct.fromMap(Map<String, dynamic> map) {
     return CommonProduct(
+      id: map['id'],
       name: map['name'],
       brand: map['brand'],
       origin: map['origin'],
@@ -28,6 +31,7 @@ class CommonProduct {
   factory CommonProduct.fromSnapshot(DataSnapshot snapshot) {
     final productData = snapshot.value as Map<dynamic, dynamic>;
     return CommonProduct(
+      id: productData['id'],
       name: productData['name'] ?? "Unknown Product",
       brand: productData['brand'] ?? "Unknown Brand",
       origin: productData['origin'] ?? "Unknown Origin",
@@ -38,6 +42,7 @@ class CommonProduct {
   }
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'brand': brand,
       'origin': origin,

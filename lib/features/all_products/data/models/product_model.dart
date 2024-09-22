@@ -2,6 +2,7 @@ import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 
 class ProductModel extends CommonProduct {
   ProductModel({
+    required super.id,
     required super.name,
     required super.brand,
     required super.imageUrl,
@@ -11,6 +12,7 @@ class ProductModel extends CommonProduct {
 
   factory ProductModel.fromMap(String id, Map<dynamic, dynamic> data) {
     return ProductModel(
+      id: data['id'],
       name: data['name'],
       brand: data['brand'] ?? "Unknown brand",
       price: data['price'] ?? 0.0,
@@ -22,6 +24,7 @@ class ProductModel extends CommonProduct {
 
   CommonProduct toEntity() {
     return CommonProduct(
+      id: id,
       name: name,
       brand: brand,
       price: price,

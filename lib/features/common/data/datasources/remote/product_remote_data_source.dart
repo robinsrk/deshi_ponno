@@ -53,12 +53,27 @@ class CommonProductRemoteDataSourceImpl
   Future<void> storeScannedProduct(CommonProduct product) async {
     final User? user = _auth.currentUser;
     if (user != null) {
-      await _database
-          .child('users')
-          .child(user.uid)
-          .child('scanned_products')
-          .push()
-          .set(product.toMap());
+      final DatabaseReference userProductsRef =
+          _database.child('users').child(user.uid).child('scanned_products');
+
+      final DatabaseEvent event = await userProductsRef.once();
+      final DataSnapshot snapshot = event.snapshot;
+      final Map<dynamic, dynamic>? scannedProducts =
+          snapshot.value as Map<dynamic, dynamic>?;
+
+      bool productExists = false;
+      if (scannedProducts != null) {
+        for (var entry in scannedProducts.entries) {
+          if (entry.value['id'] == product.id) {
+            productExists = true;
+            break;
+          }
+        }
+      }
+
+      if (!productExists) {
+        await userProductsRef.push().set(product.toMap());
+      }
     }
   }
 }
