@@ -8,7 +8,7 @@ class ThemeCubit extends Cubit<ThemeData> {
   static const _darkKey = 'darkKey';
   static const String _materialKey = "materialKey";
 
-  ThemeCubit() : super(AppTheme.lightTheme) {
+  ThemeCubit() : super(AppTheme.darkTheme) {
     _loadTheme();
   }
 
