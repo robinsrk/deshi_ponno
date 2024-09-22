@@ -41,7 +41,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -76,9 +75,8 @@ void main() async {
       CommonProductRepositoryImpl(commonProductRemoteDataSource);
   // Firebase authentication
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
   final AuthRemoteDataSourceImpl authRemoteDataSource =
-      AuthRemoteDataSourceImpl(firebaseAuth, googleSignIn);
+      AuthRemoteDataSourceImpl(firebaseAuth);
   final AuthRepositoryImpl authRepository =
       AuthRepositoryImpl(authRemoteDataSource);
   final Login loginUseCase = Login(authRepository);

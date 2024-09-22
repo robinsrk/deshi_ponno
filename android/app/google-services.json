@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "204825377289-s6et58v8ah30ond0eainkggqifuko5bm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "coco.it.deshi_ponno",
+            "certificate_hash": "ce9a94c125ed08b246521c75b18de2fd5e002186"
+          }
+        },
+        {
+          "client_id": "204825377289-s74bpcj2ibs4li2uvnm5rhucq1ed5vrp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "coco.it.deshi_ponno",
+            "certificate_hash": "1b6815c3d000d8964bbd96d459749f36c948b0a6"
+          }
+        },
+        {
           "client_id": "204825377289-4bhsrtasqgmm7b2co8nd1otb19s2mbtd.apps.googleusercontent.com",
           "client_type": 3
         }

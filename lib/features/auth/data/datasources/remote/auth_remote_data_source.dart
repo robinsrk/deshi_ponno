@@ -1,7 +1,6 @@
 import "dart:developer" as dev;
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthRemoteDataSource {
@@ -12,9 +11,8 @@ abstract class AuthRemoteDataSource {
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth firebaseAuth;
-  final GoogleSignIn _googleSignIn;
 
-  AuthRemoteDataSourceImpl(this.firebaseAuth, this._googleSignIn);
+  AuthRemoteDataSourceImpl(this.firebaseAuth);
 
   @override
   Future<bool> isUserLoggedIn() async {
@@ -26,28 +24,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<User> login() async {
     try {
       // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser =
+          await GoogleSignIn(scopes: ['email', 'profile']).signIn();
 
       if (googleUser == null) {
         // If the user cancels the sign-in
         throw Exception("User cancelled login");
       }
 
-      print(googleUser.authentication);
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      print(googleAuth);
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Create a new credential
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      print(googleAuth.accessToken);
-      print(googleAuth.idToken);
 
       // Sign in to Firebase with the Google user credential
-      final UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await firebaseAuth.signInWithCredential(credential);
 
       // Return the logged-in user
       return userCredential.user!;
@@ -56,6 +53,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       rethrow;
     }
   }
+
   @override
   Future<User> signup(String email, String password) async {
     try {

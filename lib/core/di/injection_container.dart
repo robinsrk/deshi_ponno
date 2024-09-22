@@ -37,7 +37,7 @@ void init() {
   sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
   // Data sources
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(sl<FirebaseAuth>(), sl<GoogleSignIn>()),
+    () => AuthRemoteDataSourceImpl(sl<FirebaseAuth>()),
   );
   sl.registerLazySingleton<ProductRemoteDataSource>(
     () => ProductRemoteDataSourceImpl(sl<FirebaseDatabase>()),
