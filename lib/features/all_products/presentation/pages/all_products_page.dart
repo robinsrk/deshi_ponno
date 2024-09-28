@@ -10,6 +10,7 @@ import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class ProductListPage extends StatefulWidget {
   const ProductListPage({super.key});
@@ -22,6 +23,8 @@ class _ProductListPageState extends State<ProductListPage> {
   ProductFilter _filter = ProductFilter(
       origin: 'Bangladesh', minPrice: 0, maxPrice: double.infinity, brand: '');
 
+  bool _isAdLoaded = false;
+  late BannerAd bannerAd;
   @override
   Widget build(BuildContext context) {
     final numberFormatter = GetIt.instance<NumberFormatterService>();
@@ -81,6 +84,12 @@ class _ProductListPageState extends State<ProductListPage> {
                     },
                   ),
                 ),
+                if (_isAdLoaded)
+                  SizedBox(
+                    height: bannerAd.size.height.toDouble(),
+                    width: bannerAd.size.width.toDouble(),
+                    child: AdWidget(ad: bannerAd),
+                  ),
               ],
             );
           } else if (state is ProductListError) {
@@ -94,8 +103,31 @@ class _ProductListPageState extends State<ProductListPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    bannerAd.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
+    bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4470111026859700/3188119396',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+
+    bannerAd.load();
   }
 
   List<CommonProduct> _applyFilters(List<CommonProduct> products) {

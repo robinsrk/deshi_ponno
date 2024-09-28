@@ -58,6 +58,7 @@ class AppTheme {
       onError: Colors.black,
       brightness: Brightness.dark,
     ),
+    dialogBackgroundColor: const Color(0xFF191919),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: Color(0xFF191919),
     ),

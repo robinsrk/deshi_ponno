@@ -1,12 +1,14 @@
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/core/theme/theme_cubit.dart';
-import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_state.dart';
+import 'package:deshi_ponno/features/settings/presentation/widgets/about_app_widget.dart';
+import 'package:deshi_ponno/features/settings/presentation/widgets/language_selection_widet.dart';
 import 'package:deshi_ponno/features/settings/presentation/widgets/made_with_love_widget.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -16,6 +18,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool _isAdLoaded = false;
+  late BannerAd bannerAd;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,64 +78,53 @@ class _SettingsPageState extends State<SettingsPage> {
                   return const Center(child: CircularProgressIndicator());
                 },
               ),
-              BlocBuilder<LocalizationCubit, Locale>(
-                builder: (context, locale) {
-                  return ListTile(
-                    title: Text(
-                        AppLocalizations.of(context).translate("language")),
-                    trailing: Wrap(
-                      spacing: 8.0,
-                      children: [
-                        ChoiceChip(
-                          label: const Text("🇺🇸 English"),
-                          selected: locale.languageCode == 'en',
-                          onSelected: (bool selected) {
-                            if (selected) {
-                              context
-                                  .read<LocalizationCubit>()
-                                  .updateLocale(const Locale('en', ''));
-                            }
-                          },
-                        ),
-                        ChoiceChip(
-                          label: const Text("🇧🇩 বাংলা"),
-                          selected: locale.languageCode == 'bn',
-                          onSelected: (bool selected) {
-                            if (selected) {
-                              context
-                                  .read<LocalizationCubit>()
-                                  .updateLocale(const Locale('bn', ''));
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () {},
-                      child:
-                          Text(AppLocalizations.of(context).translate("about")),
-                    ),
-                  ],
-                ),
-              )
+              const LanguageSelectionWidet(),
+              const AboutAppWidget()
             ],
           ),
-          const MadeWithLoveWidget(),
+          Column(
+            children: [
+              if (_isAdLoaded)
+                SizedBox(
+                  height: bannerAd.size.height.toDouble(),
+                  width: bannerAd.size.width.toDouble(),
+                  child: AdWidget(ad: bannerAd),
+                ),
+              const MadeWithLoveWidget(),
+            ],
+          ),
         ],
       ),
     );
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    bannerAd.dispose();
+  }
+
+  @override
   initState() {
     super.initState();
+
+    bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-4470111026859700/3188119396',
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+
+    bannerAd.load();
     context.read<SettingsCubit>().loadSettings();
   }
 
