@@ -4,6 +4,7 @@ import 'package:deshi_ponno/core/theme/theme_cubit.dart';
 import 'package:deshi_ponno/core/usecases/usecase.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
+import 'package:deshi_ponno/features/welcome/presentation/blocs/welcome_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -24,19 +25,27 @@ class _LoadingPageState extends State<LoadingPage> {
       final String lottieImage = theme.brightness == Brightness.dark
           ? "assets/lottie/scan-light.json"
           : "assets/lottie/scan-dark.json";
-      return Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: Center(
-          child: Lottie.asset(lottieImage),
-        ),
-      );
+      return BlocListener<WelcomeCubit, bool>(
+          listener: (context, welcomeCompleted) {
+            if (welcomeCompleted) {
+              _checkAuthentication(context);
+            } else {
+              Navigator.pushReplacementNamed(context, '/welcome');
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: Center(
+              child: Lottie.asset(lottieImage),
+            ),
+          ));
     });
   }
 
   @override
   void initState() {
-    _checkAuthentication(context);
     context.read<LocalizationCubit>().loadLocale();
+    _checkWelcome(context);
     super.initState();
   }
 
@@ -44,7 +53,7 @@ class _LoadingPageState extends State<LoadingPage> {
     final CheckUserLoggedIn checkUserLoggedIn =
         context.read<CheckUserLoggedIn>();
 
-    final result = await Future.delayed(const Duration(seconds: 3), () {
+    final result = await Future.delayed(const Duration(seconds: 0), () {
       return checkUserLoggedIn(NoParams());
     });
 
@@ -61,5 +70,11 @@ class _LoadingPageState extends State<LoadingPage> {
         }
       },
     );
+  }
+
+  void _checkWelcome(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 3), () {
+      context.read<WelcomeCubit>().checkWelcomeStatus();
+    });
   }
 }

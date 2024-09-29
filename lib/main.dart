@@ -32,6 +32,8 @@ import 'package:deshi_ponno/features/settings/data/repositories/localization_rep
 import 'package:deshi_ponno/features/settings/data/repositories/settings_repository_impl.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
+import 'package:deshi_ponno/features/welcome/presentation/blocs/welcome_cubit.dart';
+import 'package:deshi_ponno/features/welcome/presentation/pages/welcome_screen.dart';
 import 'package:deshi_ponno/firebase_options.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -159,6 +161,9 @@ class MyApp extends StatelessWidget {
               storeScannedProduct: StoreScannedProduct(commonProductRepository),
             ),
           ),
+          BlocProvider<WelcomeCubit>(
+            create: (BuildContext context) => di.sl<WelcomeCubit>()..checkWelcomeCompleted
+          )
         ],
         child: BlocBuilder<LocalizationCubit, Locale>(
           builder: (BuildContext context, Locale locale) {
@@ -200,6 +205,7 @@ class MyApp extends StatelessWidget {
                         "/signup": (BuildContext context) => const SignupPage(),
                         "/home": (BuildContext context) => const HomePage(),
                         "/main": (BuildContext context) => const NavBarPage(),
+                        "/welcome": (BuildContext context) => WelcomePage(),
                         "/loading": (BuildContext context) =>
                             const LoadingPage(),
                         "/products": (BuildContext context) =>
@@ -207,7 +213,7 @@ class MyApp extends StatelessWidget {
                         "/profile": (BuildContext context) =>
                             const ProfilePage(),
                       },
-                      home: const LoadingPage(),
+                      initialRoute: "/loading",
                     );
                   },
                 );

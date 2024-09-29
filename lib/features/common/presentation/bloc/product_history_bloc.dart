@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'package:deshi_ponno/features/common/domain/entities/product.dart';
 import 'package:deshi_ponno/features/common/domain/usecases/get_scanned_products.dart';
 import 'package:deshi_ponno/features/common/domain/usecases/store_scanned_products.dart';
@@ -32,6 +33,7 @@ class ProductHistoryBloc
       }
     } catch (e) {
       emit(const ProductHistoryError("Could not load product history"));
+      dev.log("product history error: $e");
     }
   }
 

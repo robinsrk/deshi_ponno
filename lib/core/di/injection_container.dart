@@ -20,16 +20,23 @@ import 'package:deshi_ponno/features/home_page/presentation/bloc/product_bloc.da
 import 'package:deshi_ponno/features/settings/data/repositories/localization_repository_impl.dart';
 import 'package:deshi_ponno/features/settings/domain/repositories/localization_repository.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
+import 'package:deshi_ponno/features/welcome/data/datasources/local/welcome_local_data_source.dart';
+import 'package:deshi_ponno/features/welcome/data/repositories/welcome_repository_impl.dart';
+import 'package:deshi_ponno/features/welcome/domain/repositories/welcome_repository.dart';
+import 'package:deshi_ponno/features/welcome/domain/usecases/check_welcome.dart';
+import 'package:deshi_ponno/features/welcome/domain/usecases/complete_welcome.dart';
+import 'package:deshi_ponno/features/welcome/presentation/blocs/welcome_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt sl = GetIt.instance;
 
-void init() {
+void init() async {
   // Firebase
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<FirebaseDatabase>(() => FirebaseDatabase.instance);
@@ -97,4 +104,29 @@ void init() {
         signup: sl<Signup>(),
       ));
   sl.registerFactory<ProductCubit>(() => ProductCubit(sl<GetProduct>()));
+// Features - Welcome
+  sl.registerFactory(
+        () => WelcomeCubit(
+      checkWelcomeCompleted: sl(),
+      completeWelcome: sl(),
+    ),
+  );
+
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => sharedPreferences);
+
+  sl.registerLazySingleton(() => CheckWelcomeCompleted(sl()));
+  sl.registerLazySingleton(() => CompleteWelcome(sl()));
+
+  // Repository
+  sl.registerLazySingleton<WelcomeRepository>(
+        () => WelcomeRepositoryImpl(sl()),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<WelcomeLocalDataSource>(
+        () => WelcomeLocalDataSourceImpl(sl()),
+  );
+
+  // External
 }
