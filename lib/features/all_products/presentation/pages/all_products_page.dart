@@ -21,16 +21,64 @@ class ProductListPage extends StatefulWidget {
 
 class _ProductListPageState extends State<ProductListPage> {
   ProductFilter _filter = ProductFilter(
-      origin: 'Bangladesh', minPrice: 0, maxPrice: double.infinity, brand: '');
+    origin: "Bangladesh",
+    minPrice: 0,
+    maxPrice: double.infinity,
+    brand: "",
+    name: "",
+  );
 
   bool _isAdLoaded = false;
+  bool _isSearching = false;
   late BannerAd bannerAd;
+  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final numberFormatter = GetIt.instance<NumberFormatterService>();
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate("all_products")),
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).translate("search"),
+                  border: InputBorder.none,
+                  hintStyle: const TextStyle(color: Colors.white54),
+                ),
+                onChanged: (query) {
+                  setState(() {
+                    _filter = ProductFilter(
+                      origin: _filter.origin,
+                      minPrice: _filter.minPrice,
+                      maxPrice: _filter.maxPrice,
+                      brand: _filter.brand,
+                      name: query,
+                    );
+                  });
+                },
+              )
+            : Text(AppLocalizations.of(context).translate("all_products")),
+        actions: [
+          IconButton(
+            icon: Icon(_isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+                if (!_isSearching) {
+                  _filter = ProductFilter(
+                    origin: _filter.origin,
+                    minPrice: _filter.minPrice,
+                    maxPrice: _filter.maxPrice,
+                    brand: _filter.brand,
+                    name: "",
+                  );
+                  _searchController.clear();
+                }
+              });
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<ProductListCubit, ProductListState>(
         builder: (context, state) {
@@ -138,7 +186,9 @@ class _ProductListPageState extends State<ProductListPage> {
           product.price <= _filter.maxPrice;
       final matchesBrand =
           _filter.brand.isEmpty || product.brand == _filter.brand;
-      return matchesOrigin && matchesPrice && matchesBrand;
+      final matchesName = _filter.name.isEmpty ||
+          product.name.toLowerCase().contains(_filter.name.toLowerCase());
+      return matchesOrigin && matchesPrice && matchesBrand && matchesName;
     }).toList();
   }
 
@@ -202,6 +252,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       minPrice: _filter.minPrice,
                       maxPrice: _filter.maxPrice,
                       brand: _filter.brand,
+                      name: _filter.name,
                     );
                   });
                 },
@@ -219,6 +270,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       minPrice: _filter.minPrice,
                       maxPrice: _filter.maxPrice,
                       brand: value ?? "",
+                      name: _filter.name,
                     );
                   });
                 },

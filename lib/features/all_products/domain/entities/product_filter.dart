@@ -3,10 +3,13 @@ class ProductFilter {
   final double minPrice;
   final double maxPrice;
   final String brand;
+  final String name;
 
-  ProductFilter(
-      {required this.origin,
-      required this.minPrice,
-      required this.maxPrice,
-      required this.brand});
+  ProductFilter({
+    required this.origin,
+    required this.minPrice,
+    required this.maxPrice,
+    required this.brand,
+    required this.name,
+  });
 }
