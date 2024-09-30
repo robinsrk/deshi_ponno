@@ -28,7 +28,11 @@
   "all": "All",
   "app_description": "Welcome to our app! With the ability to scan QR and barcodes, our app helps you easily find detailed information about products. Simply scan the code, and you’ll discover the ingredients, nutritional values, and the region of origin for each item. Whether you’re checking for allergens or looking for locally sourced products, our app provides you with the information you need to make informed choices. Enjoy a safer and more informed shopping experience!",
   "about": "About the app",
+  "go_next": "Go Next",
   "next": "Next",
+  "done": "Done",
+  "back": "Back",
+  "previous": "Previous",
   "select_language": "Select language",
   "select_theme": "Select theme"
 }

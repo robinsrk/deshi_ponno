@@ -14,9 +14,10 @@ class ProfilePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/loading', (Route<dynamic> route) => false);
+              FirebaseAuth.instance.signOut().then((_) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/login', (Route<dynamic> route) => false);
+              });
             },
             icon: const Icon(Icons.logout),
           ),
