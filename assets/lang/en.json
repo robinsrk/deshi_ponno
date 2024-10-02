@@ -1,6 +1,7 @@
 {
   "app_title": "Deshi Ponno",
   "settings": "Settings",
+  "lang_code": "en",
   "dark_mode": "Dark Mode",
   "language": "Language",
   "english": "English",
@@ -32,6 +33,10 @@
   "next": "Next",
   "done": "Done",
   "back": "Back",
+  "favourites": "Favourites",
+  "notification_permission": "Allow notification to get update about products",
+  "allow_permission": "Allow permission",
+  "allow_from_settings": "Allow from settings",
   "previous": "Previous",
   "select_language": "Select language",
   "select_theme": "Select theme"

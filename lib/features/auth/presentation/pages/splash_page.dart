@@ -73,7 +73,7 @@ class _LoadingPageState extends State<LoadingPage> {
   }
 
   void _checkWelcome(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 3), () {
+    await Future.delayed(const Duration(seconds: 2), () {
       context.read<WelcomeCubit>().checkWelcomeStatus();
     });
   }

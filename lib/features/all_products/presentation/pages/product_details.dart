@@ -15,7 +15,15 @@ class ProductDetailsPage extends StatelessWidget {
         GetIt.instance<NumberFormatterService>();
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate("product_details")),
+        title: Text(
+          AppLocalizations.of(context).translate("product_details"),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {},
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

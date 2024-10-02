@@ -17,6 +17,7 @@ import 'package:deshi_ponno/features/auth/presentation/pages/splash_page.dart';
 import 'package:deshi_ponno/features/common/data/datasources/remote/product_remote_data_source.dart';
 import 'package:deshi_ponno/features/common/data/repositories/product_repository_impl.dart';
 import 'package:deshi_ponno/features/common/domain/repositories/product_repository.dart';
+import 'package:deshi_ponno/features/common/domain/usecases/delete_scanned_product.dart';
 import 'package:deshi_ponno/features/common/domain/usecases/get_scanned_products.dart';
 import 'package:deshi_ponno/features/common/domain/usecases/store_scanned_products.dart';
 import 'package:deshi_ponno/features/common/presentation/bloc/product_history_bloc.dart';
@@ -39,6 +40,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -63,9 +65,12 @@ void main() async {
   FirebaseDatabase.instance.ref().child("products").keepSynced(true);
   FirebaseDatabase.instance.ref().child("users").keepSynced(true);
 
+  // Firebase notifications
+  FirebaseMessaging.instance.subscribeToTopic("product_update");
+  FirebaseMessaging.instance.subscribeToTopic("app_update");
+
   // Dependency injection
   di.init();
-
   // Local storage
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
@@ -159,11 +164,13 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => ProductHistoryBloc(
               getScannedProducts: GetScannedProducts(commonProductRepository),
               storeScannedProduct: StoreScannedProduct(commonProductRepository),
+              deleteScannedProduct:
+                  DeleteScannedProduct(commonProductRepository),
             ),
           ),
           BlocProvider<WelcomeCubit>(
-            create: (BuildContext context) => di.sl<WelcomeCubit>()..checkWelcomeCompleted
-          )
+              create: (BuildContext context) =>
+                  di.sl<WelcomeCubit>()..checkWelcomeCompleted)
         ],
         child: BlocBuilder<LocalizationCubit, Locale>(
           builder: (BuildContext context, Locale locale) {
@@ -205,7 +212,8 @@ class MyApp extends StatelessWidget {
                         "/signup": (BuildContext context) => const SignupPage(),
                         "/home": (BuildContext context) => const HomePage(),
                         "/main": (BuildContext context) => const NavBarPage(),
-                        "/welcome": (BuildContext context) => WelcomePage(),
+                        "/welcome": (BuildContext context) =>
+                            const WelcomePage(),
                         "/loading": (BuildContext context) =>
                             const LoadingPage(),
                         "/products": (BuildContext context) =>

@@ -82,24 +82,7 @@ class _HomePageState extends State<HomePage> {
                             );
                           }
                         },
-                        // TODO: add user history
                         builder: (context, state) {
-                          // if (state is ProductInitial) {
-                          //   return ListTile(
-                          //     title: Text(
-                          //       "${AppLocalizations.of(context).translate("no_recents")}, ${AppLocalizations.of(context).translate("scan_product")}",
-                          //       style: Theme.of(context).textTheme.headlineSmall,
-                          //     ),
-                          //   );
-                          // } else if (state is ProductLoading) {
-                          //   return const CircularProgressIndicator();
-                          // } else if (state is ProductLoaded) {
-                          //   return ProductHistory(
-                          //     product: state.product,
-                          //   );
-                          // } else if (state is ProductError) {
-                          //   return Text(state.message);
-                          // }
                           return const SizedBox.shrink();
                         },
                       ),

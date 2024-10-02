@@ -15,11 +15,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "204825377289-guq01210j4vsktqdbek2lltlpl4mb1ou.apps.googleusercontent.com",
+          "client_id": "204825377289-01su5j5dstjbq5m3c3dk8ir32hmklbc5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "coco.it.deshi_ponno",
-            "certificate_hash": "7494afa9cfab6a43449e12a250ce2fc0b736fc83"
+            "certificate_hash": "6cff9fc949e8287f91ffa7ce470316fb99b94752"
+          }
+        },
+        {
+          "client_id": "204825377289-a5gibvojj539q1v3j533kgkbpj7o4kg9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "coco.it.deshi_ponno",
+            "certificate_hash": "e5f077670ebf8e4e1becdd35fd51c96bbbeb5291"
+          }
+        },
+        {
+          "client_id": "204825377289-r4pfhnlvu7j8cir7v0g9hjkih9nlh8sg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "coco.it.deshi_ponno",
+            "certificate_hash": "c911d6d972fc37d9a9e1b7ee59b52f5a96d7cec1"
           }
         },
         {

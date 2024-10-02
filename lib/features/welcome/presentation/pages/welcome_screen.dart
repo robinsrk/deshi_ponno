@@ -2,11 +2,13 @@ import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/core/usecases/usecase.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
 import 'package:deshi_ponno/features/welcome/presentation/blocs/welcome_cubit.dart';
-import 'package:deshi_ponno/features/welcome/presentation/widgets/select_language_widget.dart';
-import 'package:deshi_ponno/features/welcome/presentation/widgets/select_theme_widget.dart';
+import 'package:deshi_ponno/features/welcome/presentation/pages/select_language_page.dart';
+import 'package:deshi_ponno/features/welcome/presentation/pages/select_permissions_page.dart';
+import 'package:deshi_ponno/features/welcome/presentation/pages/select_theme_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -16,9 +18,10 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
   int selectedIndex = 0;
   final pageController = PageController();
+  PermissionStatus _notificationStatus = PermissionStatus.denied;
 
   bool _isAdLoaded = false;
   late BannerAd bannerAd;
@@ -37,8 +40,9 @@ class _WelcomePageState extends State<WelcomePage> {
                   });
                 },
                 children: const [
-                  SelectLanguageWidget(),
-                  SelectThemeWidget(),
+                  SelectLanguagePage(),
+                  SelectThemePage(),
+                  SelectPermissionPage(),
                 ],
               ),
             ),
@@ -63,7 +67,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         maintainSize: true,
                         maintainAnimation: true,
                         maintainState: true,
-                        child: TextButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             pageController.previousPage(
                                 duration: const Duration(milliseconds: 500),
@@ -76,7 +80,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       ),
                       SmoothPageIndicator(
                         controller: pageController,
-                        count: 2,
+                        count: 3,
                         onDotClicked: (index) => pageController.animateToPage(
                             index,
                             duration: const Duration(milliseconds: 500),
@@ -89,23 +93,35 @@ class _WelcomePageState extends State<WelcomePage> {
                           activeDotColor: Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                      selectedIndex == 1
-                          ? TextButton(
-                              onPressed: () {
-                                context
-                                    .read<WelcomeCubit>()
-                                    .finishWelcome()
-                                    .then((_) {
-                                  _navigateToNextScreen(context);
-                                });
-                                Navigator.pushReplacementNamed(
-                                    context, '/login');
+                      selectedIndex == 2
+                          ? ElevatedButton(
+                              onPressed: () async {
+                                if (_notificationStatus.isGranted) {
+                                  context
+                                      .read<WelcomeCubit>()
+                                      .finishWelcome()
+                                      .then((_) {
+                                    _navigateToNextScreen(context);
+                                  });
+                                } else {
+                                  await _requestPermission();
+                                  if (_notificationStatus.isPermanentlyDenied) {
+                                    openAppSettings();
+                                  }
+                                }
                               },
                               child: Text(
-                                AppLocalizations.of(context).translate("done"),
+                                _notificationStatus.isGranted
+                                    ? AppLocalizations.of(context)
+                                        .translate("done")
+                                    : _notificationStatus.isPermanentlyDenied
+                                        ? AppLocalizations.of(context)
+                                            .translate("next")
+                                        : AppLocalizations.of(context)
+                                            .translate("next"),
                               ),
                             )
-                          : TextButton(
+                          : ElevatedButton(
                               onPressed: () {
                                 pageController.nextPage(
                                     duration: const Duration(milliseconds: 500),
@@ -131,12 +147,19 @@ class _WelcomePageState extends State<WelcomePage> {
     super.dispose();
     pageController.dispose();
     bannerAd.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
   initState() {
     super.initState();
-
+    _checkNotificationPermission();
+    WidgetsBinding.instance.addObserver(this);
+    pageController.addListener(() {
+      setState(() {
+        selectedIndex = pageController.page!.round();
+      });
+    });
     bannerAd = BannerAd(
       adUnitId: 'ca-app-pub-4470111026859700/1331595322',
       size: AdSize.banner,
@@ -154,6 +177,13 @@ class _WelcomePageState extends State<WelcomePage> {
     );
 
     bannerAd.load();
+  }
+
+  Future<void> _checkNotificationPermission() async {
+    final status = await Permission.notification.status;
+    setState(() {
+      _notificationStatus = status;
+    });
   }
 
   void _navigateToNextScreen(BuildContext context) async {
@@ -176,5 +206,19 @@ class _WelcomePageState extends State<WelcomePage> {
         }
       },
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkNotificationPermission();
+    }
+  }
+
+  Future<void> _requestPermission() async {
+    final status = await Permission.notification.request();
+    setState(() {
+      _notificationStatus = status;
+    });
   }
 }

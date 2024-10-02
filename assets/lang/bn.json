@@ -1,6 +1,7 @@
 {
   "app_title": "দেশি পণ্য ",
   "settings": "সেটিংস",
+  "lang_code": "bn",
   "dark_mode": "ডার্ক মোড",
   "language": "ভাষা",
   "english": "ইংরেজি",
@@ -32,6 +33,10 @@
   "next": "পরবর্তী",
   "done": "এগিয়ে যান",
   "back": "ফিরে",
+  "favourites": "প্রিয়",
+  "notification_permission": "পণ্য সম্পর্কে আপডেট পেতে নোটিফিকেশন পারমিশন দিন",
+  "allow_permission": "পারমিশন দিন",
+  "allow_from_settings": "সেটিংস থেকে পারমিশন দিন",
   "previous": "পূর্ববর্তী",
   "select_language": "ভাষা পছন্দ করুন",
   "select_theme": "থিম পছন্দ করুন"

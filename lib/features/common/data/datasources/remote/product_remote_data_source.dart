@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 abstract class CommonProductRemoteDataSource {
+  Future<void> deleteScannedProduct(num id);
   Future<List<CommonProduct>> getScannedProducts();
   Future<void> storeScannedProduct(CommonProduct product);
 }
@@ -13,17 +14,37 @@ class CommonProductRemoteDataSourceImpl
   final DatabaseReference _database = FirebaseDatabase.instance.ref();
 
   @override
+  Future<void> deleteScannedProduct(num id) async {
+    final User? user = _auth.currentUser;
+    if (user != null) {
+      final DatabaseReference userProductsRef =
+          _database.child('users').child(user.uid).child('history');
+
+      final DatabaseEvent event = await userProductsRef.once();
+      final DataSnapshot snapshot = event.snapshot;
+      final Map<dynamic, dynamic>? scannedProducts =
+          snapshot.value as Map<dynamic, dynamic>?;
+
+      if (scannedProducts != null) {
+        for (var entry in scannedProducts.entries) {
+          if (entry.value['id'] == id) {
+            await userProductsRef.child(entry.key).remove();
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  @override
   Future<List<CommonProduct>> getScannedProducts() async {
     final User? user = _auth.currentUser;
     if (user == null) {
       return [];
     }
 
-    final DatabaseEvent event = await _database
-        .child('users')
-        .child(user.uid)
-        .child('scanned_products')
-        .once();
+    final DatabaseEvent event =
+        await _database.child('users').child(user.uid).child('history').once();
 
     final dynamic data = event.snapshot.value;
 
@@ -54,7 +75,7 @@ class CommonProductRemoteDataSourceImpl
     final User? user = _auth.currentUser;
     if (user != null) {
       final DatabaseReference userProductsRef =
-          _database.child('users').child(user.uid).child('scanned_products');
+          _database.child('users').child(user.uid).child('history');
 
       final DatabaseEvent event = await userProductsRef.once();
       final DataSnapshot snapshot = event.snapshot;

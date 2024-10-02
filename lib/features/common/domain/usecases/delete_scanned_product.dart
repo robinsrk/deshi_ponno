@@ -4,7 +4,7 @@ class DeleteScannedProduct {
   final ProductRepository repository;
   DeleteScannedProduct(this.repository);
 
-  Future<void> call(String id) async {
+  Future<void> call(num id) async {
     return await repository.deleteScannedProduct(id);
   }
 }

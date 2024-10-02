@@ -1,6 +1,7 @@
 import "dart:developer" as dev;
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthRemoteDataSource {
@@ -44,10 +45,42 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       // Sign in to Firebase with the Google user credential
       final UserCredential userCredential =
-          await firebaseAuth.signInWithCredential(credential);
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-      // Return the logged-in user
-      return userCredential.user!;
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        // Create a reference to the user node in Firebase Realtime Database
+        final DatabaseReference userRef = FirebaseDatabase.instance
+            .ref()
+            .child('users')
+            .child(user.uid)
+            .child("profile");
+
+        // Check if user data already exists
+        final DatabaseEvent event = await userRef.once();
+        final DataSnapshot snapshot = event.snapshot;
+
+        if (!snapshot.exists) {
+          // Get the user's profile information
+          final String displayName = user.displayName ?? "N/A";
+          final String email = user.email ?? "N/A";
+          final String photoURL = user.photoURL ?? "N/A";
+
+          // Set the user's information
+          await userRef.set({
+            'displayName': displayName,
+            'email': email,
+            'photoURL': photoURL,
+            'role': 'user',
+          });
+        }
+
+        // Return the logged-in user
+        return user;
+      } else {
+        throw Exception("User is null");
+      }
     } catch (e) {
       print("Error signing in with Google: $e");
       rethrow;

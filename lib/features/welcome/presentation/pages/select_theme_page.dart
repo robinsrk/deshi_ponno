@@ -1,6 +1,5 @@
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/core/theme/theme_cubit.dart';
-import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_cubit.dart';
 import 'package:deshi_ponno/features/settings/presentation/bloc/settings_state.dart';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -8,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-class SelectThemeWidget extends StatefulWidget {
-  const SelectThemeWidget({super.key});
+class SelectThemePage extends StatefulWidget {
+  const SelectThemePage({super.key});
 
   @override
-  State<SelectThemeWidget> createState() => _SelectThemeWidgetState();
+  State<SelectThemePage> createState() => _SelectThemePageState();
 }
 
-class _SelectThemeWidgetState extends State<SelectThemeWidget> {
+class _SelectThemePageState extends State<SelectThemePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
