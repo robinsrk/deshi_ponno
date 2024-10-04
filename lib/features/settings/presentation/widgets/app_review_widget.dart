@@ -1,35 +1,25 @@
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:in_app_review/in_app_review.dart';
 
-class AboutAppWidget extends StatefulWidget {
-  const AboutAppWidget({
+class AppReviewWidget extends StatefulWidget {
+  const AppReviewWidget({
     super.key,
   });
 
   @override
-  State<AboutAppWidget> createState() => _AboutAppWidgetState();
+  State<AppReviewWidget> createState() => _AppReviewWidgetState();
 }
 
-class _AboutAppWidgetState extends State<AboutAppWidget> {
-  final InAppReview _inAppReview = InAppReview.instance;
+class _AppReviewWidgetState extends State<AppReviewWidget> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      trailing: Row(
+      title: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
         children: [
           OutlinedButton(
             onPressed: () {
               _showMyDialog();
-            },
-            child: Text(AppLocalizations.of(context).translate("about")),
-          ),
-          const SizedBox(width: 10),
-          OutlinedButton(
-            onPressed: () {
-              _inAppReview.openStoreListing();
             },
             child: Text(AppLocalizations.of(context).translate("give_review")),
           ),

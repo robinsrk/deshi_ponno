@@ -61,6 +61,8 @@ void main() async {
   } catch (e) {
     dev.log(e.toString());
   }
+
+  // Offline database
   FirebaseDatabase.instance.setPersistenceEnabled(true);
   FirebaseDatabase.instance.ref().child("products").keepSynced(true);
   FirebaseDatabase.instance.ref().child("users").keepSynced(true);
@@ -71,6 +73,7 @@ void main() async {
 
   // Dependency injection
   di.init();
+
   // Local storage
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
@@ -80,6 +83,7 @@ void main() async {
       CommonProductRemoteDataSourceImpl();
   final CommonProductRepositoryImpl commonProductRepository =
       CommonProductRepositoryImpl(commonProductRemoteDataSource);
+
   // Firebase authentication
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final AuthRemoteDataSourceImpl authRemoteDataSource =
