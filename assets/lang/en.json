@@ -11,6 +11,8 @@
   "scan_product": "Scan a product",
   "name": "Name",
   "brand": "Brand",
+  "brands": "Brand",
+  "category": "Category",
   "history": "History",
   "recents": "Recents",
   "no_recents": "No recent scans",

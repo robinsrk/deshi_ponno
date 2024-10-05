@@ -55,8 +55,35 @@ class ProductDetailsPage extends StatelessWidget {
                 product.name,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
-              subtitle: Text(
-                '${AppLocalizations.of(context).translate("brand")}: ${product.brand} \n${AppLocalizations.of(context).translate("origin")}: ${product.origin} \n${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}',
+              trailing: Text(
+                numberFormatter.formatCurrency(product.price, context),
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context).translate("brand"),
+                  ),
+                  Text(product.brand)
+                ],
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context).translate("origin"),
+                  ),
+                  Text(product.origin)
+                ],
               ),
             ),
           ],

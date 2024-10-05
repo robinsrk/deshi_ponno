@@ -5,6 +5,8 @@ import 'package:deshi_ponno/features/common/presentation/bloc/product_history_bl
 import 'package:deshi_ponno/features/home_page/presentation/bloc/product_bloc.dart';
 import 'package:deshi_ponno/features/home_page/presentation/bloc/product_states.dart';
 import 'package:deshi_ponno/features/home_page/presentation/pages/barcode_scanner.dart';
+import 'package:deshi_ponno/features/home_page/presentation/widgets/brands_widget.dart';
+import 'package:deshi_ponno/features/home_page/presentation/widgets/category_widget.dart';
 import 'package:deshi_ponno/features/home_page/presentation/widgets/product_details_bottom_sheet.dart';
 import 'package:deshi_ponno/features/home_page/presentation/widgets/product_history.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,12 +25,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool _isAdLoaded = false;
   late BannerAd bannerAd;
+
   @override
   Widget build(BuildContext context) {
     final double svgWidth = MediaQuery.of(context).size.width * 0.8;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate("app_title")),
+        title: Text(
+          AppLocalizations.of(context).translate("app_title"),
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
         actions: [
           IconButton(
             icon: Hero(
@@ -50,98 +56,94 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: Stack(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                "assets/images/welcome.svg",
-                width: svgWidth,
-              ),
-            ],
-          ),
-          Expanded(
-            flex: 1,
+          SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      BlocConsumer<ProductCubit, ProductState>(
-                        listener: (context, state) {
-                          if (state is ProductLoaded) {
-                            _showProductDetailsBottomSheet(
-                                context, state.product);
-                          } else if (state is ProductError) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.message)),
-                            );
-                          }
-                        },
-                        builder: (context, state) {
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                      BlocBuilder<ProductHistoryBloc, ProductHistoryState>(
-                        builder: (context, state) {
-                          if (state is ProductHistoryLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (state is ProductHistoryLoaded) {
-                            return Flexible(
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                      title: Text(
-                                          AppLocalizations.of(context)
-                                              .translate("recents"),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineSmall)),
-                                  Expanded(
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: state.products.length,
-                                      itemBuilder: (context, index) {
-                                        final product = state.products[index];
-                                        return ProductHistory(product: product);
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else if (state is ProductHistoryError) {
-                            return Center(child: Text(state.message));
-                          } else if (state is ProductHistoryEmpty) {
-                            return ListTile(
-                              title: Text(
-                                "${AppLocalizations.of(context).translate("no_recents")}, ${AppLocalizations.of(context).translate("scan_product")}",
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                              ),
-                            );
-                          } else {
-                            return const Center(child: Text("Error"));
-                          }
-                        },
-                      ),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/images/welcome.svg",
+                      width: svgWidth,
+                    ),
+                  ],
                 ),
-                if (_isAdLoaded)
-                  SizedBox(
-                    height: bannerAd.size.height.toDouble(),
-                    width: bannerAd.size.width.toDouble(),
-                    child: AdWidget(ad: bannerAd),
-                  ),
+                Column(
+                  children: [
+                    const BrandsWidget(),
+                    const CategoryWidget(),
+                    BlocConsumer<ProductCubit, ProductState>(
+                      listener: (context, state) {
+                        if (state is ProductLoaded) {
+                          _showProductDetailsBottomSheet(
+                              context, state.product);
+                        } else if (state is ProductError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)),
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                    BlocBuilder<ProductHistoryBloc, ProductHistoryState>(
+                      builder: (context, state) {
+                        if (state is ProductHistoryLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state is ProductHistoryLoaded) {
+                          return Column(
+                            children: [
+                              ListTile(
+                                  title: Text(
+                                      AppLocalizations.of(context)
+                                          .translate("history"),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall)),
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: state.products.length,
+                                itemBuilder: (context, index) {
+                                  final product = state.products[index];
+                                  return ProductHistory(product: product);
+                                },
+                              ),
+                            ],
+                          );
+                        } else if (state is ProductHistoryError) {
+                          return Center(child: Text(state.message));
+                        } else if (state is ProductHistoryEmpty) {
+                          return ListTile(
+                            title: Text(
+                              AppLocalizations.of(context).translate("history"),
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                          );
+                        } else {
+                          return const Center(child: Text("Error"));
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
+          if (_isAdLoaded)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                height: bannerAd.size.height.toDouble(),
+                width: bannerAd.size.width.toDouble(),
+                child: AdWidget(ad: bannerAd),
+              ),
+            ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
