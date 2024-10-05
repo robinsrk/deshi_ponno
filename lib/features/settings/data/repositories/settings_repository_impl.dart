@@ -8,8 +8,6 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   Future<Settings> loadSettings() async {
-    // Simulate loading settings from persistent storage.
-    // Replace this with actual logic to load settings from a database or local storage.
     final prefs = await SharedPreferences.getInstance();
     final isDarkMode = prefs.getBool(_darkModeKey) ?? false;
     final isMaterialMode = prefs.getBool(_materialModeKey) ?? false;
@@ -18,8 +16,6 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   @override
   Future<void> updateSettings(Settings settings) async {
-    // Simulate updating settings in persistent storage.
-    // Replace this with actual logic to save settings to a database or local storage.
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_darkModeKey, settings.isDarkMode);
     await prefs.setBool(_materialModeKey, settings.isMaterialU);

@@ -56,83 +56,87 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Stack(
+      body: Column(
         children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/images/welcome.svg",
-                      width: svgWidth,
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const BrandsWidget(),
-                    const CategoryWidget(),
-                    BlocConsumer<ProductCubit, ProductState>(
-                      listener: (context, state) {
-                        if (state is ProductLoaded) {
-                          _showProductDetailsBottomSheet(
-                              context, state.product);
-                        } else if (state is ProductError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(state.message)),
-                          );
-                        }
-                      },
-                      builder: (context, state) {
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                    BlocBuilder<ProductHistoryBloc, ProductHistoryState>(
-                      builder: (context, state) {
-                        if (state is ProductHistoryLoading) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (state is ProductHistoryLoaded) {
-                          return Column(
-                            children: [
-                              ListTile(
-                                  title: Text(
-                                      AppLocalizations.of(context)
-                                          .translate("history"),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall)),
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: state.products.length,
-                                itemBuilder: (context, index) {
-                                  final product = state.products[index];
-                                  return ProductHistory(product: product);
-                                },
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/images/welcome.svg",
+                        width: svgWidth,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      const BrandsWidget(),
+                      const CategoryWidget(),
+                      BlocConsumer<ProductCubit, ProductState>(
+                        listener: (context, state) {
+                          if (state is ProductLoaded) {
+                            _showProductDetailsBottomSheet(
+                                context, state.product);
+                          } else if (state is ProductError) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(state.message)),
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                      BlocBuilder<ProductHistoryBloc, ProductHistoryState>(
+                        builder: (context, state) {
+                          if (state is ProductHistoryLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is ProductHistoryLoaded) {
+                            return Column(
+                              children: [
+                                ListTile(
+                                    title: Text(
+                                        AppLocalizations.of(context)
+                                            .translate("history"),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall)),
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: state.products.length,
+                                  itemBuilder: (context, index) {
+                                    final product = state.products[index];
+                                    return ProductHistory(product: product);
+                                  },
+                                ),
+                              ],
+                            );
+                          } else if (state is ProductHistoryError) {
+                            return Center(child: Text(state.message));
+                          } else if (state is ProductHistoryEmpty) {
+                            return ListTile(
+                              title: Text(
+                                AppLocalizations.of(context)
+                                    .translate("history"),
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
                               ),
-                            ],
-                          );
-                        } else if (state is ProductHistoryError) {
-                          return Center(child: Text(state.message));
-                        } else if (state is ProductHistoryEmpty) {
-                          return ListTile(
-                            title: Text(
-                              AppLocalizations.of(context).translate("history"),
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                          );
-                        } else {
-                          return const Center(child: Text("Error"));
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                            );
+                          } else {
+                            return const Center(child: Text("Error"));
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           if (_isAdLoaded)
