@@ -25,6 +25,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool _isAdLoaded = false;
   late BannerAd bannerAd;
+  InterstitialAd? interstitialAd;
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +80,10 @@ class _HomePageState extends State<HomePage> {
                       BlocConsumer<ProductCubit, ProductState>(
                         listener: (context, state) {
                           if (state is ProductLoaded) {
-                            _showProductDetailsBottomSheet(
-                                context, state.product);
+                            _showInterstitialAd(() {
+                              _showProductDetailsBottomSheet(
+                                  context, state.product);
+                            });
                           } else if (state is ProductError) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(state.message)),
@@ -172,6 +175,18 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<ProductHistoryBloc>().add(LoadProductHistoryEvent());
+    InterstitialAd.load(
+      adUnitId: 'ca-app-pub-4470111026859700/2470390940',
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          interstitialAd = ad;
+        },
+        onAdFailedToLoad: (error) {
+          interstitialAd = null;
+        },
+      ),
+    );
     bannerAd = BannerAd(
       adUnitId: 'ca-app-pub-4470111026859700/9940743932',
       size: AdSize.banner,
@@ -189,6 +204,36 @@ class _HomePageState extends State<HomePage> {
     );
 
     bannerAd.load();
+  }
+
+  void _showInterstitialAd(VoidCallback onAdClosed) {
+    if (interstitialAd != null) {
+      interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+        onAdDismissedFullScreenContent: (ad) {
+          ad.dispose();
+          InterstitialAd.load(
+            adUnitId: 'ca-app-pub-4470111026859700/2470390940',
+            request: const AdRequest(),
+            adLoadCallback: InterstitialAdLoadCallback(
+              onAdLoaded: (ad) {
+                interstitialAd = ad;
+              },
+              onAdFailedToLoad: (error) {
+                interstitialAd = null;
+              },
+            ),
+          );
+          onAdClosed();
+        },
+        onAdFailedToShowFullScreenContent: (ad, error) {
+          ad.dispose();
+          onAdClosed();
+        },
+      );
+      interstitialAd!.show();
+    } else {
+      onAdClosed();
+    }
   }
 
   void _showProductDetailsBottomSheet(
