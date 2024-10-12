@@ -56,9 +56,16 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                 ),
               ],
             ),
-            Text(
-              "${AppLocalizations.of(context).translate("name")}: ${product.name}",
-              style: Theme.of(context).textTheme.bodyLarge,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  product.name,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                Text(numberFormatter.formatCurrency(product.price, context),
+                    style: Theme.of(context).textTheme.headlineSmall),
+              ],
             ),
             const SizedBox(height: 8),
             Text(
@@ -66,22 +73,25 @@ class ProductDetailsBottomSheet extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocalizations.of(context).translate("brand")),
+                Text(product.brand),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocalizations.of(context).translate("origin")),
+                Text(product.origin),
+              ],
+            ),
             Text(
               "${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}",
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Close"),
-                ),
-              ],
-            ),
+            SizedBox(height: 16),
           ],
         ),
       ),

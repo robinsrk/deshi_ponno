@@ -4,7 +4,6 @@ import 'package:deshi_ponno/core/di/injection_container.dart' as di;
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:deshi_ponno/core/theme/theme_cubit.dart';
 import 'package:deshi_ponno/features/all_products/presentation/bloc/product_list_cubit.dart';
-import 'package:deshi_ponno/features/all_products/presentation/pages/all_products_page.dart';
 import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:deshi_ponno/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
@@ -220,8 +219,6 @@ class MyApp extends StatelessWidget {
                             const WelcomePage(),
                         "/loading": (BuildContext context) =>
                             const LoadingPage(),
-                        "/products": (BuildContext context) =>
-                            const ProductListPage(),
                         "/profile": (BuildContext context) =>
                             const ProfilePage(),
                       },

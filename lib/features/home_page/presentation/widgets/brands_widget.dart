@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
+import 'package:deshi_ponno/features/all_products/presentation/pages/all_products_page.dart';
 import 'package:flutter/material.dart';
 
 class BrandsWidget extends StatefulWidget {
@@ -31,16 +32,29 @@ class _BrandsWidgetState extends State<BrandsWidget> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl:
-                            "https://seeklogo.com/images/P/pran-logo-61EDC725ED-seeklogo.com.png",
-                        height: 50,
-                      ),
-                      Text(AppLocalizations.of(context).brand("pran"))
-                    ],
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductListPage(
+                            brandName: 'Pran',
+                            categoryName: '',
+                          ),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl:
+                              "https://seeklogo.com/images/P/pran-logo-61EDC725ED-seeklogo.com.png",
+                          height: 50,
+                        ),
+                        Text(AppLocalizations.of(context).brand("pran"))
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
