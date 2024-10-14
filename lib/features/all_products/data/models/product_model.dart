@@ -8,6 +8,7 @@ class ProductModel extends CommonProduct {
     required super.imageUrl,
     required super.price,
     required super.origin,
+    required super.category,
   });
 
   factory ProductModel.fromMap(String id, Map<dynamic, dynamic> data) {
@@ -19,6 +20,7 @@ class ProductModel extends CommonProduct {
       origin: data['origin'] ?? "Unknown origin",
       imageUrl: data['image_url'] ??
           "https://i.pinimg.com/originals/aa/c5/4c/aac54cd9b837f7cf979ad61c0df09dd6.png",
+      category: data['category'] ?? "Unknown category",
     );
   }
 
@@ -30,6 +32,7 @@ class ProductModel extends CommonProduct {
       price: price,
       origin: origin,
       imageUrl: imageUrl,
+      category: category,
     );
   }
 }

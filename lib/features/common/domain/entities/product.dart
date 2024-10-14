@@ -7,6 +7,7 @@ class CommonProduct {
   final String origin;
   final num price;
   final String imageUrl;
+  final String category;
 
   CommonProduct({
     required this.id,
@@ -15,6 +16,7 @@ class CommonProduct {
     required this.brand,
     required this.price,
     required this.imageUrl,
+    required this.category,
   });
 
   factory CommonProduct.fromMap(Map<String, dynamic> map) {
@@ -25,6 +27,7 @@ class CommonProduct {
       origin: map['origin'],
       price: map['price'],
       imageUrl: map['imageUrl'],
+      category: map['category'],
     );
   }
 
@@ -38,6 +41,7 @@ class CommonProduct {
       imageUrl: productData['image_url'] ??
           "https://i.pinimg.com/originals/aa/c5/4c/aac54cd9b837f7cf979ad61c0df09dd6.png",
       price: productData['price'] ?? 0.0,
+      category: productData['category'] ?? "Unknown Category",
     );
   }
   Map<String, dynamic> toMap() {
@@ -48,6 +52,7 @@ class CommonProduct {
       'origin': origin,
       'price': price,
       'imageUrl': imageUrl,
+      'category': category,
     };
   }
 }

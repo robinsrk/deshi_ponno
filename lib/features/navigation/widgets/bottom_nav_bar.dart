@@ -14,6 +14,7 @@ class BottomNavBar extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.primary,
       color: Theme.of(context).colorScheme.surface,
       index: currentIndex,
+      height: 50,
       items: const <Widget>[
         Icon(Icons.home, size: 30),
         Icon(Icons.shopping_cart, size: 30),

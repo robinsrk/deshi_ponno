@@ -4,6 +4,7 @@ class ProductFilter {
   final double maxPrice;
   final String brand;
   final String name;
+  final String category;
 
   ProductFilter({
     required this.origin,
@@ -11,5 +12,6 @@ class ProductFilter {
     required this.maxPrice,
     required this.brand,
     required this.name,
+    required this.category,
   });
 }

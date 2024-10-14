@@ -46,10 +46,12 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                   alignment: Alignment.center,
                   child: CachedNetworkImage(
                     imageUrl: product.imageUrl,
+                    height: 300,
                     progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator(
-                                value: downloadProgress.progress),
+                        (context, url, downloadProgress) => Center(
+                      child: CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                    ),
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
                   ),
@@ -63,35 +65,52 @@ class ProductDetailsBottomSheet extends StatelessWidget {
                   product.name,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                Text(numberFormatter.formatCurrency(product.price, context),
-                    style: Theme.of(context).textTheme.headlineSmall),
+                Text(
+                  numberFormatter.formatCurrency(product.price, context),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
               ],
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "${AppLocalizations.of(context).translate("brand")}: ${product.brand}",
-              style: Theme.of(context).textTheme.bodyLarge,
             ),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(AppLocalizations.of(context).translate("brand")),
-                Text(product.brand),
+                Text(
+                  AppLocalizations.of(context).translate("brand"),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  product.brand,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ],
             ),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(AppLocalizations.of(context).translate("origin")),
-                Text(product.origin),
+                Text(
+                  AppLocalizations.of(context).translate("origin"),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  product.origin,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ],
             ),
-            Text(
-              "${AppLocalizations.of(context).translate("price")}: ${numberFormatter.formatCurrency(product.price, context)}",
-              style: Theme.of(context).textTheme.bodyLarge,
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Close"),
+                ),
+              ],
             ),
-            SizedBox(height: 16),
           ],
         ),
       ),

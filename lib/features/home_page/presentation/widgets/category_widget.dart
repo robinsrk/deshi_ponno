@@ -154,6 +154,7 @@
 // }
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:deshi_ponno/core/localization/app_localization.dart';
+import 'package:deshi_ponno/features/all_products/presentation/pages/all_products_page.dart';
 import 'package:flutter/material.dart';
 
 class CategoryWidget extends StatefulWidget {
@@ -242,7 +243,15 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               return GestureDetector(
                 onTap: () {
                   print("${products[index]['name']} clicked");
-                  Navigator.pushNamed(context, "/products");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductListPage(
+                        brandName: '',
+                        categoryName: products[index]['name'].toString(),
+                      ),
+                    ),
+                  );
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -251,7 +260,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                       imageUrl: products[index]['image']!,
                       height: 50,
                       placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
+                          const Center(child: CircularProgressIndicator()),
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),
                     ),
