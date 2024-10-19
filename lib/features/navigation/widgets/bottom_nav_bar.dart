@@ -11,7 +11,7 @@ class BottomNavBar extends StatelessWidget {
     final int currentIndex =
         _getIndexFromState(context.watch<NavBarCubit>().state);
     return CurvedNavigationBar(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       color: Theme.of(context).colorScheme.surface,
       index: currentIndex,
       height: 50,

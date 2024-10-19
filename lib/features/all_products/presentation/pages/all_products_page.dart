@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:super_context_menu/super_context_menu.dart';
 
 class ProductListPage extends StatefulWidget {
   final String? categoryName;
@@ -132,87 +133,100 @@ class _ProductListPageState extends State<ProductListPage> {
                               ),
                             );
                           },
-                          child: Card(
-                            elevation: 4.0,
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Hero(
-                                    tag: product.name,
-                                    child: CachedNetworkImage(
-                                      imageUrl: product.imageUrl,
-                                      progressIndicatorBuilder:
-                                          (context, url, downloadProgress) =>
-                                              Center(
-                                        child: CircularProgressIndicator(
-                                            value: downloadProgress.progress),
+                          child: ContextMenuWidget(
+                            menuProvider: (MenuRequest request) {
+                              return Menu(
+                                children: [
+                                  MenuAction(
+                                    title: 'Favourite ',
+                                    callback: () {},
+                                    image: MenuImage.icon(Icons.favorite),
+                                  ),
+                                ],
+                              );
+                            },
+                            child: Card(
+                              elevation: 4.0,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Hero(
+                                      tag: product.name,
+                                      child: CachedNetworkImage(
+                                        imageUrl: product.imageUrl,
+                                        progressIndicatorBuilder:
+                                            (context, url, downloadProgress) =>
+                                                Center(
+                                          child: CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                        fit: BoxFit.cover,
                                       ),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        product.name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)
-                                                .translate("brand"),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text(
-                                            product.brand,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)
-                                                .translate("price"),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text(
-                                            numberFormatter.formatCurrency(
-                                                product.price, context),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          product.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              AppLocalizations.of(context)
+                                                  .translate("brand"),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            Text(
+                                              product.brand,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              AppLocalizations.of(context)
+                                                  .translate("price"),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            Text(
+                                              numberFormatter.formatCurrency(
+                                                  product.price, context),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -248,17 +262,15 @@ class _ProductListPageState extends State<ProductListPage> {
   void initState() {
     super.initState();
 
-    // Set initial filter values based on optional parameters
     _filter = ProductFilter(
       origin: "Bangladesh",
       minPrice: 0,
       maxPrice: double.infinity,
       brand: widget.brandName ?? "", // Use brandName if provided
-      name: "", // Start with an empty search
+      name: "",
       category: widget.categoryName ?? "",
     );
 
-    // Load the banner ad
     bannerAd = BannerAd(
       adUnitId: 'ca-app-pub-4470111026859700/3188119396',
       size: AdSize.banner,
@@ -298,8 +310,14 @@ class _ProductListPageState extends State<ProductListPage> {
     }).toList();
   }
 
-  Widget _buildDropdownChip(BuildContext context, String selectedValue,
-      String hint, List<String> items, ValueChanged<String?> onChanged) {
+  Widget _buildDropdownChip(
+    BuildContext context,
+    String translation,
+    String selectedValue,
+    String hint,
+    List<String> items,
+    ValueChanged<String?> onChanged,
+  ) {
     return InkWell(
       onTap: () async {
         final selectedItem = await showModalBottomSheet<String>(
@@ -317,7 +335,13 @@ class _ProductListPageState extends State<ProductListPage> {
                 ),
                 ...items.map((item) {
                   return ListTile(
-                    title: Text(item),
+                    title: Text(
+                      translation == "category"
+                          ? AppLocalizations.of(context).category(item)
+                          : translation == "brand"
+                              ? AppLocalizations.of(context).brand(item)
+                              : item,
+                    ),
                     onTap: () {
                       Navigator.pop(context, item);
                     },
@@ -349,6 +373,7 @@ class _ProductListPageState extends State<ProductListPage> {
             children: [
               _buildDropdownChip(
                 context,
+                "country",
                 _filter.origin,
                 AppLocalizations.of(context).translate("origin"),
                 origins,
@@ -368,7 +393,8 @@ class _ProductListPageState extends State<ProductListPage> {
               const SizedBox(width: 8),
               _buildDropdownChip(
                 context,
-                _filter.brand,
+                "brand",
+                AppLocalizations.of(context).brand(_filter.brand),
                 AppLocalizations.of(context).translate("brand"),
                 brands,
                 (value) {
@@ -387,7 +413,8 @@ class _ProductListPageState extends State<ProductListPage> {
               const SizedBox(width: 8),
               _buildDropdownChip(
                 context,
-                _filter.category,
+                "category",
+                AppLocalizations.of(context).category(_filter.category),
                 AppLocalizations.of(context).translate("category"),
                 categories,
                 (value) {

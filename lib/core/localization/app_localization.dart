@@ -11,8 +11,17 @@ class AppLocalizations {
 
   late Map<String, String> _localizedStrings;
   late Map<String, String> _brandLocalize;
+  late Map<String, String> _categoryLocalize;
 
   AppLocalizations(this.locale);
+
+  String brand(String key) {
+    return _brandLocalize[key] ?? key;
+  }
+
+  String category(String key) {
+    return _categoryLocalize[key] ?? key;
+  }
 
   Future<bool> load() async {
     String jsonString =
@@ -32,15 +41,19 @@ class AppLocalizations {
       return MapEntry<String, String>(key, value.toString());
     });
 
+    String categoryString = await rootBundle
+        .loadString('assets/lang/category_${locale.languageCode}.json');
+    Map<String, dynamic> categoryMap = json.decode(categoryString);
+
+    _categoryLocalize =
+        categoryMap.map<String, String>((String key, dynamic value) {
+      return MapEntry<String, String>(key, value.toString());
+    });
     return true;
   }
 
   String translate(String key) {
     return _localizedStrings[key] ?? key;
-  }
-
-  String brand(String key) {
-    return _brandLocalize[key] ?? key;
   }
 
   static AppLocalizations of(BuildContext context) {

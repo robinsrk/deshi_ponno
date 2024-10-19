@@ -59,8 +59,8 @@ android {
 
     defaultConfig {
         applicationId "coco.it.deshi_ponno"
-        minSdkVersion 21
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 23
+        // minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

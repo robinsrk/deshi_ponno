@@ -1,5 +1,6 @@
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class FavouritesPage extends StatefulWidget {
   const FavouritesPage({super.key});
@@ -15,6 +16,15 @@ class _FavouritesPageState extends State<FavouritesPage> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context).translate("favourites"),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Lottie.asset("assets/lottie/construction.json"),
+            const SizedBox(height: 50),
+            Text("Under construction...")
+          ],
         ),
       ),
     );

@@ -145,10 +145,13 @@ class _HomePageState extends State<HomePage> {
           if (_isAdLoaded)
             Align(
               alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                height: bannerAd.size.height.toDouble(),
-                width: bannerAd.size.width.toDouble(),
-                child: AdWidget(ad: bannerAd),
+              child: Container(
+                color: Colors.transparent,
+                child: SizedBox(
+                  height: bannerAd.size.height.toDouble(),
+                  width: bannerAd.size.width.toDouble(),
+                  child: AdWidget(ad: bannerAd),
+                ),
               ),
             ),
         ],
