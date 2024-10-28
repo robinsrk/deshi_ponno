@@ -3,7 +3,7 @@ import 'package:deshi_ponno/features/settings/presentation/bloc/localization_cub
 import 'package:deshi_ponno/features/welcome/presentation/widgets/language_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 
 class SelectLanguagePage extends StatefulWidget {
   const SelectLanguagePage({super.key});
@@ -28,11 +28,10 @@ class _SelectLanguagePageState extends State<SelectLanguagePage> {
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 20),
-              SvgPicture.asset(
-                "assets/images/language.svg",
-                height: 300,
-                width: 200,
-              ),
+              Lottie.asset(
+                "assets/lottie/language.json",
+                reverse: true,
+              )
             ],
           ),
           BlocBuilder<LocalizationCubit, Locale>(

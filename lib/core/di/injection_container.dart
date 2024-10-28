@@ -8,6 +8,7 @@ import 'package:deshi_ponno/features/all_products/presentation/bloc/product_list
 import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:deshi_ponno/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:deshi_ponno/features/auth/domain/repositories/auth_repository.dart';
+import 'package:deshi_ponno/features/auth/domain/usecases/check_admin.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/login.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/signup.dart';
@@ -102,11 +103,12 @@ void init() async {
         checkUserLoggedIn: sl<CheckUserLoggedIn>(),
         login: sl<Login>(),
         signup: sl<Signup>(),
+        checkAdmin: sl<CheckAdmin>(),
       ));
   sl.registerFactory<ProductCubit>(() => ProductCubit(sl<GetProduct>()));
 // Features - Welcome
   sl.registerFactory(
-        () => WelcomeCubit(
+    () => WelcomeCubit(
       checkWelcomeCompleted: sl(),
       completeWelcome: sl(),
     ),
@@ -120,12 +122,12 @@ void init() async {
 
   // Repository
   sl.registerLazySingleton<WelcomeRepository>(
-        () => WelcomeRepositoryImpl(sl()),
+    () => WelcomeRepositoryImpl(sl()),
   );
 
   // Data sources
   sl.registerLazySingleton<WelcomeLocalDataSource>(
-        () => WelcomeLocalDataSourceImpl(sl()),
+    () => WelcomeLocalDataSourceImpl(sl()),
   );
 
   // External

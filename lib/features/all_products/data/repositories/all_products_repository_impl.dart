@@ -9,7 +9,6 @@ class ProductListRepositoryImpl implements AllProductsRepository {
 
   @override
   Stream<List<CommonProduct>> getAllProducts() {
-    return remoteDataSource
-        .getAllProductsStream(); // Return the stream directly
+    return remoteDataSource.getAllProductsStream();
   }
 }

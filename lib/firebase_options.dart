@@ -15,6 +15,16 @@ import 'package:flutter/foundation.dart'
 /// );
 /// ```
 class DefaultFirebaseOptions {
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyAEH57PJ1VYspUGobdaGq7YdakpK8346nM',
+    appId: '1:204825377289:android:85bcc72f932778eaea56d8',
+    messagingSenderId: '204825377289',
+    projectId: 'deshi-ponno',
+    databaseURL:
+        'https://deshi-ponno-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'deshi-ponno.appspot.com',
+  );
+
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
       throw UnsupportedError(
@@ -51,14 +61,4 @@ class DefaultFirebaseOptions {
         );
     }
   }
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAEH57PJ1VYspUGobdaGq7YdakpK8346nM',
-    appId: '1:204825377289:android:85bcc72f932778eaea56d8',
-    messagingSenderId: '204825377289',
-    projectId: 'deshi-ponno',
-    databaseURL: 'https://deshi-ponno-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'deshi-ponno.appspot.com',
-  );
-
 }

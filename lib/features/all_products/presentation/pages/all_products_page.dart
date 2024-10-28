@@ -266,7 +266,7 @@ class _ProductListPageState extends State<ProductListPage> {
       origin: "Bangladesh",
       minPrice: 0,
       maxPrice: double.infinity,
-      brand: widget.brandName ?? "", // Use brandName if provided
+      brand: widget.brandName ?? "",
       name: "",
       category: widget.categoryName ?? "",
     );

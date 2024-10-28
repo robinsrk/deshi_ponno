@@ -143,6 +143,13 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkNotificationPermission();
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     pageController.dispose();
@@ -206,13 +213,6 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
         }
       },
     );
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _checkNotificationPermission();
-    }
   }
 
   Future<void> _requestPermission() async {

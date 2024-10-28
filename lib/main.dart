@@ -6,6 +6,7 @@ import 'package:deshi_ponno/core/theme/theme_cubit.dart';
 import 'package:deshi_ponno/features/all_products/presentation/bloc/product_list_cubit.dart';
 import 'package:deshi_ponno/features/auth/data/datasources/remote/auth_remote_data_source.dart';
 import 'package:deshi_ponno/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:deshi_ponno/features/auth/domain/usecases/check_admin.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/check_user_logged_in.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/login.dart';
 import 'package:deshi_ponno/features/auth/domain/usecases/signup.dart';
@@ -92,6 +93,7 @@ void main() async {
   final Login loginUseCase = Login(authRepository);
   final Signup signupUseCase = Signup(authRepository);
   final CheckUserLoggedIn checkUserLoggedIn = CheckUserLoggedIn(authRepository);
+  final CheckAdmin checkAdmin = CheckAdmin(authRepository);
 
   final ProductRepositoryImpl productRepository = ProductRepositoryImpl(
     ProductRemoteDataSourceImpl(FirebaseDatabase.instance),
@@ -103,6 +105,7 @@ void main() async {
     loginUseCase: loginUseCase,
     signupUseCase: signupUseCase,
     checkUserLoggedInUseCase: checkUserLoggedIn,
+    checkAdmin: checkAdmin,
     isDarkMode: isDarkMode,
     isMaterialU: isMaterialU,
   ));
@@ -113,6 +116,7 @@ class MyApp extends StatelessWidget {
   final Login loginUseCase;
   final Signup signupUseCase;
   final CheckUserLoggedIn checkUserLoggedInUseCase;
+  final CheckAdmin checkAdmin;
   final bool isDarkMode;
   final bool isMaterialU;
   final ProductRepository commonProductRepository;
@@ -123,6 +127,7 @@ class MyApp extends StatelessWidget {
     required this.loginUseCase,
     required this.signupUseCase,
     required this.checkUserLoggedInUseCase,
+    required this.checkAdmin,
     required this.isDarkMode,
     required this.isMaterialU,
     required this.commonProductRepository,
@@ -135,6 +140,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<CheckUserLoggedIn>(
           create: (BuildContext context) => checkUserLoggedInUseCase,
         ),
+        RepositoryProvider<CheckAdmin>(
+          create: (BuildContext context) => checkAdmin,
+        ),
         RepositoryProvider<ProductRepositoryImpl>(
           create: (BuildContext context) => repository,
         ),
@@ -142,10 +150,13 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthBloc>(
-              create: (BuildContext context) => AuthBloc(
-                  login: loginUseCase,
-                  signup: signupUseCase,
-                  checkUserLoggedIn: checkUserLoggedInUseCase)),
+            create: (BuildContext context) => AuthBloc(
+              login: loginUseCase,
+              signup: signupUseCase,
+              checkUserLoggedIn: checkUserLoggedInUseCase,
+              checkAdmin: checkAdmin,
+            ),
+          ),
           BlocProvider<ProductCubit>(
               create: (BuildContext context) =>
                   ProductCubit(GetProduct(repository))),

@@ -1,6 +1,6 @@
 import 'package:deshi_ponno/core/localization/app_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SelectPermissionPage extends StatefulWidget {
@@ -30,10 +30,9 @@ class _SelectPermissionPageState extends State<SelectPermissionPage>
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 20),
-              SvgPicture.asset(
-                "assets/images/notification.svg",
-                height: 300,
-                width: 200,
+              Lottie.asset(
+                "assets/lottie/notification.json",
+                reverse: true,
               ),
             ],
           ),
@@ -58,6 +57,13 @@ class _SelectPermissionPageState extends State<SelectPermissionPage>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkPermission();
+    }
+  }
+
+  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -69,13 +75,6 @@ class _SelectPermissionPageState extends State<SelectPermissionPage>
     WidgetsBinding.instance.addObserver(this);
     _checkPermission();
     super.initState();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _checkPermission();
-    }
   }
 
   Future<void> _checkPermission() async {

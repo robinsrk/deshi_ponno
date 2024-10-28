@@ -5,7 +5,7 @@ import 'package:deshi_ponno/features/settings/presentation/bloc/settings_state.d
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 
 class SelectThemePage extends StatefulWidget {
   const SelectThemePage({super.key});
@@ -30,10 +30,9 @@ class _SelectThemePageState extends State<SelectThemePage> {
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 20),
-              SvgPicture.asset(
-                "assets/images/theme.svg",
-                height: 300,
-                width: 200,
+              Lottie.asset(
+                "assets/lottie/theme.json",
+                reverse: true,
               ),
             ],
           ),

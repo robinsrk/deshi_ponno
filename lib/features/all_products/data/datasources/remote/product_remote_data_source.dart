@@ -17,7 +17,6 @@ class ProductListRemoteDataSource {
         return <CommonProduct>[];
       }
 
-      // Convert List<ProductModel> to List<Product>
       return data.entries.map((entry) {
         final productModel = ProductModel.fromMap(entry.key, entry.value);
         return productModel.toEntity(); // Convert ProductModel to Product

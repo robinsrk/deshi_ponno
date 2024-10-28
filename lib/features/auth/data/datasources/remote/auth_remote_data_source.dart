@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthRemoteDataSource {
+  Future<bool> isAdmin();
   Future<bool> isUserLoggedIn();
   Future<User> login();
   Future<User> signup(String email, String password);
@@ -14,6 +15,41 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth firebaseAuth;
 
   AuthRemoteDataSourceImpl(this.firebaseAuth);
+
+  @override
+  Future<bool> isAdmin() async {
+    print('isadmin checking');
+    final user = firebaseAuth.currentUser;
+    if (user == null) {
+      return false;
+    }
+
+    try {
+      // Reference to the user's profile in the Realtime Database
+      final DatabaseReference userRef = FirebaseDatabase.instance
+          .ref()
+          .child('users')
+          .child(user.uid)
+          .child('profile');
+
+      // Fetch the user data once
+      final DatabaseEvent event = await userRef.once();
+      final DataSnapshot snapshot = event.snapshot;
+
+      if (snapshot.exists) {
+        // Retrieve the 'role' field from the profile
+        final String role = snapshot.child('role').value as String;
+        // Check if the role is 'admin'
+        print("user role is $role");
+        return role == 'admin';
+      } else {
+        return false; // User profile does not exist in the database
+      }
+    } catch (e) {
+      print("Error fetching admin role: $e");
+      return false;
+    }
+  }
 
   @override
   Future<bool> isUserLoggedIn() async {

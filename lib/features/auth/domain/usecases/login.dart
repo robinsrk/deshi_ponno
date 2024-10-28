@@ -1,9 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:deshi_ponno/core/errors/failures.dart';
+import 'package:deshi_ponno/core/usecases/usecase.dart';
+import 'package:deshi_ponno/features/auth/domain/entities/user.dart';
 import 'package:deshi_ponno/features/auth/domain/repositories/auth_repository.dart';
-
-import '../../../../core/usecases/usecase.dart';
-import '../entities/user.dart';
 
 class Login implements UseCase<User, LoginParams> {
   final AuthRepository repository;
@@ -17,6 +16,5 @@ class Login implements UseCase<User, LoginParams> {
 }
 
 class LoginParams {
-
   LoginParams();
 }
